@@ -2,18 +2,32 @@
 
 ## Purpose
 
-This backlog is the canonical queue/index for CodeMaestro research tracks. It tracks research that must be completed before related guidance becomes canonical CodeMaestro architecture or Skill reference material and records accepted working tracks that remain active inputs to implementation/evals.
+This backlog is the canonical queue/index for CodeMaestro research tracks. It tracks the **execution state of research work** independently from whether an architectural direction or track-opening decision has already been accepted.
 
-Research findings are evidence, not automatic project decisions. Material changes to the architecture must be recorded in `docs/architecture/DECISIONS.md` and incorporated into `docs/architecture/ARCHITECTURE.md` after review.
+Research findings are evidence, not automatic project decisions. Material changes to the architecture must be recorded in `docs/architecture/DECISIONS.md` and incorporated into the canonical architecture after review.
 
-## Status values
+## Research status values
+
+`Status` describes the state of the research work itself:
 
 - `QUEUED` — identified but not started.
-- `IN RESEARCH` — active evidence collection.
+- `IN RESEARCH` — active evidence collection or expected outputs remain unresolved.
 - `SYNTHESIS` — sources gathered; conclusions being compared.
-- `REVIEW` — recommendation ready for architectural review.
-- `ACCEPTED` — findings/direction accepted into architecture or an accepted working track exists.
-- `REJECTED` — researched but not adopted.
+- `REVIEW` — research recommendation ready for review.
+- `ACCEPTED` — the research findings/expected outputs have been sufficiently completed, reviewed, and incorporated into canonical guidance for the stated scope.
+- `REJECTED` — research completed/reviewed but not adopted.
+
+`ACCEPTED` must **not** be used merely because the architecture accepted a direction or opened a research track.
+
+## Architectural disposition values
+
+Where useful, a separate `Disposition` field records architectural treatment without changing research execution state:
+
+- `TRACK OPENED` — the research question is authorized/required.
+- `DIRECTION ACCEPTED` — the architectural direction motivating the track is accepted, while research may remain incomplete.
+- `NOT ADOPTED` — the associated architectural direction was rejected or withdrawn.
+
+This two-axis model prevents `DIRECTION ACCEPTED` from being mistaken for completed research.
 
 ## Authority preference
 
@@ -301,7 +315,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-021 — Context Engineering & Long-Horizon State
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro preserve useful project state, resume safely across long tasks/sessions, manage context freshness, and avoid replay/stale-context failures?
 
@@ -314,7 +329,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-022 — Repository Comprehension, Impact & Architecture Drift
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro understand repository/system structure, dependency topology, behavioral boundaries, blast radius, recovered specifications, and bidirectional architecture drift before judgment or mutation?
 
@@ -327,7 +343,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-023 — Skill / Plugin Security & Supply Chain
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro evaluate third-party Skills/plugins/repositories before adoption, including provenance, prompt injection, executable scripts, dependencies, filesystem/network/credential access, permissions, and catalog fault isolation?
 
@@ -340,7 +357,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-024 — Finding Refutation & Spec-to-Code Compliance
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro verify or refute candidate findings and compare implementation with normative specifications without promoting speculation to fact?
 
@@ -353,7 +371,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-025 — Intent-to-Evidence Traceability
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro preserve bidirectional traceability among intent, requirements, specifications, decisions, plans, implementation, tests/evals, and observed outcomes?
 
@@ -366,7 +385,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-026 — Migration, Compatibility & Cutover Engineering
 
 **Priority:** P1; P0 for consequential/irreversible migrations
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro plan and validate migrations across runtimes, frameworks, schemas, APIs/protocols, infrastructure, and platforms while preserving compatibility and rollback capability?
 
@@ -379,7 +399,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-027 — Interface, Protocol & Contract Engineering
 
 **Priority:** P1
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro design, review, evolve, and verify consumer-facing and system-to-system contracts across APIs, RPC, events, streams, webhooks, and data/schema boundaries?
 
@@ -392,7 +413,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-028 — Performance, Benchmarking & Capacity Engineering
 
 **Priority:** P1; P0 for performance/resource-critical workloads
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro measure, diagnose, optimize, benchmark, and capacity-plan software systems without relying on premature optimization or stale platform-specific thresholds?
 
@@ -405,7 +427,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-029 — Cross-Runtime Portability, Capability Discovery & Conformance
 
 **Priority:** P0
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro preserve equivalent engineering behavior across Chat, Work, Codex, and future surfaces while capability availability, permission, execution mechanics, and connected-app support differ?
 
@@ -418,7 +441,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-030 — Product, UX/UI & Visual Interface Engineering
 
 **Priority:** P1 by default; P0 for user-facing/product-critical work
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro design, audit, implement, and validate user-facing software across product framing, UX, interaction, visual design, accessibility, responsive behavior, design systems, and visual/interaction QA without fabricating user research?
 
@@ -431,7 +455,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-031 — Build, Toolchain & Environment Engineering
 
 **Priority:** P1 by default; P0 for consequential build/release integrity or reproducibility
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro reason about build systems, compilers/toolchains, environment parity, reproducibility, generated artifacts, caches, cross-compilation, target platforms, and build provenance independently from CI/CD orchestration?
 
@@ -444,11 +469,14 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 ## CM-R-032 — Privacy & Data Lifecycle Engineering
 
 **Priority:** P1 by default; P0 for personal/sensitive/high-impact data
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 
 **Question:** How should CodeMaestro reason about privacy risk and the lifecycle of personal, sensitive, or user-derived data even where access is authorized and no cybersecurity compromise exists?
 
 **Expected output:** data inventory/flows, purpose/use, minimization, collection boundaries, retention/deletion, backups/logs/telemetry/caches/replicas, derived/training/eval datasets, third parties, user control, privacy-by-design, and disposal.
+
+**Milestone 0 open requirement:** retention/deletion/public-sanitization policy for repository work-session records remains unresolved and must be researched/decided before Milestone 0 logging is declared operational.
 
 **Working record:** `CM-R-032-privacy-data-lifecycle-engineering.md`
 
@@ -462,6 +490,8 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 - Pass 5: `2026-09-04-comparative-research-pass-5.md`
 - Pass 5 acceptance / Capability Freeze: `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
 
+The Pass 5 checkpoint accepts the **architectural directions and track openings** for CM-R-029…032. It does not mark those research records complete.
+
 ## Comparative reference registry
 
 The external reference set and study priorities are maintained in:
@@ -473,5 +503,3 @@ References are research inputs, not CodeMaestro dependencies or automatic archit
 ## Prioritization principle
 
 P0 research must be sufficiently resolved for the affected behaviors before the first production-quality CodeMaestro Skill is considered stable. P1 areas must be sufficiently resolved before the corresponding specialized capability/reference guidance is declared canonical for consequential use. P2 areas may be added incrementally as the Skill stabilizes.
-
-Accepted tracks may still contain implementation-time freshness work; `ACCEPTED` means the architectural direction/track is accepted, not that every future version-sensitive question is permanently answered.
