@@ -1,0 +1,45 @@
+{
+  "capability_order": [
+    "requirements-architecture-systems",
+    "product-ux-ui",
+    "software-implementation",
+    "debugging-diagnostics",
+    "testing-assurance",
+    "review-audit-compliance",
+    "security-trust",
+    "privacy-data-lifecycle",
+    "database-data",
+    "interface-protocol-contract",
+    "build-toolchain-environment",
+    "migration-compatibility",
+    "performance-capacity",
+    "cicd-platform-delivery",
+    "reliability-observability-sre-incident",
+    "ai-llm-agent-mcp",
+    "research-experimental-language"
+  ],
+  "signals": {
+    "requirements-architecture-systems": ["requirements", "architecture", "system design", "adr", "tradeoff"],
+    "product-ux-ui": ["user flow", "ux", "ui", "interaction", "screen", "experience", "hierarchy"],
+    "software-implementation": ["implement", "code", "component", "function", "feature", "refactor"],
+    "debugging-diagnostics": ["debug", "diagnose", "failure", "fails", "broken", "root cause", "stack trace"],
+    "testing-assurance": ["test", "tests", "validation", "coverage", "assurance", "regression"],
+    "review-audit-compliance": ["review", "audit", "compliance", "assess", "merge safe", "findings"],
+    "security-trust": ["security", "secret", "credential", "authorization", "prompt injection", "tenant", "trust"],
+    "privacy-data-lifecycle": ["privacy", "pii", "retention", "deletion", "personal data", "data minimization"],
+    "database-data": ["database", "query", "sql", "schema", "row", "tenant filter", "rls"],
+    "interface-protocol-contract": ["api", "interface", "protocol", "contract", "provider", "endpoint"],
+    "build-toolchain-environment": ["build", "dependency", "compiler", "package manager", "lockfile", "toolchain", "environment"],
+    "migration-compatibility": ["migration", "migrate", "compatibility", "backward compatible", "rollback", "move from"],
+    "performance-capacity": ["performance", "latency", "load", "bottleneck", "capacity", "throughput", "slow"],
+    "cicd-platform-delivery": ["ci", "cd", "pipeline", "deploy", "deployment", "release", "github actions"],
+    "reliability-observability-sre-incident": ["reliability", "observability", "incident", "timeout", "timeouts", "sre", "recovery"],
+    "ai-llm-agent-mcp": ["llm", "agent", "mcp", "model", "tool-calling", "tool calling", "rag", "prompt"],
+    "research-experimental-language": ["research", "unfamiliar", "niche language", "current authoritative", "version-sensitive", "do not guess"]
+  },
+  "exclusions": {
+    "product-ux-ui": ["stack trace", "compiler"],
+    "software-implementation": ["audit only", "review only"],
+    "cicd-platform-delivery": ["builds locally"]
+  }
+}
