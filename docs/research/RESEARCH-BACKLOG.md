@@ -476,7 +476,7 @@ Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 researc
 
 **Expected output:** data inventory/flows, purpose/use, minimization, collection boundaries, retention/deletion, backups/logs/telemetry/caches/replicas, derived/training/eval datasets, third parties, user control, privacy-by-design, and disposal.
 
-**Milestone 0 open requirement:** retention/deletion/public-sanitization policy for repository work-session records remains unresolved and must be researched/decided before Milestone 0 logging is declared operational.
+**Milestone 0 logging sub-question:** resolved by `../project-governance/LOGGING-PRIVACY-RETENTION-POLICY.md`. The broader CM-R-032 track remains `IN RESEARCH` with `Disposition: DIRECTION ACCEPTED`.
 
 **Working record:** `CM-R-032-privacy-data-lifecycle-engineering.md`
 
