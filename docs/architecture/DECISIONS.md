@@ -181,3 +181,75 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 - unknown languages enter a research-and-verification workflow rather than being treated as categorically unsupported;
 - exact language/API/toolchain claims must not be presented at a stronger confidence level than the available local or authoritative evidence;
 - the active design and open questions are tracked in `docs/research/CM-R-016-universal-language-intelligence.md`.
+
+---
+
+## CM-ADR-015 — Autonomous Research Lab with explicit epistemic states
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will include an autonomous Research Lab capability for technical survey, comparison, investigation, bounded experimentation, replication, and experimental evolution. Research work must preserve explicit epistemic states rather than collapsing hypotheses, observations, characterization, decisions, normative rules, implementation, and validation into one generic notion of "knowledge".
+
+**Rationale:** Experimental engineering such as the Cusp language project requires more than web search and summarization. Reliable work needs durable hypotheses, baselines, experiment design, reproducible evidence, adversarial challenge, and a controlled path from findings to accepted project decisions.
+
+**Consequences:**
+
+- substantial research uses a proportional evidence-driven lifecycle;
+- durable artifacts are required when results must survive context loss, be resumed, audited, reproduced, or challenged;
+- research findings do not automatically become canonical CodeMaestro guidance or target-project authority;
+- the Research Lab may compose with Language Intelligence and engineering sub-skills;
+- exact durable artifact schemas and packaging remain research items under CM-R-017 and CM-R-020;
+- the accepted design is recorded in `docs/superpowers/specs/2026-09-04-research-experimental-engineering-design.md`.
+
+---
+
+## CM-ADR-016 — Skills own methodology; runtime roles provide optional independent contexts
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will distinguish reusable Skills from optional runtime agent roles. Skills own methodology, decision criteria, evidence contracts, and reusable workflows. Runtime roles may be used for scoped independent work when the active environment provides safe subagent capabilities.
+
+**Rationale:** Research scout, experimenter, skeptic, and replicator are useful independent perspectives, but modeling every role as a permanently installed Skill would conflate reusable knowledge with execution context and increase discovery/context overhead.
+
+**Consequences:**
+
+- candidate roles include `research-scout`, `experimentalist`, `skeptic`, and `replicator`;
+- subagents provide evidence or independent judgment, not hidden project authority;
+- the parent workflow reviews delegated output before accepting phase completion;
+- delegation must degrade safely in environments without subagent capability;
+- exact role configuration and orchestration policy remain under CM-R-018.
+
+---
+
+## CM-ADR-017 — Experimental-language evolution requires a distinct authority ladder
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will use a Language Evolution Protocol that explicitly separates research pressure, observed behavior, characterization, proposal, accepted project decision, normative specification, implementation, conformance validation, and stable/released behavior.
+
+**Rationale:** Experimental languages evolve under uncertainty. Treating implementation behavior or an AI-generated proposal as semantic authority causes specification drift and can prematurely canonize accidental behavior.
+
+**Consequences:**
+
+- research may discover, characterize, challenge, experiment, and propose semantics but may not silently create semantic authority;
+- comparative study of other languages informs alternatives and trade-offs but does not become target-language authority;
+- substantive semantic proposals should include compatibility, security, resource/performance, validation, and migration considerations where material;
+- Cusp is the primary stress case for this protocol;
+- detailed governance research continues under CM-R-019.
+
+---
+
+## CM-ADR-018 — Evidence provenance is captured at production/retrieval time
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Material engineering and research evidence should retain provenance to the state that produced it, and source identity should be captured when evidence is retrieved or generated rather than reconstructed later from model memory.
+
+**Rationale:** Long-running, multi-agent, or experimental work cannot be audited reliably when source/version/run identity exists only in conversational context.
+
+**Consequences:**
+
+- provenance may include source URL/path, repository SHA, toolchain/runtime versions, environment, commands, configuration, input hashes, test/experiment versions, seeds, timestamps, and run IDs as relevant;
+- claim strength must not exceed the evidence provenance available;
+- snapshot-bound evidence from the Cusp systems is retained as a generalized design principle even though the custom APIs themselves are not migrated;
+- the exact claim/evidence ledger and citation/reproducibility model remain under CM-R-020.
