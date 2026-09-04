@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from dataclasses import dataclass
 import json
 from pathlib import Path
@@ -46,6 +47,9 @@ CLUSTERS = frozenset(
 
 SOURCE_KINDS = frozenset(
     {"legacy-request", "legacy-issue", "legacy-eval", "current-project-task", "synthetic"}
+)
+REAL_DERIVED_SOURCE_KINDS = frozenset(
+    {"legacy-request", "legacy-issue", "legacy-eval", "current-project-task"}
 )
 
 
@@ -162,6 +166,34 @@ def load_cases(path: Path) -> list[RoutingCase]:
             )
         )
     return cases
+
+
+def validate_corpus_composition(cases: Sequence[RoutingCase]) -> dict:
+    """Enforce the precommitted B5 corpus-size, cluster, and provenance floors."""
+    case_count = len(cases)
+    if case_count < 100:
+        raise ValueError(f"full routing corpus requires at least 100 cases; got {case_count}")
+
+    ids = [case.id for case in cases]
+    if len(ids) != len(set(ids)):
+        raise ValueError("full routing corpus contains duplicate case IDs")
+
+    cluster_counts = Counter(case.cluster for case in cases)
+    missing = {cluster: cluster_counts.get(cluster, 0) for cluster in CLUSTERS if cluster_counts.get(cluster, 0) < 10}
+    if missing:
+        raise ValueError(f"every ambiguity cluster requires at least 10 cases: {dict(sorted(missing.items()))}")
+
+    real_derived_count = sum(case.source_kind in REAL_DERIVED_SOURCE_KINDS for case in cases)
+    if real_derived_count * 3 < case_count:
+        raise ValueError(
+            f"at least one third of the corpus must be real-derived; got {real_derived_count}/{case_count}"
+        )
+
+    return {
+        "case_count": case_count,
+        "real_derived_count": real_derived_count,
+        "cluster_counts": dict(sorted(cluster_counts.items())),
+    }
 
 
 def load_results(path: Path) -> list[RoutingResult]:
@@ -283,7 +315,14 @@ def main() -> int:
 
     if args.command == "validate":
         cases = load_cases(args.cases)
-        print(f"PASS: {len(cases)} routing cases valid")
+        if args.cases.name == "corpus-v1.json":
+            summary = validate_corpus_composition(cases)
+            print(
+                f"PASS: {summary['case_count']} routing cases valid; "
+                f"{summary['real_derived_count']} real-derived"
+            )
+        else:
+            print(f"PASS: {len(cases)} routing cases valid")
         return 0
 
     cases = load_cases(args.cases)
