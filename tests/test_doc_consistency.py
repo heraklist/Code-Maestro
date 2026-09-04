@@ -84,5 +84,27 @@ class MarkdownLinkTests(unittest.TestCase):
             self.assertEqual([f.code for f in findings], ["LINK_TARGET_MISSING"])
 
 
+class LoggingPolicyTests(unittest.TestCase):
+    REQUIRED_HEADINGS = (
+        "## Scope",
+        "## Storage classes",
+        "## Public-safe transcript rule",
+        "## Retention",
+        "## Deletion and purge",
+        "## Redaction",
+        "## Access and authority",
+        "## Review trigger",
+        "## Evidence basis",
+    )
+
+    def test_logging_privacy_policy_has_required_contract(self):
+        root = Path(__file__).resolve().parents[1]
+        path = root / "docs/project-governance/LOGGING-PRIVACY-RETENTION-POLICY.md"
+        self.assertTrue(path.exists())
+        text = path.read_text(encoding="utf-8")
+        for heading in self.REQUIRED_HEADINGS:
+            self.assertIn(heading, text)
+
+
 if __name__ == "__main__":
     unittest.main()
