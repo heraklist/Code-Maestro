@@ -1,0 +1,20 @@
+# CodeMaestro Project Event Log — 2026-09-04 Eval Readiness
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260904T180700+0300-eval-b1-start-001
+TIMESTAMP: 2026-09-04 18:07:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: TASK_STARTED
+TARGET: Eval Readiness Task B1 — machine-readable routing case/result contracts
+ACTION: Started the B1 RED→GREEN cycle on dedicated branch `docs/pre-registry-hardening-eval-first`; first mutation will add failing routing-eval tests and adapt the existing CI test command to discover all test modules.
+REASON: User approved Inline execution with Eval B1→B4 first to obtain empirical taxonomy evidence before further registry/contracts work.
+BEFORE: No routing eval parser, grader, schema, or routing-eval test suite exists.
+AFTER: RED test mutation authorized; production routing-eval implementation remains absent until failure is observed.
+EVIDENCE: approved Eval Readiness plan `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md`; current branch execution consent in session.
+AUTHORITY: Superpowers executing-plans + test-driven-development; approved v2 amendment and Eval Readiness plan.
+RESULT: IN PROGRESS
+RELATED COMMIT / ARTIFACT: branch `docs/pre-registry-hardening-eval-first`; Task B1.
