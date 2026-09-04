@@ -1,0 +1,97 @@
+[
+  {
+    "case_id": "build-ci-debug-001",
+    "clarification_required": false,
+    "primary": "build-toolchain-environment",
+    "supporting": [
+      "product-ux-ui",
+      "cicd-platform-delivery"
+    ]
+  },
+  {
+    "case_id": "implementation-debug-001",
+    "clarification_required": false,
+    "primary": "debugging-diagnostics",
+    "supporting": [
+      "research-experimental-language"
+    ]
+  },
+  {
+    "case_id": "testing-review-001",
+    "clarification_required": false,
+    "primary": "testing-assurance",
+    "supporting": [
+      "product-ux-ui",
+      "software-implementation",
+      "review-audit-compliance",
+      "cicd-platform-delivery"
+    ]
+  },
+  {
+    "case_id": "security-privacy-001",
+    "clarification_required": false,
+    "primary": "security-trust",
+    "supporting": []
+  },
+  {
+    "case_id": "database-interface-001",
+    "clarification_required": false,
+    "primary": "database-data",
+    "supporting": [
+      "interface-protocol-contract",
+      "review-audit-compliance",
+      "security-trust"
+    ]
+  },
+  {
+    "case_id": "migration-implementation-001",
+    "clarification_required": false,
+    "primary": "migration-compatibility",
+    "supporting": [
+      "requirements-architecture-systems",
+      "product-ux-ui",
+      "testing-assurance",
+      "build-toolchain-environment",
+      "cicd-platform-delivery"
+    ]
+  },
+  {
+    "case_id": "performance-reliability-001",
+    "clarification_required": false,
+    "primary": "reliability-observability-sre-incident",
+    "supporting": [
+      "performance-capacity",
+      "cicd-platform-delivery"
+    ]
+  },
+  {
+    "case_id": "product-frontend-001",
+    "clarification_required": false,
+    "primary": "product-ux-ui",
+    "supporting": [
+      "software-implementation"
+    ]
+  },
+  {
+    "case_id": "research-language-freshness-001",
+    "clarification_required": false,
+    "primary": "research-experimental-language",
+    "supporting": [
+      "software-implementation",
+      "build-toolchain-environment",
+      "interface-protocol-contract"
+    ]
+  },
+  {
+    "case_id": "ai-interface-security-001",
+    "clarification_required": false,
+    "primary": "security-trust",
+    "supporting": [
+      "review-audit-compliance",
+      "interface-protocol-contract",
+      "ai-llm-agent-mcp",
+      "software-implementation",
+      "privacy-data-lifecycle"
+    ]
+  }
+]
