@@ -91,3 +91,21 @@ Task 6 executed a real RED→GREEN sequence:
 - fresh resume/handoff retrieval reconstructed actual state and next action without loading the pre-bootstrap conversation corpus.
 
 The project log contains the detailed evidence and stable `EVENT ID` references.
+
+### 2026-09-04 13:45:00 +03:00 — USER / CONTINUITY CLARIFICATION
+
+The user observed that the live session history is not formatted as a clear turn-by-turn conversation and clarified the acceptance criterion: the current approach is acceptable if a future project-working Chat / Work / Codex session can recover the necessary historical context and continue normally from the point represented by the durable log.
+
+### 2026-09-04 13:45:00 +03:00 — ASSISTANT / CONTINUITY ASSESSMENT
+
+The current system provides **full operational/project continuity**, not a verbatim reconstruction of every historical conversational turn.
+
+A fresh project-working session is expected to reconstruct continuity from:
+
+- actual repository branch/SHA/current state;
+- canonical specs/ADRs;
+- latest relevant checkpoint;
+- recent project-event tail;
+- relevant conversation-transcript segments when rationale or user intent is needed.
+
+This is sufficient to continue engineering work correctly without model memory and was validated by the Task 6 resume drill. It does not guarantee exact recall of every phrase, discarded conversational alternative, or unlogged pre-bootstrap dialogue.
