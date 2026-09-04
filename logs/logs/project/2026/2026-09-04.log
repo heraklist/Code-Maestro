@@ -150,3 +150,35 @@ EVIDENCE: canonical marker plus executable repository scan asserting prohibited 
 AUTHORITY: Logging privacy/retention policy, canonical schema, and Task 6 validation plan.
 RESULT: PASS — pending GREEN branch execution of the live-record tests.
 RELATED COMMIT / ARTIFACT: this ledger; `tests/test_doc_consistency.py`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132859+0300-validation-002
+TIMESTAMP: 2026-09-04 13:28:59 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_PASSED
+TARGET: Milestone 0 Task 6 live logging integrity tests
+ACTION: Verified correction/supersession, redaction, live record formatting, unique event IDs/timestamps, checkpoint presence, no prohibited test secret under `logs/`, and no fabricated Self-Evolution run.
+REASON: Close the RED→GREEN cycle for the end-to-end logging drills.
+BEFORE: GitHub Actions run `33863247483` failed exactly two intended RED assertions before the drills existed.
+AFTER: GitHub Actions run `33863359988` completed `success` on head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`.
+EVIDENCE: GitHub Actions run `33863359988`; live record tests and repository documentation checker passed.
+AUTHORITY: Verification-before-completion and Milestone 0 Task 6.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`; GitHub Actions run `33863359988`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132859+0300-resume-001
+TIMESTAMP: 2026-09-04 13:28:59 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: RESUME_VALIDATED
+TARGET: Progressive resume / handoff contract
+ACTION: Performed fresh retrieval of the canonical session protocol, latest transcript checkpoint, current project-event tail, and actual PR/head state without loading the full pre-bootstrap conversation history.
+REASON: Validate that a project-working session can reconstruct current state and next action from durable artifacts rather than model memory.
+BEFORE: Transcript checkpoint recorded SHA `09a38dcc5eed8c9f98b3cc65bb4d62c7f95ad78e`, which was valid at Task 5 but stale after Task 6 mutations.
+AFTER: Actual PR state was resolved as branch `docs/architecture-foundation-v0.1`, head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`, PR #1 open/draft/unmerged/mergeable; next action reconstructed as final Milestone 0 completion synchronization and verification.
+EVIDENCE: fresh reads of `docs/project-governance/SESSION-LOGGING-PROTOCOL.md`, active transcript, active project log, and PR #1 metadata.
+AUTHORITY: Session resume protocol and state-before-mutation invariant.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: PR #1; active transcript/project ledger; head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`.
