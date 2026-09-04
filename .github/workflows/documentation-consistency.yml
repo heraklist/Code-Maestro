@@ -8,6 +8,7 @@ on:
       - 'docs/**'
       - 'logs/**'
       - 'tools/doc_consistency.py'
+      - 'tools/check_append_only_logs.py'
       - 'tests/test_doc_consistency.py'
       - '.github/workflows/documentation-consistency.yml'
 
@@ -20,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,3 +34,6 @@ jobs:
 
       - name: Run repository documentation checker
         run: python tools/doc_consistency.py
+
+      - name: Enforce append-only project ledgers
+        run: python tools/check_append_only_logs.py HEAD^
