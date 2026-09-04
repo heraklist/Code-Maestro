@@ -1,13 +1,26 @@
 # Comparative Research Pass 4 — Contracts, Operational Assurance, Performance, and Evidence Boundaries
 
 **Date:** 2026-09-04
-**Status:** REVIEW — research findings recorded; architectural adoption requires explicit approval.
+**Status:** ACCEPTED — Candidates A–H were explicitly approved; see `../architecture/2026-09-04-pass-4-acceptance-and-canonicalization.md`.
 
 ## Objective
 
 Run a fourth, deliberately selective comparative pass over current Skill and agent repositories, looking only for mechanisms that materially extend CodeMaestro beyond the already accepted architecture.
 
 This pass rejects duplication by default. Generic expert personas, technology-specific checklists, arbitrary static thresholds, and workflows already covered by Language Intelligence, Research Lab, Repository/Context Intelligence, Traceability, Assurance, Refutation, Migration, or Orchestration are not treated as new capabilities merely because they appear in another repository.
+
+## Provenance status
+
+This research pass was conducted before CM-ADR-018 had been fully operationalized as a repository documentation protocol. Repository/source names were captured contemporaneously, but exact upstream commit SHAs, access timestamps, and URLs were not consistently persisted.
+
+Accordingly:
+
+- the comparative observations below remain useful research evidence;
+- repository-specific claims are **pre-protocol / weaker-provenance evidence** unless independently reverified;
+- later canonical claims must not pretend that missing SHA/version provenance was captured retrospectively;
+- current/version-sensitive claims require fresh authoritative verification before implementation or release decisions.
+
+Source identities used during the pass are retained below. Canonical architecture accepted from this pass is recorded separately in the acceptance checkpoint and `DECISIONS.md`.
 
 ## Source set sampled
 
@@ -654,7 +667,9 @@ Marketplace counts, stars, and repeated personas remain discovery signals only.
 
 ---
 
-# Candidate architecture/research changes requiring approval
+# Candidate architecture/research changes — accepted disposition
+
+Candidates A–H below were explicitly approved and are canonicalized by `../architecture/2026-09-04-pass-4-acceptance-and-canonicalization.md` and the corresponding ADRs in `../architecture/DECISIONS.md`.
 
 ## Candidate A — Interface / Protocol / Contract Engineering
 
@@ -750,11 +765,11 @@ No new track required.
 
 ---
 
-# Recommended new research items
+# Recommended new research items — accepted
 
 ## CM-R-027 — Interface, Protocol & Contract Engineering
 
-**Proposed priority:** P1
+**Accepted priority:** P1
 
 **Question:** How should CodeMaestro design, review, evolve, and verify consumer-facing and system-to-system contracts across APIs, RPC, events, streams, webhooks, and data/schema boundaries?
 
@@ -766,7 +781,7 @@ No new track required.
 
 ## CM-R-028 — Performance, Benchmarking & Capacity Engineering
 
-**Proposed priority:** P1; P0 for performance/resource-critical workloads
+**Accepted priority:** P1; P0 for performance/resource-critical workloads
 
 **Question:** How should CodeMaestro measure, diagnose, optimize, benchmark, and capacity-plan software systems without relying on premature optimization or stale platform-specific thresholds?
 
@@ -776,7 +791,7 @@ No new track required.
 
 ---
 
-# Existing tracks to extend if approved
+# Existing tracks extended by acceptance
 
 - **CM-R-001** — fault-isolated Skill discovery/loading and catalog diagnostics.
 - **CM-R-002** — misuse-resistant secure API/config design.
@@ -827,8 +842,8 @@ large catalog of overlapping expert personas
 
 ## Approval boundary
 
-This document records research findings only.
+Candidates A–H are accepted architecture as of 2026-09-04 through `../architecture/2026-09-04-pass-4-acceptance-and-canonicalization.md`.
 
-No Candidate A–H is accepted architecture until explicit user review/approval.
+This document remains the research evidence record; canonical decision wording lives in `../architecture/DECISIONS.md`.
 No production Skill implementation is authorized by this pass.
 Physical Skill boundaries remain eval-driven.
