@@ -40,3 +40,15 @@ Previous state: Milestone 0 policy/schemas/protocol existed, but no live durable
 Current state: Logging roots exist and this Chat has opened its first public-safe durable session transcript.
 Reason: Milestone 0 Task 5 bootstrap under explicit user instruction to maintain session/project logs.
 Evidence: repository commits `7821afb3df6a18d03e014c82523a85adf7e13037`, `f4ac035c3371c6f693f49e58470791382005c3c3`, `2a1b78ee08f285208e1e2be77c6186d41d0e20ca` and this transcript artifact.
+
+### 2026-09-04 13:22:27 +03:00 — ASSISTANT / OBSERVABLE ACTION SUMMARY
+
+The live project event ledger was created at `logs/logs/project/2026/2026-09-04.log` in commit `0b5ca26decf16f19104c0483fb4da18421c219f4`.
+
+The ledger records:
+
+- the logging bootstrap event with exact root/transcript commits;
+- the explicit coverage boundary stating that pre-bootstrap Chat history is not fabricated;
+- Task 5 state as `PARTIALLY VERIFIED` until filesystem tests and end-to-end validation pass.
+
+Operational clarification: append commits that maintain the active transcript/ledger are self-evidencing and do not recursively require a second log event solely to log the log-write itself. Material non-log mutations remain subject to event-time project logging.
