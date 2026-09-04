@@ -1,7 +1,7 @@
 # Comparative Research Pass 3 — Traceability, Assurance, Migration, and Autonomous Engineering
 
 **Date:** 2026-09-04
-**Status:** REVIEW — research findings recorded; architectural adoption requires explicit approval.
+**Status:** ACCEPTED — Candidate A–D accepted as architecture/research direction. Physical Skill boundaries remain eval-driven.
 
 ## Objective
 
@@ -33,9 +33,9 @@ Relevant patterns:
 - `tomzx/agents` `backpropagate-sdlc`: walks code/tests back through tasks, plan, specification, requirements, and issue, checking adjacent and end-to-end consistency.
 - traceability-led documentation systems: assign durable requirement/test/change identifiers and maintain bidirectional links rather than treating docs as prose snapshots.
 
-### Recommendation
+### Accepted direction
 
-Propose a new cross-cutting capability/research track:
+Open a new cross-cutting capability/research track:
 
 **CM-R-025 — Intent-to-Evidence Traceability & Drift Propagation**
 
@@ -78,7 +78,7 @@ no crash
 
 Formal-verification projects add a further layer: important properties can be translated into theorem statements and mechanically proved when the semantics and stakes justify that cost.
 
-### Recommendation
+### Accepted direction
 
 Do **not** create a generic mandatory Formal Methods Skill.
 
@@ -132,7 +132,7 @@ This generalizes to:
 - protocol conformance suites;
 - fuzz/property counterexamples.
 
-### Recommendation
+### Accepted direction
 
 Extend the Evidence/Debugging model with a class of **machine-generated counterexample evidence**. A counterexample should seed the next hypothesis/repair step directly and remain attached to the resulting fix and regression test.
 
@@ -158,13 +158,15 @@ This is relevant across:
 - APIs/protocols;
 - infrastructure/platform changes.
 
-### Recommendation
+### Accepted direction
 
-Propose a new P1/P0 research item rather than a physical Skill decision:
+Open a new research item rather than deciding a physical Skill:
 
 **CM-R-026 — Migration, Compatibility & Cutover Engineering**
 
 It should unify the migration concerns currently spread across language intelligence, database, release readiness, dependencies, and architecture.
+
+Default priority is P1, promoted to P0 for migrations touching data integrity, authentication/security boundaries, or irreversible external interfaces.
 
 ---
 
@@ -180,7 +182,7 @@ orchestrator state ≠ model memory
 
 A resume router can inspect durable artifacts and decide which phase is actually incomplete without replaying earlier phases.
 
-### Recommendation
+### Accepted direction
 
 Fold this into CM-R-021. Add explicit study of:
 
@@ -207,9 +209,9 @@ actual code reality → design/spec freshness
 
 When implementation legitimately changes, architecture documentation and earlier approvals may need to be invalidated or revised.
 
-### Recommendation
+### Accepted direction
 
-CM-R-022 should cover **bidirectional architecture drift**, while CM-R-025 owns artifact-chain traceability and invalidation semantics.
+CM-R-022 covers **bidirectional architecture drift**, while CM-R-025 owns artifact-chain traceability and invalidation semantics.
 
 ---
 
@@ -220,7 +222,7 @@ CM-R-022 should cover **bidirectional architecture drift**, while CM-R-025 owns 
 - `trailofbits/skills` — assurance, property testing, mutation testing, spec compliance, false-positive resistance, code-context building.
 - `facebookresearch/repoprover` — formalization orchestration, durable shared repository, checker-driven repair, merge-gated verified state.
 - `tomzx/agents` — bidirectional SDLC traceability, artifact invalidation/back-propagation, explicit assumptions/questions/decisions.
-- `muratcankoylan/Agent-Skills-for-Context-Engineering` — long-horizon state and eval methodology (already promoted in pass 2).
+- `muratcankoylan/Agent-Skills-for-Context-Engineering` — long-horizon state and eval methodology.
 
 ### Selective extraction
 
@@ -232,39 +234,39 @@ CM-R-022 should cover **bidirectional architecture drift**, while CM-R-025 owns 
 
 Large persona catalogs and marketplace entries whose primary distinction is title/domain wording without unique methodology, deterministic tooling, evidence contracts, or evaluable behavior.
 
-## Candidate architecture changes requiring approval
+## Accepted architecture changes
 
-### Candidate A — Intent-to-Evidence Traceability
+### Candidate A — Intent-to-Evidence Traceability — ACCEPTED
 
 Add a cross-cutting traceability layer capable of connecting user intent, requirements, decisions, specifications, implementation, tests, and observed outcomes, with explicit drift/invalidation behavior.
 
-### Candidate B — Assurance Ladder
+### Candidate B — Assurance Ladder — ACCEPTED
 
 Extend the testing/evidence architecture so CodeMaestro deliberately chooses the cheapest assurance technique that provides the required confidence, escalating to property/fuzz/formal methods only when justified.
 
-### Candidate C — Counterexample-Driven Repair
+### Candidate C — Counterexample-Driven Repair — ACCEPTED
 
 Treat compiler/prover/fuzzer/schema/model-checker counterexamples as durable evidence that can directly seed debugging, repair, regression tests, and provenance.
 
-### Candidate D — Migration/Compatibility research track
+### Candidate D — Migration/Compatibility research track — ACCEPTED
 
 Add CM-R-026 for phased, reversible, compatibility-aware migration engineering.
 
-## Proposed new research items
+## New research items
 
 ### CM-R-025 — Intent-to-Evidence Traceability & Drift Propagation
 
-**Proposed priority:** P0
+**Priority:** P0
 
 Research stable identifiers, bidirectional artifact links, orphan detection, approval invalidation, code-to-spec back-propagation, and traceability evals.
 
 ### CM-R-026 — Migration, Compatibility & Cutover Engineering
 
-**Proposed priority:** P1, promoted to P0 for migrations touching data integrity, auth/security boundaries, or irreversible external interfaces.
+**Priority:** P1 by default; P0 when data integrity, auth/security boundaries, or irreversible external interfaces are materially involved.
 
 Research compatibility matrices, expand-contract/dual-run patterns, data and semantic diffing, staged cutover, rollback triggers, reversible batching, and cleanup gates.
 
-## Existing tracks to extend if approved
+## Existing tracks extended by this decision
 
 - **CM-R-006** — add Assurance Ladder and formal/property/fuzz/mutation selection criteria.
 - **CM-R-012** — add evals for traceability preservation and artifact invalidation.
@@ -288,6 +290,8 @@ This pass does **not** recommend standalone Skills for:
 
 These mechanisms should be composed behind stable CodeMaestro contracts unless later evals demonstrate a real routing/context benefit from physical separation.
 
-## Current recommendation
+## Acceptance result
 
-Accept Candidate A–D as architecture/research direction, but preserve the existing rule that physical Skill boundaries are decided later through baseline routing/effectiveness/composition evals.
+Candidate A–D are accepted as CodeMaestro architecture/research direction as of 2026-09-04.
+
+This acceptance does not decide physical Skill boundaries or authorize production implementation. Those remain gated by research synthesis, baseline RED evals, and later implementation design.
