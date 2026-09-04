@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codemaestro.local/evals/routing/schema.json",
+  "title": "CodeMaestro Routing Eval Corpus",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "cluster",
+      "prompt",
+      "expected_primary",
+      "expected_supporting",
+      "clarification_required",
+      "high_risk",
+      "source_kind",
+      "source_ref",
+      "source_transform"
+    ],
+    "properties": {
+      "id": {"type": "string", "minLength": 1},
+      "cluster": {
+        "enum": [
+          "build-ci-debug",
+          "implementation-debug",
+          "testing-review",
+          "security-privacy",
+          "database-interface",
+          "migration-implementation",
+          "performance-reliability",
+          "product-frontend",
+          "research-language-freshness",
+          "ai-interface-security"
+        ]
+      },
+      "prompt": {"type": "string", "minLength": 1},
+      "expected_primary": {"type": "string", "minLength": 1},
+      "expected_supporting": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+      "clarification_required": {"type": "boolean"},
+      "high_risk": {"type": "boolean"},
+      "source_kind": {
+        "enum": ["legacy-request", "legacy-issue", "legacy-eval", "current-project-task", "synthetic"]
+      },
+      "source_ref": {"type": "string"},
+      "source_transform": {"type": "string", "minLength": 1}
+    }
+  }
+}
