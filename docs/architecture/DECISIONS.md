@@ -161,3 +161,23 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 **Rationale:** The legacy project already contains useful safety and capability tests, and Skill guidance is only trustworthy when it changes observed behavior reliably.
 
 **Consequences:** Before production Skill guidance is written for major behaviors, baseline failure scenarios should be captured. Legacy endpoint-specific tests are converted to environment-independent behavioral evals.
+
+---
+
+## CM-ADR-014 — Autonomous engineering sub-skills with shared Language Intelligence
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will separate autonomous engineering sub-skills from a shared Language Intelligence layer. Language coverage will be profile- and research-driven by default rather than implemented as one permanently installed Skill per language. Standalone language correction/orientation skills are promoted selectively when eval evidence shows that generic language intelligence is insufficient.
+
+**Rationale:** CodeMaestro is intended to support mainstream, niche, legacy, domain-specific, private, and experimental languages. A skill-per-language architecture would create unnecessary discovery/context overhead, duplicated methodology, and an unbounded maintenance surface. Current official language-agent projects such as Mojo and MoonBit also demonstrate that rapidly changing languages benefit from freshness gates, correction layers, authoritative source routing, and explicit verification rather than static encyclopedic prompts.
+
+**Consequences:**
+
+- engineering sub-skills must define their own trigger, scope, non-goals, evidence, freshness, failure, output, and verification contracts and remain safe/correct without hidden parent behavior;
+- the shared Language Intelligence subsystem will own language detection, classification, maturity, version/toolchain discovery, source-of-truth routing, reliability levels, profiles, and the unknown-language protocol;
+- language profiles are references/data contracts, not automatically standalone Skills;
+- standalone language skills require explicit promotion criteria and eval evidence;
+- unknown languages enter a research-and-verification workflow rather than being treated as categorically unsupported;
+- exact language/API/toolchain claims must not be presented at a stronger confidence level than the available local or authoritative evidence;
+- the active design and open questions are tracked in `docs/research/CM-R-016-universal-language-intelligence.md`.
