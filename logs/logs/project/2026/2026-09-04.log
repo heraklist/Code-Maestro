@@ -1,0 +1,36 @@
+# CodeMaestro Project Event Log — 2026-09-04
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260904T132147+0300-bootstrap-001
+TIMESTAMP: 2026-09-04 13:21:47 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: LOGGING_BOOTSTRAP
+TARGET: Repository work-session logging foundation
+ACTION: Established the three logging namespaces and opened the first durable Chat transcript/project event stream.
+REASON: Milestone 0 Task 5 under explicit user instruction to maintain repository session and project logs in real time.
+BEFORE: Policy, schemas, protocol, and doc-CI existed; live `logs/` session/project history was not operational.
+AFTER: `logs/conversations/`, `logs/logs/project/`, and reserved `logs/logs/self-evolution/` roots exist; live session transcript exists and project event ledger is being initialized.
+EVIDENCE: `logs/conversations/README.md` commit `7821afb3df6a18d03e014c82523a85adf7e13037`; `logs/logs/project/README.md` commit `f4ac035c3371c6f693f49e58470791382005c3c3`; `logs/logs/self-evolution/README.md` commit `2a1b78ee08f285208e1e2be77c6186d41d0e20ca`; first transcript commit `1f166244066ee9581dc17069bf28a5b03ce95dc5`.
+AUTHORITY: Explicit user instruction to execute Milestone 0 inline and maintain the agreed logs; approved consolidated v2 §17/§21 and Milestone 0 implementation plan.
+RESULT: PARTIALLY VERIFIED — filesystem/bootstrap artifacts created; Task 5 and end-to-end validation not yet complete.
+RELATED COMMIT / ARTIFACT: commits `7821afb3df6a18d03e014c82523a85adf7e13037`, `f4ac035c3371c6f693f49e58470791382005c3c3`, `2a1b78ee08f285208e1e2be77c6186d41d0e20ca`, `1f166244066ee9581dc17069bf28a5b03ce95dc5`; transcript `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132147+0300-history-001
+TIMESTAMP: 2026-09-04 13:21:47 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: COVERAGE_BOUNDARY
+TARGET: Durable session/project history
+ACTION: Declared that durable live logging begins at Task 5 bootstrap and that earlier Chat dialogue is not retroactively reconstructed into a purported complete transcript.
+REASON: Evidence honesty and the canonical rule against fabricating unavailable earlier transcript coverage.
+BEFORE: Earlier work existed in repository commits/specs/plan/CI evidence but not in the live session/project logging filesystem.
+AFTER: Coverage boundary is explicit; earlier durable repository artifacts remain authoritative evidence for pre-bootstrap work.
+EVIDENCE: Transcript header `Coverage` field and existing branch history.
+AUTHORITY: Canonical logging schemas/protocol and evidence-before-assertion invariant.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`.
