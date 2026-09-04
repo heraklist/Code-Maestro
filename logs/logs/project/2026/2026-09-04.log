@@ -3,52 +3,198 @@
 Event stream policy: semantic append-only / public-safe
 Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
 
-[Earlier events retained unchanged through CM-EVENT-20260904T133229+0300-state-sync-001.]
-
 ---
 
-EVENT ID: CM-EVENT-20260904T144442+0300-architecture-red-001
-TIMESTAMP: 2026-09-04 14:44:42 +03:00
+EVENT ID: CM-EVENT-20260904T132147+0300-bootstrap-001
+TIMESTAMP: 2026-09-04 13:21:47 +03:00
 SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
-EVENT / TYPE: VALIDATION_RED
-TARGET: Post-Milestone-0 Task 1 living architecture canonicalization
-ACTION: Added executable requirements that the living architecture no longer claim canonicalization is pending and expose the approved authority/runtime/capability/intelligence/governance/evaluation/logging/sequence sections.
-REASON: The approved implementation plan requires a RED baseline before replacing the stale architecture gateway.
-BEFORE: `ARCHITECTURE.md` still declared `detailed canonicalization pending written-spec approval`.
-AFTER: GitHub Actions run `33869381682` failed exactly the new `LivingArchitectureTests.test_architecture_is_current_living_synthesis`; the other 20 tests passed.
-EVIDENCE: GitHub Actions run `33869381682`, job `101011494502`; test commit `dd7653264fc00d77709ef2cf7a7126abc6caff9f`.
-AUTHORITY: `docs/superpowers/plans/2026-09-04-architecture-capability-registry-integration.md` Task 1; TDD workflow.
-RESULT: FAIL — expected RED baseline.
-RELATED COMMIT / ARTIFACT: `dd7653264fc00d77709ef2cf7a7126abc6caff9f`; GitHub Actions run `33869381682`.
+EVENT / TYPE: LOGGING_BOOTSTRAP
+TARGET: Repository work-session logging foundation
+ACTION: Established the three logging namespaces and opened the first durable Chat transcript/project event stream.
+REASON: Milestone 0 Task 5 under explicit user instruction to maintain repository session and project logs in real time.
+BEFORE: Policy, schemas, protocol, and doc-CI existed; live `logs/` session/project history was not operational.
+AFTER: `logs/conversations/`, `logs/logs/project/`, and reserved `logs/logs/self-evolution/` roots exist; live session transcript exists and project event ledger is being initialized.
+EVIDENCE: `logs/conversations/README.md` commit `7821afb3df6a18d03e014c82523a85adf7e13037`; `logs/logs/project/README.md` commit `f4ac035c3371c6f693f49e58470791382005c3c3`; `logs/logs/self-evolution/README.md` commit `2a1b78ee08f285208e1e2be77c6186d41d0e20ca`; first transcript commit `1f166244066ee9581dc17069bf28a5b03ce95dc5`.
+AUTHORITY: Explicit user instruction to execute Milestone 0 inline and maintain the agreed logs; approved consolidated v2 §17/§21 and Milestone 0 implementation plan.
+RESULT: PARTIALLY VERIFIED — filesystem/bootstrap artifacts created; Task 5 and end-to-end validation not yet complete.
+RELATED COMMIT / ARTIFACT: commits `7821afb3df6a18d03e014c82523a85adf7e13037`, `f4ac035c3371c6f693f49e58470791382005c3c3`, `2a1b78ee08f285208e1e2be77c6186d41d0e20ca`, `1f166244066ee9581dc17069bf28a5b03ce95dc5`; transcript `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`.
 
 ---
 
-EVENT ID: CM-EVENT-20260904T144620+0300-architecture-green-001
-TIMESTAMP: 2026-09-04 14:46:20 +03:00
+EVENT ID: CM-EVENT-20260904T132147+0300-history-001
+TIMESTAMP: 2026-09-04 13:21:47 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: COVERAGE_BOUNDARY
+TARGET: Durable session/project history
+ACTION: Declared that durable live logging begins at Task 5 bootstrap and that earlier Chat dialogue is not retroactively reconstructed into a purported complete transcript.
+REASON: Evidence honesty and the canonical rule against fabricating unavailable earlier transcript coverage.
+BEFORE: Earlier work existed in repository commits/specs/plan/CI evidence but not in the live session/project logging filesystem.
+AFTER: Coverage boundary is explicit; earlier durable repository artifacts remain authoritative evidence for pre-bootstrap work.
+EVIDENCE: Transcript header `Coverage` field and existing branch history.
+AUTHORITY: Canonical logging schemas/protocol and evidence-before-assertion invariant.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132319+0300-test-001
+TIMESTAMP: 2026-09-04 13:23:19 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: FILE_MODIFIED
+TARGET: `tests/test_doc_consistency.py`
+ACTION: Added `LoggingFilesystemTests` requiring the three logging namespace README artifacts to exist on the real repository checkout.
+REASON: Milestone 0 Task 5 filesystem contract verification after the required RED test demonstrated the roots were absent before bootstrap.
+BEFORE: Test suite covered documentation consistency, privacy policy, schemas, and session protocol but did not assert logging roots.
+AFTER: Test suite includes the logging filesystem root contract.
+EVIDENCE: pre-bootstrap local RED: `LoggingFilesystemTests` failed because `logs/conversations/README.md` was absent; branch mutation commit `115fee7000df88fc0d98d2919c27f1c5ae1431b4`.
+AUTHORITY: Milestone 0 implementation plan Task 5 and canonical v2 §21.
+RESULT: PENDING — branch CI had not yet completed at event creation.
+RELATED COMMIT / ARTIFACT: `115fee7000df88fc0d98d2919c27f1c5ae1431b4`; `tests/test_doc_consistency.py`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132414+0300-validation-001
+TIMESTAMP: 2026-09-04 13:24:14 +03:00
 SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
 EVENT / TYPE: VALIDATION_PASSED
-TARGET: Post-Milestone-0 Task 1 living architecture canonicalization
-ACTION: Replaced the stale gateway with the current living architecture synthesis while preserving the approved authority hierarchy, 17-family freeze, Shared Intelligence model, execution/governance invariants, evaluation dimensions, logging ownership boundary, progressive disclosure, and implementation sequence.
-REASON: Close Task 1 RED→GREEN without starting production Skill/runtime implementation.
-BEFORE: Architecture gateway described written-spec approval/canonicalization as pending.
-AFTER: `ARCHITECTURE.md` declares `CURRENT LIVING ARCHITECTURE`; exact-branch unit tests and repository documentation checker both pass.
-EVIDENCE: architecture commit `53f8f623dc4ddb0c340e2d54650eda1b6c255acd`; GitHub Actions run `33869436723`, job `101011664754`, unit-test and repository-checker steps both `success`.
-AUTHORITY: approved consolidated v2 and architecture/capability registry implementation plan Task 1.
+TARGET: Milestone 0 Task 5 logging filesystem contract
+ACTION: Verified the real branch checkout after logging root/bootstrap and filesystem test changes.
+REASON: Task 5 cannot be treated as complete from file existence alone; exact-branch tests and documentation checker must pass.
+BEFORE: Event `CM-EVENT-20260904T132319+0300-test-001` had `RESULT: PENDING`.
+AFTER: GitHub Actions job completed successfully; unit tests and repository documentation checker both passed.
+EVIDENCE: GitHub Actions run `33863023688`, job `100991541767`; steps `Run unit tests` and `Run repository documentation checker` both `success`.
+AUTHORITY: Verification-before-completion contract and Milestone 0 Task 5.
 RESULT: PASS
-RELATED COMMIT / ARTIFACT: `53f8f623dc4ddb0c340e2d54650eda1b6c255acd`; `docs/architecture/ARCHITECTURE.md`; GitHub Actions run `33869436723`.
+RELATED COMMIT / ARTIFACT: branch validation run `33863023688`; filesystem/test commit `115fee7000df88fc0d98d2919c27f1c5ae1431b4`.
 
 ---
 
-EVENT ID: CM-EVENT-20260904T144620+0300-checkpoint-architecture-001
-TIMESTAMP: 2026-09-04 14:46:20 +03:00
+EVENT ID: CM-EVENT-20260904T132414+0300-checkpoint-001
+TIMESTAMP: 2026-09-04 13:24:14 +03:00
 SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
 EVENT / TYPE: CHECKPOINT
-TARGET: Architecture/capability-registry integration Task 1 -> Task 2 handoff
-ACTION: Recorded Task 1 completion and authorized next action.
-REASON: Inline execution checkpoint requirement.
-BEFORE: Living architecture canonicalization was in RED→GREEN execution.
-AFTER: Task 1 is PASS; Task 2 capability-registry schema/validator is next.
-EVIDENCE: GitHub Actions run `33869436723` success.
-AUTHORITY: `superpowers:executing-plans`; approved implementation plan.
+TARGET: Milestone 0 Task 5 -> Task 6 handoff
+ACTION: Recorded verified logging bootstrap state before beginning end-to-end logging drills.
+REASON: Canonical checkpoint/handoff gate.
+BEFORE: Live logging roots and records existed but Task 5 verification was pending.
+AFTER: Task 5 filesystem/bootstrap verification is PASS; Task 6 end-to-end integrity validation is next.
+EVIDENCE: GitHub Actions run `33863023688`; active transcript/project ledger; logging policy/schemas/protocol.
+AUTHORITY: `docs/project-governance/SESSION-LOGGING-PROTOCOL.md` and Milestone 0 implementation plan.
 RESULT: PASS
-RELATED COMMIT / ARTIFACT: `docs/architecture/ARCHITECTURE.md`; `docs/superpowers/plans/2026-09-04-architecture-capability-registry-integration.md`.
+RELATED COMMIT / ARTIFACT: `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`; `logs/logs/project/2026/2026-09-04.log`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132603+0300-test-002
+TIMESTAMP: 2026-09-04 13:26:03 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: FILE_MODIFIED
+TARGET: `tests/test_doc_consistency.py`
+ACTION: Added live-record integrity tests for transcript header/checkpoint, stable event IDs and offset timestamps, correction/supersession drill, redaction marker/no-secret persistence, and empty Self-Evolution run namespace.
+REASON: Milestone 0 Task 6 requires executable end-to-end evidence over the actual repository logging artifacts.
+BEFORE: Tests verified logging roots but not live record semantics.
+AFTER: Branch tests now demand the Task 6 correction/redaction drills and live-record invariants.
+EVIDENCE: commit `c13ef8cc1eb656502caceb7cee326b85a452af0d`; RED GitHub Actions run `33863247483`, job `100992234327`, with exactly two intended failures: correction drill missing and redaction drill missing.
+AUTHORITY: Milestone 0 Task 6 and Logging Integrity eval contract.
+RESULT: FAIL — expected RED baseline confirmed before drill implementation.
+RELATED COMMIT / ARTIFACT: `c13ef8cc1eb656502caceb7cee326b85a452af0d`; GitHub Actions run `33863247483`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132600+0300-drill-source-001
+TIMESTAMP: 2026-09-04 13:27:11 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_DRILL_SOURCE
+TARGET: Synthetic harmless correction drill state
+ACTION: Recorded synthetic drill statement `drill-state = ORIGINAL-INTENTIONALLY-SUPERSEDED`.
+REASON: Provide a harmless original event that must remain present after a correction/supersession append.
+BEFORE: No correction drill source event existed.
+AFTER: Synthetic drill source event exists and is intentionally designated for supersession by the next event.
+EVIDENCE: Task 6 correction-drill procedure. The timestamp-shaped component in this predeclared test `EVENT ID` is an opaque identifier component selected by the RED test and is not the authoritative event time; `TIMESTAMP` is authoritative.
+AUTHORITY: Milestone 0 Task 6 validation plan.
+RESULT: PASS — source event appended for drill purposes.
+RELATED COMMIT / ARTIFACT: `logs/logs/project/2026/2026-09-04.log`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132711+0300-drill-correction-001
+TIMESTAMP: 2026-09-04 13:27:12 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: CORRECTION
+TARGET: Synthetic harmless correction drill state
+ACTION: Appended correction while preserving the original source event.
+REASON: Validate semantic append-only correction behavior.
+BEFORE: Source event states `drill-state = ORIGINAL-INTENTIONALLY-SUPERSEDED`.
+AFTER: Correct drill state is `drill-state = CORRECTED`; source event remains in history.
+EVIDENCE: correction pair in this ledger.
+AUTHORITY: Canonical logging schema and Task 6 validation plan.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: this ledger.
+CORRECTION / SUPERSEDES EVENT CM-EVENT-20260904T132600+0300-drill-source-001
+Previous statement: `drill-state = ORIGINAL-INTENTIONALLY-SUPERSEDED`
+Corrected state: `drill-state = CORRECTED`
+Evidence: synthetic Milestone 0 correction drill; no production/project semantic fact was altered.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132713+0300-redaction-001
+TIMESTAMP: 2026-09-04 13:27:13 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: REDACTION
+TARGET: Synthetic harmless redaction drill
+ACTION: Demonstrated durable redaction using only the canonical omission marker; no real or realistic secret value was generated or persisted.
+REASON: Validate public-safe secret handling without contaminating repository history with a secret fixture.
+BEFORE: Live project ledger did not yet contain a redaction drill marker.
+AFTER: Durable record contains `[REDACTED SECRET — not persisted]` and no test secret payload.
+EVIDENCE: canonical marker plus executable repository scan asserting prohibited sentinel content is absent under `logs/`.
+AUTHORITY: Logging privacy/retention policy, canonical schema, and Task 6 validation plan.
+RESULT: PASS — pending GREEN branch execution of the live-record tests.
+RELATED COMMIT / ARTIFACT: this ledger; `tests/test_doc_consistency.py`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132859+0300-validation-002
+TIMESTAMP: 2026-09-04 13:28:59 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_PASSED
+TARGET: Milestone 0 Task 6 live logging integrity tests
+ACTION: Verified correction/supersession, redaction, live record formatting, unique event IDs/timestamps, checkpoint presence, no prohibited test secret under `logs/`, and no fabricated Self-Evolution run.
+REASON: Close the RED→GREEN cycle for the end-to-end logging drills.
+BEFORE: GitHub Actions run `33863247483` failed exactly two intended RED assertions before the drills existed.
+AFTER: GitHub Actions run `33863359988` completed `success` on head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`.
+EVIDENCE: GitHub Actions run `33863359988`; live record tests and repository documentation checker passed.
+AUTHORITY: Verification-before-completion and Milestone 0 Task 6.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`; GitHub Actions run `33863359988`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132859+0300-resume-001
+TIMESTAMP: 2026-09-04 13:28:59 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: RESUME_VALIDATED
+TARGET: Progressive resume / handoff contract
+ACTION: Performed fresh retrieval of the canonical session protocol, latest transcript checkpoint, current project-event tail, and actual PR/head state without loading the full pre-bootstrap conversation history.
+REASON: Validate that a project-working session can reconstruct current state and next action from durable artifacts rather than model memory.
+BEFORE: Transcript checkpoint recorded SHA `09a38dcc5eed8c9f98b3cc65bb4d62c7f95ad78e`, which was valid at Task 5 but stale after Task 6 mutations.
+AFTER: Actual PR state was resolved as branch `docs/architecture-foundation-v0.1`, head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`, PR #1 open/draft/unmerged/mergeable; next action reconstructed as final Milestone 0 completion synchronization and verification.
+EVIDENCE: fresh reads of `docs/project-governance/SESSION-LOGGING-PROTOCOL.md`, active transcript, active project log, and PR #1 metadata.
+AUTHORITY: Session resume protocol and state-before-mutation invariant.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: PR #1; active transcript/project ledger; head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T133229+0300-state-sync-001
+TIMESTAMP: 2026-09-04 13:32:29 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: STATE_CHANGE
+TARGET: Repository-facing Milestone 0 status surfaces
+ACTION: Updated README from execution-in-progress to operational Milestone 0 state and updated PR #1 title/description to reflect the implemented logging/CI foundation rather than the earlier documentation-only scope.
+REASON: Prevent immediate documentation/PR-description drift after Milestone 0 completion evidence.
+BEFORE: README said Milestone 0 was executing; PR body said the actual logging filesystem did not exist and `writing-plans` was still next.
+AFTER: README documents operational logging foundation and next implementation ordering; PR is titled `docs/infra: establish CodeMaestro v3 architecture and logging foundation` and accurately describes current implemented scope.
+EVIDENCE: README commit `369260831ac6e3c8297ec625766a551f1562967f`; PR #1 metadata update confirmed by GitHub.
+AUTHORITY: Documentation consistency/governance rules and verified Milestone 0 evidence.
+RESULT: PENDING — final exact-head verification must pass after repository-facing status synchronization.
+RELATED COMMIT / ARTIFACT: `369260831ac6e3c8297ec625766a551f1562967f`; PR #1.

@@ -1,0 +1,68 @@
+# CodeMaestro Project Event Log — 2026-09-04 Task 1 Continuation
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260904T144442+0300-architecture-red-001
+TIMESTAMP: 2026-09-04 14:44:42 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_RED
+TARGET: Post-Milestone-0 Task 1 living architecture canonicalization
+ACTION: Added executable requirements that the living architecture no longer claim canonicalization is pending and expose the approved authority/runtime/capability/intelligence/governance/evaluation/logging/sequence sections.
+REASON: The approved implementation plan requires a RED baseline before replacing the stale architecture gateway.
+BEFORE: `ARCHITECTURE.md` still declared `detailed canonicalization pending written-spec approval`.
+AFTER: GitHub Actions run `33869381682` failed exactly the new `LivingArchitectureTests.test_architecture_is_current_living_synthesis`; the other 20 tests passed.
+EVIDENCE: GitHub Actions run `33869381682`, job `101011494502`; test commit `dd7653264fc00d77709ef2cf7a7126abc6caff9f`.
+AUTHORITY: `docs/superpowers/plans/2026-09-04-architecture-capability-registry-integration.md` Task 1; TDD workflow.
+RESULT: FAIL — EXPECTED RED BASELINE, superseded by `CM-EVENT-20260904T144620+0300-architecture-green-001`.
+RELATED COMMIT / ARTIFACT: `dd7653264fc00d77709ef2cf7a7126abc6caff9f`; GitHub Actions run `33869381682`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T144620+0300-architecture-green-001
+TIMESTAMP: 2026-09-04 14:46:20 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_PASSED
+TARGET: Post-Milestone-0 Task 1 living architecture canonicalization
+ACTION: Replaced the stale gateway with the current living architecture synthesis while preserving the approved authority hierarchy, 17-family freeze, Shared Intelligence model, execution/governance invariants, evaluation dimensions, logging ownership boundary, progressive disclosure, and implementation sequence.
+REASON: Close Task 1 RED→GREEN without starting production Skill/runtime implementation.
+BEFORE: Architecture gateway described written-spec approval/canonicalization as pending.
+AFTER: `ARCHITECTURE.md` declares `CURRENT LIVING ARCHITECTURE`; exact-branch unit tests and repository documentation checker both pass.
+EVIDENCE: architecture commit `53f8f623dc4ddb0c340e2d54650eda1b6c255acd`; GitHub Actions run `33869436723`, job `101011664754`, unit-test and repository-checker steps both `success`.
+AUTHORITY: approved consolidated v2 and architecture/capability registry implementation plan Task 1.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `53f8f623dc4ddb0c340e2d54650eda1b6c255acd`; `docs/architecture/ARCHITECTURE.md`; GitHub Actions run `33869436723`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T144620+0300-checkpoint-architecture-001
+TIMESTAMP: 2026-09-04 14:46:20 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: CHECKPOINT
+TARGET: Architecture/capability-registry integration Task 1 -> Task 2 handoff
+ACTION: Recorded Task 1 completion and authorized next action.
+REASON: Inline execution checkpoint requirement.
+BEFORE: Living architecture canonicalization was in RED→GREEN execution.
+AFTER: Task 1 is PASS; Task 2 capability-registry schema/validator is next.
+EVIDENCE: GitHub Actions run `33869436723` success.
+AUTHORITY: `superpowers:executing-plans`; approved implementation plan.
+RESULT: PASS
+RELATED COMMIT / ARTIFACT: `docs/architecture/ARCHITECTURE.md`; `docs/superpowers/plans/2026-09-04-architecture-capability-registry-integration.md`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T144900+0300-log-correction-001
+TIMESTAMP: 2026-09-04 14:49:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: CORRECTION
+TARGET: Project event ledger append-only integrity
+ACTION: Restored the full pre-Task-1 `2026-09-04.log` blob and moved the Task-1 continuation events into this separate log file instead of replacing earlier event payloads with a summary placeholder.
+REASON: Fresh pre-merge verification found that commit `1a37fc78bd7c6191dec2570e4e0c97b58f933d04` accidentally truncated earlier project-event content, violating the semantic append-only contract and causing correction/redaction regression tests to fail.
+BEFORE: Current `2026-09-04.log` contained `[Earlier events retained unchanged ...]` instead of the actual earlier events; GitHub Actions run `33869481150` failed two logging-integrity regression tests.
+AFTER: Earlier event payloads are restored byte-for-byte from blob `043fc5f8fb658486558644fc903982e74bb4f3c8`; Task-1 events remain durable in this continuation log; the historical truncating commit remains visible in Git history but no longer defines current branch state.
+EVIDENCE: failing run `33869481150`, job `101011805106`; previous-good log blob `043fc5f8fb658486558644fc903982e74bb4f3c8`; current correction artifact.
+AUTHORITY: semantic append-only logging contract, systematic-debugging root-cause analysis, verification-before-completion.
+RESULT: PENDING — exact-head CI must pass after restoration before merge readiness is claimed.
+RELATED COMMIT / ARTIFACT: `1a37fc78bd7c6191dec2570e4e0c97b58f933d04`; `logs/logs/project/2026/2026-09-04.log`; this continuation log.
