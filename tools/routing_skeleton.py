@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 import json
 from pathlib import Path
 import re
 
-from tools.routing_eval import CAPABILITY_IDS, load_cases
+try:
+    from tools.routing_eval import CAPABILITY_IDS, load_cases
+except ModuleNotFoundError:
+    from routing_eval import CAPABILITY_IDS, load_cases
 
 
 ROOT = Path(__file__).resolve().parents[1]
