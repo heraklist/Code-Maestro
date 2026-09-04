@@ -66,3 +66,19 @@ EVIDENCE: RED commit `107bf645c869d443d9f348d63b2752b6ff33f1d4`; RED Actions run
 AUTHORITY: `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md` Task B6; Superpowers test-driven-development; evidence-before-assertion.
 RESULT: PASS — B6 contract is GREEN; B7 repeated full-corpus baseline has not started.
 RELATED COMMIT / ARTIFACT: `tools/routing_eval.py`; `tests/test_routing_eval.py`; `evals/routing/results/README.md`; commits `107bf645c869d443d9f348d63b2752b6ff33f1d4`, `0859b6a7c45584bd343ef41564ab3e002d9284f0`, `cf8d514ef162bf2b609cd573592419a907643244`.
+
+---
+
+EVENT ID: CM-EVENT-20260905T004300+0300-routing-b7-blocker-001
+TIMESTAMP: 2026-09-05 00:43:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: EVAL_EXECUTION_BLOCKER
+TARGET: Eval Readiness Task B7 stochastic/model repeated-run baseline
+ACTION: Added and executed a GitHub Actions harness that ran the frozen 100-case corpus three times through the deterministic skeleton, graded each run, aggregated metrics, and uploaded immutable workflow evidence; then stopped before treating those runs as B7 qualification evidence.
+REASON: The approved B7 contract requires at least three independent stochastic/model result-generation runs per evaluated runtime/model configuration. The currently authorized GitHub execution surface exposes repository/Actions execution but no authorized model-inference endpoint or model credential to produce three qualifying stochastic routing runs. Repeating the deterministic skeleton yields useful diagnostic evidence but cannot satisfy the explicit stochastic-producer requirement.
+BEFORE: B6 aggregation semantics were GREEN and B7 had not executed any full-corpus baseline harness.
+AFTER: A non-qualifying deterministic diagnostic baseline exists and demonstrates the grader/aggregation pipeline end-to-end, while B7 remains blocked pending an authorized model inference surface. No thresholds, frozen expectations, skeleton configuration, or grader semantics were changed after observing results.
+EVIDENCE: workflow commit `b04ecbdf751051475464a74ae8a0950d3f47ff32`; Actions run `33922322419`; three deterministic runs each produced primary 32/100, supporting exact-set 11/100, clarification 61/100, high-risk 8/18, unknown IDs 0, malformed 0; aggregate GREEN=false with zero dispersion; artifact ID `9955497895`, ZIP SHA-256 `ade22142601aebb15fddd89659f05f486577123c7bf0729975f7000df932ed7d`.
+AUTHORITY: `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md` Task B7; approved requirement for n>=3 stochastic/model runs; Superpowers executing-plans stop-on-blocker rule; evidence-before-assertion.
+RESULT: BLOCKED — deterministic diagnostic baseline is valid supporting evidence but does not satisfy B7's stochastic/model qualification gate.
+RELATED COMMIT / ARTIFACT: `.github/workflows/routing-baseline.yml`; commit `b04ecbdf751051475464a74ae8a0950d3f47ff32`; Actions run `33922322419`; artifact `routing-pre-contract-baseline` ID `9955497895`.
