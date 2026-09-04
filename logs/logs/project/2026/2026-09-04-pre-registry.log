@@ -50,3 +50,19 @@ EVIDENCE: `docs/superpowers/plans/2026-09-04-pre-registry-repository-hardening.m
 AUTHORITY: approved v2 amendment; Superpowers writing-plans; user-directed eval-first execution order.
 RESULT: PASS — planning artifacts created; implementation has not started.
 RELATED COMMIT / ARTIFACT: `0a661c0caa4dd2971c1c2b3bfac3e7f903fb60e8`; `e099a1d22962d83087184fbbd0f9f0b281dde955`; both plan files named above.
+
+---
+
+EVENT ID: CM-EVENT-20260904T224700+0300-routing-b6-001
+TIMESTAMP: 2026-09-04 22:47:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: EVAL_CONTRACT_IMPLEMENTATION
+TARGET: Eval Readiness Task B6 repeated-run manifest and aggregation semantics
+ACTION: Added pre-implementation RED tests for repeated-run eligibility, worst-run failure, all-runs GREEN, population statistics, unavailable metadata handling, required metadata validation, and corpus/skeleton/grader identity consistency; then implemented the minimal manifest and aggregation contract and documented result evidence semantics.
+REASON: B7 must not execute stochastic/model routing runs until repeated-run evidence has deterministic identity, validation, aggregation, and worst-run gating semantics.
+BEFORE: Frozen corpus v1 existed, but no `RunManifest`, `AggregateMetrics`, or `aggregate_runs()` contract existed.
+AFTER: Repeated runs require non-empty manifest metadata, permit literal `NOT AVAILABLE`, reject corpus/skeleton/grader identity drift, compute min/max/mean/pstdev, require at least three runs for GREEN, and require every complete run to independently pass the routing GREEN gate.
+EVIDENCE: RED commit `107bf645c869d443d9f348d63b2752b6ff33f1d4`; RED Actions run `33912757065` failed exactly seven new aggregation tests because `RunManifest`/`aggregate_runs` did not exist; GREEN implementation commit `0859b6a7c45584bd343ef41564ab3e002d9284f0`; evidence README commit `cf8d514ef162bf2b609cd573592419a907643244`; exact-head Actions run `33912851770` passed unit tests, pilot validation, frozen corpus validation, pilot reproducibility, documentation consistency, and append-only ledger enforcement.
+AUTHORITY: `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md` Task B6; Superpowers test-driven-development; evidence-before-assertion.
+RESULT: PASS — B6 contract is GREEN; B7 repeated full-corpus baseline has not started.
+RELATED COMMIT / ARTIFACT: `tools/routing_eval.py`; `tests/test_routing_eval.py`; `evals/routing/results/README.md`; commits `107bf645c869d443d9f348d63b2752b6ff33f1d4`, `0859b6a7c45584bd343ef41564ab3e002d9284f0`, `cf8d514ef162bf2b609cd573592419a907643244`.
