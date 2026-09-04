@@ -1,5 +1,6 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import re
 import unittest
 
 from tools.doc_consistency import check_adr_authority, check_markdown_links, check_research_index
@@ -102,6 +103,56 @@ class LoggingFilesystemTests(unittest.TestCase):
         )
         for path in required:
             self.assertTrue(path.exists(), path)
+
+
+class LoggingLiveRecordsTests(unittest.TestCase):
+    SESSION_PATH = Path("logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md")
+    PROJECT_PATH = Path("logs/logs/project/2026/2026-09-04.log")
+    DRILL_EVENT_ID = "CM-EVENT-20260904T132600+0300-drill-source-001"
+
+    def _root(self):
+        return Path(__file__).resolve().parents[1]
+
+    def test_live_transcript_has_header_and_checkpoint(self):
+        text = (self._root() / self.SESSION_PATH).read_text(encoding="utf-8")
+        for token in (
+            "Session ID:",
+            "Session started:",
+            "Surface: Chat",
+            "Repository: heraklist/Code-Maestro",
+            "Initial branch:",
+            "Initial SHA:",
+            "Transcript policy: semantic append-only / public-safe",
+            "Coverage:",
+            "## CHECKPOINT",
+            "NEXT EXPECTED / AUTHORIZED ACTION:",
+        ):
+            self.assertIn(token, text)
+
+    def test_project_events_have_stable_ids_and_offset_timestamps(self):
+        text = (self._root() / self.PROJECT_PATH).read_text(encoding="utf-8")
+        event_ids = re.findall(r"^EVENT ID: (CM-EVENT-[^\n]+)$", text, re.MULTILINE)
+        timestamps = re.findall(r"^TIMESTAMP: (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{2}:\d{2})$", text, re.MULTILINE)
+        self.assertGreaterEqual(len(event_ids), 1)
+        self.assertEqual(len(event_ids), len(set(event_ids)))
+        self.assertEqual(len(event_ids), len(timestamps))
+
+    def test_correction_drill_preserves_source_and_appends_supersession(self):
+        text = (self._root() / self.PROJECT_PATH).read_text(encoding="utf-8")
+        self.assertIn(f"EVENT ID: {self.DRILL_EVENT_ID}", text)
+        self.assertIn(f"CORRECTION / SUPERSEDES EVENT {self.DRILL_EVENT_ID}", text)
+
+    def test_redaction_drill_uses_marker_without_test_secret(self):
+        root = self._root()
+        project = (root / self.PROJECT_PATH).read_text(encoding="utf-8")
+        self.assertIn("[REDACTED SECRET — not persisted]", project)
+        for path in (root / "logs").rglob("*"):
+            if path.is_file():
+                self.assertNotIn("CM_TEST_SECRET_DO_NOT_PERSIST", path.read_text(encoding="utf-8"))
+
+    def test_self_evolution_namespace_has_no_fabricated_run(self):
+        root = self._root() / "logs/logs/self-evolution"
+        self.assertEqual(list(root.rglob("*.log")), [])
 
 
 if __name__ == "__main__":
