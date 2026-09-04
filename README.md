@@ -6,19 +6,21 @@ The project preserves useful engineering methodology, safety boundaries, validat
 
 ## Current phase
 
-**Written-spec review and architecture documentation repair.**
+**Written specification approved; implementation planning is the active gate.**
 
-Production Skill files, runtime capability modules, scripts, and eval implementations have **not** been created yet.
+Production Skill files, runtime capability modules, executable eval suites, Self-Evolution Controller, and repository logging infrastructure have **not** been created yet.
 
-The current branch contains the architecture/research foundation, comparative research through Pass 5, accepted architecture checkpoints, the consolidated v3 written-spec candidate, Self-Evolution governance, and repository logging-governance design.
+The branch contains the architecture/research foundation, comparative research through Pass 5, accepted architecture checkpoints, the approved consolidated v3 written specification, Self-Evolution governance, and repository logging-governance design.
 
 ## Start here — current authority
 
 - [Architecture gateway](docs/architecture/ARCHITECTURE.md)
-- [CodeMaestro v3 consolidated design v2 — current written-spec review candidate](docs/superpowers/specs/2026-09-04-codemaestro-v3-consolidated-design-v2.md)
+- [CodeMaestro v3 consolidated design v2 — approved canonical written specification](docs/superpowers/specs/2026-09-04-codemaestro-v3-consolidated-design-v2.md)
 - [Architecture decision log](docs/architecture/DECISIONS.md)
-- [Research backlog / canonical research index](docs/research/RESEARCH-BACKLOG.md)
+- [Research backlog / canonical research execution-status index](docs/research/RESEARCH-BACKLOG.md)
 - [Legacy migration inventory](docs/architecture/MIGRATION-INVENTORY.md)
+
+The consolidated v2 Status section defines the authority relationship among earlier focused specs and historical amendments/checkpoints.
 
 ## Research and acceptance checkpoints
 
@@ -36,7 +38,7 @@ The current branch contains the architecture/research foundation, comparative re
 - [Initial v3 architecture design](docs/superpowers/specs/2026-09-04-codemaestro-v3-architecture-design.md)
 - [Research & Experimental Engineering design](docs/superpowers/specs/2026-09-04-research-experimental-engineering-design.md)
 - [Context, Repository & Evidence hardening design](docs/superpowers/specs/2026-09-04-context-repository-evidence-hardening-design.md)
-- [Logging ownership & timing amendment](docs/superpowers/specs/2026-09-04-logging-ownership-and-timing-amendment.md)
+- [Logging ownership & timing amendment — absorbed into v2](docs/superpowers/specs/2026-09-04-logging-ownership-and-timing-amendment.md)
 - [Initial consolidated design — superseded pointer](docs/superpowers/specs/2026-09-04-codemaestro-v3-capability-runtime-consolidated-design.md)
 
 ## Architecture foundation plan
@@ -66,6 +68,14 @@ The current target includes:
 
 The migration goal is **behavioral parity and improvement**, not recreation of the legacy API surface.
 
+## Research status model
+
+Research execution status is distinct from architectural disposition.
+
+A direction may be accepted while its track remains `IN RESEARCH`. `ACCEPTED` is reserved for research whose expected outputs have been sufficiently completed, reviewed, and incorporated for the stated scope.
+
+CM-R-021 through CM-R-032 are currently `IN RESEARCH` with accepted architectural direction. CM-R-032 specifically still owns the unresolved retention/deletion/public-sanitization policy required before Milestone 0 logging can be declared operational.
+
 ## Logging ownership
 
 Repository-development logging and portable Skill behavior are deliberately separate:
@@ -76,11 +86,13 @@ Repository-development logging and portable Skill behavior are deliberately sepa
 
 The nested `logs/logs/` name is intentional under the project owner's chosen root/subfolder structure, not an accidental typo.
 
-Because this repository is public, any future committed session history must follow public-safe privacy/secret handling. The current consolidated design requires retention/deletion/sanitization policy to be resolved under CM-R-032 before Milestone 0 logging is declared operational.
+Because this repository is public, any future committed session history must follow public-safe privacy/secret handling. The approved consolidated design requires retention/deletion/sanitization policy to be resolved under CM-R-032 before Milestone 0 logging is declared operational.
 
 ## Next gate
 
-After the current written-spec review is explicitly approved, Superpowers `writing-plans` is invoked. The resulting implementation plan must make **Milestone 0 — Repository Work-Session Logging Foundation** the first implementation milestone before other implementation work.
+Superpowers `writing-plans` is now the active process step.
+
+The implementation plan must make **Milestone 0 — Repository Work-Session Logging Foundation** the first implementation milestone. Its first deliverable is a status-aware documentation-consistency checker, followed by the real-time conversation/project logging infrastructure, canonical schemas/session instruction, and the CM-R-032 privacy/retention decision required before Milestone 0 becomes operational.
 
 ## Legacy systems
 
