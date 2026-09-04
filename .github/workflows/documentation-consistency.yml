@@ -11,8 +11,10 @@ on:
       - 'tools/doc_consistency.py'
       - 'tools/check_append_only_logs.py'
       - 'tools/routing_eval.py'
+      - 'tools/routing_skeleton.py'
       - 'tests/test_doc_consistency.py'
       - 'tests/test_routing_eval.py'
+      - 'tests/test_routing_skeleton.py'
       - '.github/workflows/documentation-consistency.yml'
 
 permissions:
@@ -37,6 +39,13 @@ jobs:
 
       - name: Validate routing pilot
         run: python tools/routing_eval.py validate evals/routing/pilot-real-derived.json
+
+      - name: Reproduce routing pilot skeleton output
+        run: |
+          python tools/routing_skeleton.py \
+            --cases evals/routing/pilot-real-derived.json \
+            --output /tmp/pilot-skeleton-v0.json
+          cmp /tmp/pilot-skeleton-v0.json evals/routing/results/pilot-skeleton-v0.json
 
       - name: Run repository documentation checker
         run: python tools/doc_consistency.py
