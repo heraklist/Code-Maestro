@@ -65,6 +65,16 @@ class ResearchIndexTests(unittest.TestCase):
 
 
 class MarkdownLinkTests(unittest.TestCase):
+    def test_markdown_link_inside_fenced_code_is_ignored(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "README.md").write_text(
+                "```markdown\n[missing](docs/missing.md)\n```\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(check_markdown_links(root), [])
+
     def test_missing_relative_markdown_link_fails(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
