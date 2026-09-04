@@ -18,3 +18,19 @@ EVIDENCE: commit `fdd35d76c3a6ca346023c438ca9b792c1b30d01a`; external review con
 AUTHORITY: `docs/project-governance/SESSION-LOGGING-PROTOCOL.md`; evidence-before-assertion; semantic append-only correction contract.
 RESULT: PASS — delayed logging correction recorded; amendment content remains pending revision for confirmed review findings.
 RELATED COMMIT / ARTIFACT: `fdd35d76c3a6ca346023c438ca9b792c1b30d01a`; `docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design.md`; this ledger.
+
+---
+
+EVENT ID: CM-EVENT-20260904T153300+0300-pre-registry-v2-001
+TIMESTAMP: 2026-09-04 15:33:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: SPEC_REVISION
+TARGET: `docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md`
+ACTION: Created v2 of the pre-registry amendment after verifying the second review and incorporated the pre-plan blockers plus related specification corrections.
+REASON: The approved v1 amendment still had an unsafe main concurrency example, an unresolved private-repository protection assumption, and a non-executable routing RED definition without a machine-readable corpus contract, deterministic grader, or predeclared GREEN threshold.
+BEFORE: v1 was approved in direction but required review repairs before `superpowers:writing-plans`.
+AFTER: v2 defines private-target/process-enforced protection fallback, non-cancellable main CI evidence, full-range append-only semantics, single-metric disclosure budgets, >=50 machine-readable routing cases, deterministic structured grading, a minimal evaluable routing skeleton, and predeclared GREEN thresholds.
+EVIDENCE: v2 commit `369d4ab17be7ae0d5215f9fa777ed360eed841b6`; GitHub documentation verification that protected branches on private personal repositories require a paid plan while Free supports them on public repositories.
+AUTHORITY: user-approved amendment direction; external review accepted after repository-specific verification; Superpowers receiving-code-review and brainstorming written-spec gate.
+RESULT: PENDING — v2 requires user review/approval before implementation planning.
+RELATED COMMIT / ARTIFACT: `369d4ab17be7ae0d5215f9fa777ed360eed841b6`; `docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md`.
