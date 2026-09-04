@@ -1,0 +1,20 @@
+# CodeMaestro Project Event Log — 2026-09-04 Pre-Registry Amendment
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260904T153200+0300-pre-registry-spec-001
+TIMESTAMP: 2026-09-04 15:32:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: GOVERNANCE_CORRECTION
+TARGET: `docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design.md`
+ACTION: Recorded the previously unlogged creation of the Pre-Registry Hardening & Eval-First amendment after external review identified the omission.
+REASON: The material spec commit `fdd35d76c3a6ca346023c438ca9b792c1b30d01a` changed repository architecture/governance state without the event-time project log required by `SESSION-LOGGING-PROTOCOL.md`. The repository history must remain append-only, so the missing event is repaired by a later explicit correction event rather than rewriting the prior commit.
+BEFORE: Branch `docs/pre-registry-hardening-eval-first` contained the amendment spec commit but no corresponding project-event record.
+AFTER: The spec creation is durably represented in the project ledger; the timing gap remains visible as a governance defect rather than being hidden.
+EVIDENCE: commit `fdd35d76c3a6ca346023c438ca9b792c1b30d01a`; external review confirming `git diff 6bb21ff..HEAD -- logs/` was empty before this correction.
+AUTHORITY: `docs/project-governance/SESSION-LOGGING-PROTOCOL.md`; evidence-before-assertion; semantic append-only correction contract.
+RESULT: PASS — delayed logging correction recorded; amendment content remains pending revision for confirmed review findings.
+RELATED COMMIT / ARTIFACT: `fdd35d76c3a6ca346023c438ca9b792c1b30d01a`; `docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design.md`; this ledger.
