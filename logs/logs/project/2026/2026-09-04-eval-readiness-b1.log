@@ -1,0 +1,52 @@
+# CodeMaestro Project Event Log — 2026-09-04 Eval Readiness B1
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260904T181200+0300-eval-b1-red-001
+TIMESTAMP: 2026-09-04 18:12:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_RED
+TARGET: Eval Readiness B1 routing parser/grader contract
+ACTION: Ran the newly discovered routing-eval test suite before production `tools/routing_eval.py` existed.
+REASON: TDD requires observable failure before implementation.
+BEFORE: Existing 21 documentation tests passed; routing-eval module absent.
+AFTER: GitHub Actions run `33888091580` failed in the unit-test step with 15 routing-eval failures, each rooted in missing `tools/routing_eval.py`; existing documentation tests remained PASS.
+EVIDENCE: run `33888091580`, job `101072750143`, head `93cf7887aad4625b0afbc844aa6eb0710c56e81c`.
+AUTHORITY: Superpowers test-driven-development; Eval Readiness Task B1.
+RESULT: FAIL — EXPECTED RED BASELINE
+RELATED COMMIT / ARTIFACT: `1da454fad2c3c67786897b2f7a0f8e88005c1249`; `93cf7887aad4625b0afbc844aa6eb0710c56e81c`; `tests/test_routing_eval.py`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T181500+0300-eval-b1-debug-001
+TIMESTAMP: 2026-09-04 18:15:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: DEBUGGING
+TARGET: B1 intermediate test-loader failure
+ACTION: Investigated the post-implementation CI error before changing code and traced it to the test harness dynamically executing the dataclass module without registering it in `sys.modules`.
+REASON: Run `33888239013` no longer failed because production behavior was missing; all 15 errors occurred during dataclass decoration inside the custom `importlib` loader.
+BEFORE: Test helper created a module with `module_from_spec()` and immediately called `exec_module()`; Python 3.12 dataclasses expected the module to be registered in `sys.modules`.
+AFTER: Test harness imports `tools.routing_eval` normally through the repository package/namespace; production routing logic was not changed by this debugging fix.
+EVIDENCE: run `33888239013`, job `101073251640`, stack trace at `dataclasses._is_type` showing `sys.modules.get(cls.__module__)` returned `None`.
+AUTHORITY: Superpowers systematic-debugging; TDD test-harness correctness.
+RESULT: PASS — root cause identified and isolated.
+RELATED COMMIT / ARTIFACT: `5140e4a4453f0c83dd04d069e173a8c5028f983d`; `tests/test_routing_eval.py`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T181600+0300-eval-b1-green-001
+TIMESTAMP: 2026-09-04 18:16:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: VALIDATION_PASSED
+TARGET: Eval Readiness B1 routing parser/grader contract
+ACTION: Verified routing case/result validation, deterministic grading thresholds, schema/protocol artifacts, and the existing repository documentation checks on the current B1 implementation.
+REASON: Close B1 RED→GREEN before creating pilot expectations.
+BEFORE: Expected RED run `33888091580`; intermediate test-harness error run `33888239013`.
+AFTER: GitHub Actions run `33888341661` completed SUCCESS on head `5140e4a4453f0c83dd04d069e173a8c5028f983d` with the full discovered unit-test suite, repository checker, and append-only project-ledger step.
+EVIDENCE: run `33888341661`; head `5140e4a4453f0c83dd04d069e173a8c5028f983d`.
+AUTHORITY: Eval Readiness Task B1; Superpowers verification discipline.
+RESULT: PASS — B1 complete; B2 real-derived pilot sourcing is next.
+RELATED COMMIT / ARTIFACT: `tools/routing_eval.py`; `tests/test_routing_eval.py`; `evals/routing/schema.json`; `docs/evals/ROUTING-EVAL-PROTOCOL.md`.
