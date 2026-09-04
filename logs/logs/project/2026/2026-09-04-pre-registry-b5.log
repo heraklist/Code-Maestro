@@ -1,0 +1,41 @@
+EVENT ID: PRE-REG-B5-001
+TIMESTAMP: 2026-09-04 20:58:00 +03:00
+SESSION: chat-inline-pre-registry-eval-b5
+EVENT / TYPE: TDD RED
+TARGET: Eval Readiness B5 corpus composition contract
+ACTION: Added corpus-composition tests before creating corpus-v1.
+REASON: The approved plan requires executable floors for total cases, per-cluster counts, provenance ratio, and valid source metadata before corpus construction.
+BEFORE: Routing parser/grader existed; no full-corpus composition validator or corpus-v1 existed.
+AFTER: Tests require >=100 cases, >=10 per cluster, >=1/3 real-derived, unique IDs, and existing source validation semantics.
+EVIDENCE: GitHub Actions run 33903432521 failed in four new CorpusCompositionTests because validate_corpus_composition did not exist.
+AUTHORITY: Approved pre-registry Eval Readiness plan Task B5.
+RESULT: EXPECTED RED
+RELATED COMMIT / ARTIFACT: 7077533f14b7a0ad9e22d33f24f662b1f79c2f0f; tests/test_routing_eval.py
+
+EVENT ID: PRE-REG-B5-002
+TIMESTAMP: 2026-09-04 20:59:45 +03:00
+SESSION: chat-inline-pre-registry-eval-b5
+EVENT / TYPE: TDD GREEN
+TARGET: Eval Readiness B5 corpus composition validator
+ACTION: Implemented validate_corpus_composition and wired corpus-v1 validation into the routing eval CLI.
+REASON: Provide the smallest executable implementation satisfying the precommitted composition tests.
+BEFORE: Four composition tests failed on missing validator.
+AFTER: Validator enforces total-count, per-cluster, duplicate-ID, and real-derived floors.
+EVIDENCE: GitHub Actions run 33903505243 completed success; unit tests, pilot validation, skeleton reproduction, documentation checker, and append-only guard all passed.
+AUTHORITY: Approved pre-registry Eval Readiness plan Task B5.
+RESULT: GREEN
+RELATED COMMIT / ARTIFACT: 6ef1d86e4746212beba0121a658dd50b12cf323d; tools/routing_eval.py
+
+EVENT ID: PRE-REG-B5-003
+TIMESTAMP: 2026-09-04 21:03:00 +03:00
+SESSION: chat-inline-pre-registry-eval-b5
+EVENT / TYPE: CORPUS PRECOMMIT
+TARGET: evals/routing/corpus-v1.json
+ACTION: Authored 100 routing expectations across all 10 ambiguity clusters before any full-corpus routing execution.
+REASON: Challenge the provisional taxonomy with balanced positive, negative/not-primary, composition, clarification, and pilot-failure boundary cases.
+BEFORE: Only the 10-case pilot had committed expectations.
+AFTER: corpus-v1 contains exactly 10 cases per cluster, 40 real-derived normalized variants, and 60 synthetic adversarial cases; provenance document records the source-family mapping and freeze rule.
+EVIDENCE: evals/routing/corpus-v1.json; docs/evals/ROUTING-CORPUS-PROVENANCE.md. No full-corpus result artifact exists at this event boundary.
+AUTHORITY: Approved pre-registry Eval Readiness plan Task B5.
+RESULT: EXPECTATIONS AUTHORED; FINAL VALIDATION PENDING
+RELATED COMMIT / ARTIFACT: aacdf0b587b1983a07e63507186c267373b252de; e7e89ffdf18b24392aa128c776d25452a26032b8
