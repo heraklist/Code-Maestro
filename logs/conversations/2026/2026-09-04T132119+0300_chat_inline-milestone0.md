@@ -52,3 +52,22 @@ The ledger records:
 - Task 5 state as `PARTIALLY VERIFIED` until filesystem tests and end-to-end validation pass.
 
 Operational clarification: append commits that maintain the active transcript/ledger are self-evidencing and do not recursively require a second log event solely to log the log-write itself. Material non-log mutations remain subject to event-time project logging.
+
+### 2026-09-04 13:24:14 +03:00 — ASSISTANT / TASK CHECKPOINT
+
+Task 5 filesystem/bootstrap verification passed on the exact branch checkout. GitHub Actions run `33863023688`, job `100991541767`, completed successfully with both the unit-test step and repository documentation checker step passing.
+
+The project ledger preserved the earlier `PENDING` test event and appended a new `VALIDATION_PASSED` event instead of rewriting historical state.
+
+## CHECKPOINT
+TIMESTAMP: 2026-09-04 13:24:14 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+CURRENT BRANCH: docs/architecture-foundation-v0.1
+CURRENT SHA: 09a38dcc5eed8c9f98b3cc65bb4d62c7f95ad78e
+LAST COMPLETED ACTION: Milestone 0 Task 5 logging filesystem/bootstrap and exact-branch validation
+DECISIONS / APPROVALS: Inline execution and real-time repository session/project logging remain authorized by the user
+MUTATIONS: logging roots, live transcript, project ledger, filesystem contract test
+EVIDENCE / VALIDATION STATE: PASS — GitHub Actions run `33863023688`
+UNRESOLVED ISSUES / RISKS: Task 6 correction/redaction/resume/handoff drills not yet executed
+ACTIVE SELF-EVOLUTION ID: NOT APPLICABLE
+NEXT EXPECTED / AUTHORIZED ACTION: Execute Milestone 0 Task 6 end-to-end logging integrity validation
