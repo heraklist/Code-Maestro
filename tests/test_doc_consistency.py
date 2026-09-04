@@ -106,5 +106,41 @@ class LoggingPolicyTests(unittest.TestCase):
             self.assertIn(heading, text)
 
 
+class LoggingSchemaTests(unittest.TestCase):
+    REQUIRED_TOKENS = (
+        "Session started:",
+        "Surface:",
+        "Repository:",
+        "Initial branch:",
+        "Initial SHA:",
+        "Transcript policy:",
+        "EVENT ID",
+        "TIMESTAMP",
+        "SESSION",
+        "EVENT / TYPE",
+        "TARGET",
+        "ACTION",
+        "REASON",
+        "BEFORE",
+        "AFTER",
+        "EVIDENCE",
+        "AUTHORITY",
+        "RESULT",
+        "RELATED COMMIT / ARTIFACT",
+        "CORRECTION / SUPERSEDES EVENT",
+        "[REDACTED SECRET — not persisted]",
+        "CHECKPOINT",
+        "YYYY-MM-DD HH:mm:ss ±HH:MM",
+    )
+
+    def test_logging_schema_contains_normative_contract(self):
+        root = Path(__file__).resolve().parents[1]
+        path = root / "docs/project-governance/LOGGING-SCHEMAS.md"
+        self.assertTrue(path.exists())
+        text = path.read_text(encoding="utf-8")
+        for token in self.REQUIRED_TOKENS:
+            self.assertIn(token, text)
+
+
 if __name__ == "__main__":
     unittest.main()
