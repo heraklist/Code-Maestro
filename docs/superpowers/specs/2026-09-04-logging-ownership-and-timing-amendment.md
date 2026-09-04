@@ -2,9 +2,11 @@
 
 ## Status
 
-Approved architectural refinement on 2026-09-04.
+**Status:** ABSORBED INTO `2026-09-04-codemaestro-v3-consolidated-design-v2.md`
 
-This amendment corrects the ownership boundary of the logging design described in the consolidated CodeMaestro v3 design. Where earlier wording can be read as making all repository logging a portable CodeMaestro Skill behavior, this document takes precedence until the next consolidated review candidate incorporates the correction directly.
+**Date:** 2026-09-04
+
+This document is a historical amendment checkpoint. Its ownership/timing correction has been incorporated into the canonical consolidated v2 design. Where wording differs, the consolidated v2 is authoritative.
 
 ---
 
@@ -169,10 +171,12 @@ WRITTEN SPEC APPROVED
         |
         v
 MILESTONE 0 — REPOSITORY WORK-SESSION LOGGING
+        |- documentation-consistency checker first
         |- create logs/conversations/
         |- create logs/logs/project/
         |- create schemas/templates
         |- create canonical real-time session instruction
+        |- resolve required privacy/retention policy
         |- verify append-only/event-time workflow
         |
         v
@@ -186,10 +190,7 @@ ONLY THEN
         `- stabilization
 ```
 
-Therefore the two commitments are deliberately separate:
-
-1. **Immediately after review:** build real-time session history + project logging for the chats used to develop CodeMaestro.
-2. **At the Self-Evolution implementation stage:** build and enforce CodeMaestro's own dedicated self-evolution audit logging.
+The canonical detailed ordering is now maintained in consolidated v2 §21.
 
 ---
 
