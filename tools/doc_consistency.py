@@ -10,6 +10,7 @@ STATUS_RE = re.compile(r"^\*\*Status:\*\*\s*(.+)$", re.MULTILINE)
 NON_CANONICAL_MARKERS = ("ABSORBED", "SUPERSEDED", "HISTORICAL", "NON-CANONICAL")
 RESEARCH_HEADING_RE = re.compile(r"^##\s+(CM-R-\d{3})\b", re.MULTILINE)
 RESEARCH_REFERENCE_RE = re.compile(r"\b(CM-R-\d{3})\b")
+NEGATED_RESEARCH_REFERENCE_RE = re.compile(r"\b(?:no|not|without)\s+(CM-R-\d{3})\b", re.IGNORECASE)
 WORKING_RECORD_RE = re.compile(r"\*\*Working record:\*\*\s*`([^`]+)`")
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 FENCED_CODE_RE = re.compile(
@@ -19,29 +20,10 @@ FENCED_CODE_RE = re.compile(
 PROJECT_EVENT_START_RE = re.compile(r"^EVENT ID:\s*(\S+)\s*$", re.MULTILINE)
 TIMESTAMP_RE = re.compile(r"^TIMESTAMP:\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{2}:\d{2})\s*$", re.MULTILINE)
 REQUIRED_PROJECT_EVENT_FIELDS = (
-    "EVENT ID:",
-    "TIMESTAMP:",
-    "SESSION:",
-    "EVENT / TYPE:",
-    "TARGET:",
-    "ACTION:",
-    "REASON:",
-    "BEFORE:",
-    "AFTER:",
-    "EVIDENCE:",
-    "AUTHORITY:",
-    "RESULT:",
-    "RELATED COMMIT / ARTIFACT:",
+    "EVENT ID:", "TIMESTAMP:", "SESSION:", "EVENT / TYPE:", "TARGET:", "ACTION:", "REASON:", "BEFORE:", "AFTER:", "EVIDENCE:", "AUTHORITY:", "RESULT:", "RELATED COMMIT / ARTIFACT:",
 )
 REQUIRED_TRANSCRIPT_HEADER_FIELDS = (
-    "Session ID:",
-    "Session started:",
-    "Surface:",
-    "Repository:",
-    "Initial branch:",
-    "Initial SHA:",
-    "Transcript policy:",
-    "Coverage:",
+    "Session ID:", "Session started:", "Surface:", "Repository:", "Initial branch:", "Initial SHA:", "Transcript policy:", "Coverage:",
 )
 
 
@@ -81,7 +63,6 @@ def check_adr_authority(root: Path) -> list[Finding]:
         text = path.read_text(encoding="utf-8")
         for adr_id, section in _sections(text, ADR_RE):
             occurrences.setdefault(adr_id, []).append((path, _status(section)))
-
     findings: list[Finding] = []
     for adr_id, items in sorted(occurrences.items()):
         active = [(path, status) for path, status in items if _is_active(status)]
@@ -103,11 +84,9 @@ def check_research_index(root: Path) -> list[Finding]:
     backlog = research_dir / "RESEARCH-BACKLOG.md"
     if not backlog.exists():
         return [Finding("RESEARCH_BACKLOG_MISSING", str(backlog.relative_to(root)), "canonical backlog missing")]
-
     text = backlog.read_text(encoding="utf-8")
     findings: list[Finding] = []
     indexed_ids: set[str] = set()
-
     for research_id, section in _sections(text, RESEARCH_HEADING_RE):
         indexed_ids.add(research_id)
         backlog_status = _status(section)
@@ -120,7 +99,6 @@ def check_research_index(root: Path) -> list[Finding]:
             record_status = _status(record_path.read_text(encoding="utf-8"))
             if backlog_status != record_status:
                 findings.append(Finding("RESEARCH_STATUS_MISMATCH", str(record_path.relative_to(root)), f"{research_id}: backlog={backlog_status!r} record={record_status!r}"))
-
     for path in sorted(research_dir.glob("CM-R-*.md")):
         match = re.match(r"(CM-R-\d{3})", path.name)
         if match and match.group(1) not in indexed_ids:
@@ -138,7 +116,8 @@ def check_research_references(root: Path) -> list[Finding]:
         if not path.exists():
             continue
         text = _without_fenced_code(path.read_text(encoding="utf-8"))
-        for research_id in sorted(set(RESEARCH_REFERENCE_RE.findall(text))):
+        negated = set(NEGATED_RESEARCH_REFERENCE_RE.findall(text))
+        for research_id in sorted(set(RESEARCH_REFERENCE_RE.findall(text)) - negated):
             if research_id not in indexed:
                 findings.append(Finding("RESEARCH_REFERENCE_UNINDEXED", str(path.relative_to(root)), f"{research_id} is referenced but absent from RESEARCH-BACKLOG.md"))
     return findings
@@ -197,7 +176,6 @@ def check_logging_integrity(root: Path) -> list[Finding]:
                 timestamps = TIMESTAMP_RE.findall(section)
                 if len(timestamps) != 1:
                     findings.append(Finding("LOG_EVENT_TIMESTAMP_INVALID", str(path.relative_to(root)), f"{event_id} must contain exactly one offset-aware TIMESTAMP"))
-
     conversation_root = root / "logs/conversations"
     if conversation_root.exists():
         for path in sorted(conversation_root.rglob("*.md")):
@@ -211,13 +189,7 @@ def check_logging_integrity(root: Path) -> list[Finding]:
 
 
 def check_repository(root: Path) -> list[Finding]:
-    return [
-        *check_adr_authority(root),
-        *check_research_index(root),
-        *check_research_references(root),
-        *check_markdown_links(root),
-        *check_logging_integrity(root),
-    ]
+    return [*check_adr_authority(root), *check_research_index(root), *check_research_references(root), *check_markdown_links(root), *check_logging_integrity(root)]
 
 
 def main(argv: list[str] | None = None) -> int:
