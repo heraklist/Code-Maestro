@@ -142,5 +142,24 @@ class LoggingSchemaTests(unittest.TestCase):
             self.assertIn(token, text)
 
 
+class SessionProtocolTests(unittest.TestCase):
+    REQUIRED_TOKENS = (
+        "SESSION ADMISSION GATE",
+        "EVENT-TIME LOGGING",
+        "PROGRESSIVE HISTORY LOADING",
+        "PRIVACY / REDACTION GATE",
+        "CHECKPOINT / HANDOFF GATE",
+        "LOG WRITE FAILURE",
+    )
+
+    def test_session_protocol_has_required_gates(self):
+        root = Path(__file__).resolve().parents[1]
+        path = root / "docs/project-governance/SESSION-LOGGING-PROTOCOL.md"
+        self.assertTrue(path.exists())
+        text = path.read_text(encoding="utf-8")
+        for token in self.REQUIRED_TOKENS:
+            self.assertIn(token, text)
+
+
 if __name__ == "__main__":
     unittest.main()
