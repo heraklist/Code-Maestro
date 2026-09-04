@@ -40,6 +40,9 @@ jobs:
       - name: Validate routing pilot
         run: python tools/routing_eval.py validate evals/routing/pilot-real-derived.json
 
+      - name: Validate frozen routing corpus v1
+        run: python tools/routing_eval.py validate evals/routing/corpus-v1.json
+
       - name: Reproduce routing pilot skeleton output
         run: |
           python tools/routing_skeleton.py \
