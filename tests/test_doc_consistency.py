@@ -3,7 +3,13 @@ from tempfile import TemporaryDirectory
 import re
 import unittest
 
-from tools.doc_consistency import check_adr_authority, check_markdown_links, check_research_index
+from tools.doc_consistency import (
+    check_adr_authority,
+    check_logging_integrity,
+    check_markdown_links,
+    check_research_index,
+    check_research_references,
+)
 
 
 class AdrAuthorityTests(unittest.TestCase):
@@ -44,6 +50,22 @@ class ResearchIndexTests(unittest.TestCase):
             self._write_backlog(root, "ACCEPTED")
             findings = check_research_index(root)
             self.assertIn("RESEARCH_STATUS_MISMATCH", [f.code for f in findings])
+
+    def test_orphan_research_reference_fails(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            research = root / "docs/research"
+            research.mkdir(parents=True)
+            (research / "RESEARCH-BACKLOG.md").write_text(
+                "## CM-R-032 — Privacy\n\n**Status:** IN RESEARCH\n",
+                encoding="utf-8",
+            )
+            (root / "docs/design.md").write_text(
+                "Depends on CM-R-999 for a future decision.\n",
+                encoding="utf-8",
+            )
+            findings = check_research_references(root)
+            self.assertEqual([f.code for f in findings], ["RESEARCH_REFERENCE_UNINDEXED"])
 
 
 class MarkdownLinkTests(unittest.TestCase):
@@ -93,6 +115,14 @@ class SessionProtocolTests(unittest.TestCase):
             self.assertIn(token, text)
 
 
+class WorkflowCoverageTests(unittest.TestCase):
+    def test_workflow_covers_logs_on_any_branch(self):
+        root = Path(__file__).resolve().parents[1]
+        text = (root / ".github/workflows/documentation-consistency.yml").read_text(encoding="utf-8")
+        self.assertIn("- 'logs/**'", text)
+        self.assertNotIn("branches:\n      - docs/architecture-foundation-v0.1", text)
+
+
 class LoggingFilesystemTests(unittest.TestCase):
     def test_logging_roots_exist(self):
         root = Path(__file__).resolve().parents[1]
@@ -103,6 +133,24 @@ class LoggingFilesystemTests(unittest.TestCase):
         )
         for path in required:
             self.assertTrue(path.exists(), path)
+
+
+class LoggingIntegrityCheckerTests(unittest.TestCase):
+    def test_malformed_project_event_is_rejected(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            project = root / "logs/logs/project/2026"
+            project.mkdir(parents=True)
+            (project / "2026-09-04.log").write_text(
+                "# Project Log\n\n---\nTIMESTAMP: 2026-09-04 14:00:00 +03:00\nSESSION: s1\n",
+                encoding="utf-8",
+            )
+            findings = check_logging_integrity(root)
+            self.assertIn("LOG_EVENT_ID_MISSING", [f.code for f in findings])
+
+    def test_current_repository_logs_are_structurally_valid(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual(check_logging_integrity(root), [])
 
 
 class LoggingLiveRecordsTests(unittest.TestCase):
