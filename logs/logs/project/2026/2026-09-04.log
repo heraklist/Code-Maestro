@@ -82,3 +82,19 @@ EVIDENCE: GitHub Actions run `33863023688`; active transcript/project ledger; lo
 AUTHORITY: `docs/project-governance/SESSION-LOGGING-PROTOCOL.md` and Milestone 0 implementation plan.
 RESULT: PASS
 RELATED COMMIT / ARTIFACT: `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`; `logs/logs/project/2026/2026-09-04.log`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132603+0300-test-002
+TIMESTAMP: 2026-09-04 13:26:03 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: FILE_MODIFIED
+TARGET: `tests/test_doc_consistency.py`
+ACTION: Added live-record integrity tests for transcript header/checkpoint, stable event IDs and offset timestamps, correction/supersession drill, redaction marker/no-secret persistence, and empty Self-Evolution run namespace.
+REASON: Milestone 0 Task 6 requires executable end-to-end evidence over the actual repository logging artifacts.
+BEFORE: Tests verified logging roots but not live record semantics.
+AFTER: Branch tests now demand the Task 6 correction/redaction drills and live-record invariants.
+EVIDENCE: commit `c13ef8cc1eb656502caceb7cee326b85a452af0d`.
+AUTHORITY: Milestone 0 Task 6 and Logging Integrity eval contract.
+RESULT: PENDING — RED branch run expected until correction/redaction drills are appended.
+RELATED COMMIT / ARTIFACT: `c13ef8cc1eb656502caceb7cee326b85a452af0d`; `tests/test_doc_consistency.py`.
