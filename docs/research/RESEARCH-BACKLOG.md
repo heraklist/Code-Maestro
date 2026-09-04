@@ -221,6 +221,21 @@ Fast-changing claims should be date/version scoped.
 
 **Preferred authorities:** relevant official platform guidance and established production engineering practices.
 
+---
+
+## CM-R-016 — Universal Language Intelligence and Experimental Language Support
+
+**Priority:** P0
+**Status:** IN RESEARCH
+
+**Question:** How should CodeMaestro provide reliable engineering support across mainstream, niche, legacy, domain-specific, private, and experimental languages without using one permanently installed Skill per language?
+
+**Expected output:** Language Intelligence architecture, language-profile contract, language taxonomy, maturity model, reliability levels, source hierarchy, unknown-language protocol, standalone language-skill promotion criteria, representative coverage matrix, and baseline eval design.
+
+**Preferred authorities:** official language specifications and documentation; primary language/toolchain repositories; vendor-maintained Agent Skills where available; GitHub Linguist for discovery metadata; other catalogs only as discovery aids rather than correctness authorities.
+
+**Working record:** `docs/research/CM-R-016-universal-language-intelligence.md`
+
 ## Prioritization principle
 
 P0 research should be resolved before the first production-quality CodeMaestro Skill is considered stable. P1 areas should be resolved before the corresponding specialized references are declared canonical. P2 areas may be added incrementally as the Skill expands.
