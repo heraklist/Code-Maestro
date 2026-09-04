@@ -170,17 +170,9 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 
 **Decision:** CodeMaestro will separate autonomous engineering sub-skills from a shared Language Intelligence layer. Language coverage will be profile- and research-driven by default rather than implemented as one permanently installed Skill per language. Standalone language correction/orientation skills are promoted selectively when eval evidence shows that generic language intelligence is insufficient.
 
-**Rationale:** CodeMaestro is intended to support mainstream, niche, legacy, domain-specific, private, and experimental languages. A skill-per-language architecture would create unnecessary discovery/context overhead, duplicated methodology, and an unbounded maintenance surface. Current official language-agent projects such as Mojo and MoonBit also demonstrate that rapidly changing languages benefit from freshness gates, correction layers, authoritative source routing, and explicit verification rather than static encyclopedic prompts.
+**Rationale:** CodeMaestro is intended to support mainstream, niche, legacy, domain-specific, private, and experimental languages. A skill-per-language architecture would create unnecessary discovery/context overhead, duplicated methodology, and an unbounded maintenance surface.
 
-**Consequences:**
-
-- engineering sub-skills must define their own trigger, scope, non-goals, evidence, freshness, failure, output, and verification contracts and remain safe/correct without hidden parent behavior;
-- the shared Language Intelligence subsystem will own language detection, classification, maturity, version/toolchain discovery, source-of-truth routing, reliability levels, profiles, and the unknown-language protocol;
-- language profiles are references/data contracts, not automatically standalone Skills;
-- standalone language skills require explicit promotion criteria and eval evidence;
-- unknown languages enter a research-and-verification workflow rather than being treated as categorically unsupported;
-- exact language/API/toolchain claims must not be presented at a stronger confidence level than the available local or authoritative evidence;
-- the active design and open questions are tracked in `docs/research/CM-R-016-universal-language-intelligence.md`.
+**Consequences:** Engineering sub-skills remain independently safe and evidence-aware; Language Intelligence owns detection, version/toolchain discovery, maturity, source routing, profiles, reliability levels, and the unknown-language protocol; standalone language Skills require eval justification.
 
 ---
 
@@ -188,18 +180,11 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 
 **Status:** Accepted — 2026-09-04
 
-**Decision:** CodeMaestro will include an autonomous Research Lab capability for technical survey, comparison, investigation, bounded experimentation, replication, and experimental evolution. Research work must preserve explicit epistemic states rather than collapsing hypotheses, observations, characterization, decisions, normative rules, implementation, and validation into one generic notion of "knowledge".
+**Decision:** CodeMaestro will include an autonomous Research Lab capability for technical survey, comparison, investigation, bounded experimentation, replication, and experimental evolution. Research work must preserve explicit epistemic states rather than collapsing hypotheses, observations, characterization, decisions, normative rules, implementation, and validation into one generic notion of knowledge.
 
-**Rationale:** Experimental engineering such as the Cusp language project requires more than web search and summarization. Reliable work needs durable hypotheses, baselines, experiment design, reproducible evidence, adversarial challenge, and a controlled path from findings to accepted project decisions.
+**Rationale:** Experimental engineering such as the Cusp language project requires more than web search and summarization.
 
-**Consequences:**
-
-- substantial research uses a proportional evidence-driven lifecycle;
-- durable artifacts are required when results must survive context loss, be resumed, audited, reproduced, or challenged;
-- research findings do not automatically become canonical CodeMaestro guidance or target-project authority;
-- the Research Lab may compose with Language Intelligence and engineering sub-skills;
-- exact durable artifact schemas and packaging remain research items under CM-R-017 and CM-R-020;
-- the accepted design is recorded in `docs/superpowers/specs/2026-09-04-research-experimental-engineering-design.md`.
+**Consequences:** Research findings do not automatically become canonical guidance or target-project authority; durable research artifacts and reproducible evidence are first-class when results must survive context loss or be challenged.
 
 ---
 
@@ -207,17 +192,11 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 
 **Status:** Accepted — 2026-09-04
 
-**Decision:** CodeMaestro will distinguish reusable Skills from optional runtime agent roles. Skills own methodology, decision criteria, evidence contracts, and reusable workflows. Runtime roles may be used for scoped independent work when the active environment provides safe subagent capabilities.
+**Decision:** Reusable Skills own methodology, decision criteria, evidence contracts, and workflows. Optional runtime agent roles may provide scoped independent work when the environment safely supports subagents.
 
-**Rationale:** Research scout, experimenter, skeptic, and replicator are useful independent perspectives, but modeling every role as a permanently installed Skill would conflate reusable knowledge with execution context and increase discovery/context overhead.
+**Rationale:** Research scout, experimenter, skeptic, and replicator are useful independent perspectives, but turning every role into a permanently installed Skill would conflate reusable knowledge with execution context.
 
-**Consequences:**
-
-- candidate roles include `research-scout`, `experimentalist`, `skeptic`, and `replicator`;
-- subagents provide evidence or independent judgment, not hidden project authority;
-- the parent workflow reviews delegated output before accepting phase completion;
-- delegation must degrade safely in environments without subagent capability;
-- exact role configuration and orchestration policy remain under CM-R-018.
+**Consequences:** Delegated output is evidence or independent judgment, not hidden authority; parent workflows review it; the design degrades safely without subagents.
 
 ---
 
@@ -225,17 +204,11 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 
 **Status:** Accepted — 2026-09-04
 
-**Decision:** CodeMaestro will use a Language Evolution Protocol that explicitly separates research pressure, observed behavior, characterization, proposal, accepted project decision, normative specification, implementation, conformance validation, and stable/released behavior.
+**Decision:** CodeMaestro will use a Language Evolution Protocol that separates research pressure, observed behavior, characterization, proposal, accepted project decision, normative specification, implementation, conformance validation, and stable/released behavior.
 
-**Rationale:** Experimental languages evolve under uncertainty. Treating implementation behavior or an AI-generated proposal as semantic authority causes specification drift and can prematurely canonize accidental behavior.
+**Rationale:** Experimental languages evolve under uncertainty, and implementation behavior or AI proposals must not silently become semantic authority.
 
-**Consequences:**
-
-- research may discover, characterize, challenge, experiment, and propose semantics but may not silently create semantic authority;
-- comparative study of other languages informs alternatives and trade-offs but does not become target-language authority;
-- substantive semantic proposals should include compatibility, security, resource/performance, validation, and migration considerations where material;
-- Cusp is the primary stress case for this protocol;
-- detailed governance research continues under CM-R-019.
+**Consequences:** Comparative research can inform proposals but not create target-language authority. Cusp is the primary stress case for this protocol.
 
 ---
 
@@ -247,9 +220,148 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 
 **Rationale:** Long-running, multi-agent, or experimental work cannot be audited reliably when source/version/run identity exists only in conversational context.
 
-**Consequences:**
+**Consequences:** Provenance may include URL/path, repository SHA, tool/runtime versions, environment, commands, configuration, hashes, seeds, timestamps, and run IDs as relevant; claim strength must not exceed available provenance.
 
-- provenance may include source URL/path, repository SHA, toolchain/runtime versions, environment, commands, configuration, input hashes, test/experiment versions, seeds, timestamps, and run IDs as relevant;
-- claim strength must not exceed the evidence provenance available;
-- snapshot-bound evidence from the Cusp systems is retained as a generalized design principle even though the custom APIs themselves are not migrated;
-- the exact claim/evidence ledger and citation/reproducibility model remain under CM-R-020.
+---
+
+## CM-ADR-019 — Intent-to-evidence traceability is bidirectional
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will preserve traceability across user intent, requirements, decisions/specifications, plans, implementation, tests/evals, and observed outcomes, and may propagate implementation reality upstream when prior artifacts become stale.
+
+**Rationale:** Forward traceability alone cannot detect specifications or approvals that no longer describe accepted code reality.
+
+**Consequences:** Material orphaned requirements/tests, undocumented authority-sensitive behavior, and stale approved artifacts should be detectable. Stable identifiers and exact storage format remain research under CM-R-025.
+
+---
+
+## CM-ADR-020 — Assurance is selected by risk and property shape
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro will use an Assurance Ladder rather than requiring every testing or formal method everywhere. It chooses the least costly technique that provides the required confidence and escalates when risk, invariants, or failure consequences justify stronger assurance.
+
+**Rationale:** Example tests, differential checks, properties, fuzzing, mutation testing, model checking, reconciliation, and formal proof observe different classes of correctness.
+
+**Consequences:** Formal verification is never claimed unless an actual prover/checker accepts the artifact. Business/control reconciliation may serve as assurance where code execution alone cannot prove operational correctness.
+
+---
+
+## CM-ADR-021 — Machine-generated counterexamples are repair evidence
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Compiler, type-checker, prover, fuzzer, schema-validator, model-checker, static-analysis, and conformance counterexamples are first-class evidence that can seed the next debugging or repair hypothesis.
+
+**Rationale:** Treating machine failures only as terminal status discards high-value diagnostic evidence.
+
+**Consequences:** Counterexamples should remain traceable to the repair and regression evidence they produce when material.
+
+---
+
+## CM-ADR-022 — Migrations require compatibility-aware, reversible cutover discipline
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Migration work should begin with compatibility inventory and use phased, reversible, evidence-backed transition mechanisms such as expand-contract, dual-run/read/write, semantic comparison, bounded batches, explicit cutover gates, rollback triggers, and delayed cleanup when applicable.
+
+**Rationale:** Runtime, schema, API, platform, and protocol changes often fail at compatibility and cutover boundaries rather than in isolated implementation units.
+
+**Consequences:** CM-R-026 owns migration methodology. Replay/backfill and consumer cutover are special cases requiring explicit semantics and reconciliation where material.
+
+---
+
+## CM-ADR-023 — Interface and protocol contracts are first-class engineering agreements
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro treats APIs, RPC, events, streams, webhooks, schemas, and protocol boundaries as durable behavioral agreements whose semantics, ownership, failure behavior, compatibility, and deployed verification require explicit engineering treatment.
+
+**Rationale:** Route or schema validity is insufficient to establish consumer correctness or safe evolution.
+
+**Consequences:** CM-R-027 is opened. Contract verification distinguishes contract, provider, consumer, compatibility, and deployed boundaries. Physical Skill packaging remains eval-driven.
+
+---
+
+## CM-ADR-024 — Performance engineering is evidence-driven and workload-relative
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Performance and capacity claims must be grounded in representative workload evidence, baseline measurements, profiling/tracing, bottleneck or saturation analysis, comparable before/after conditions, and regression evidence where material.
+
+**Rationale:** Generic optimization recipes and isolated microbenchmarks often fail to predict end-to-end system behavior.
+
+**Consequences:** CM-R-028 is opened. Static vendor thresholds are not canonical unless they are stable standards; current thresholds remain dynamically researched.
+
+---
+
+## CM-ADR-025 — Evidence conclusions are coverage-bounded and target-faithful
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Evidence must record both what target/state it actually describes and what surface was actually assessed. Negative or clean conclusions apply only to the assessed surface, and substitute evidence must not be silently presented as current-target state.
+
+**Rationale:** Authoritative information about the wrong deployment or a partial audit can otherwise be overstated into a false current-state or clean-bill-of-health claim.
+
+**Consequences:** CM-R-020 and CM-R-025 will include target/source fidelity, assessed/unassessed/unassessable coverage, and explicit limitations in the evidence model.
+
+---
+
+## CM-ADR-026 — Recovered specifications have weaker authority than normative intent
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** When original requirements are missing, CodeMaestro may recover observed behavior/specification from implementation and runtime evidence, but it must label that artifact `RECOVERED / OBSERVED SPECIFICATION` and must not treat it as original intent or normative authority without explicit promotion by project authority.
+
+**Rationale:** Legacy systems often preserve behavior after design intent and documentation disappear.
+
+**Consequences:** CM-R-022 and CM-R-025 incorporate recovered-spec workflows and authority status.
+
+---
+
+## CM-ADR-027 — Operational closure requires user/business-boundary evidence
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** An alert clearing, process completion, deployment success, health endpoint, or rerun is not by itself sufficient evidence that an incident or recovery is resolved. Closure requires appropriate user/business-boundary, state/data, dependency, and stability evidence.
+
+**Rationale:** Internal signals can recover while externally observable correctness remains degraded.
+
+**Consequences:** CM-R-006, CM-R-009, CM-R-013, CM-R-015, CM-R-020, and CM-R-026 incorporate reconciliation/control evidence, stability windows, incident-to-resilience regression, and bounded replay/reopen gates where relevant.
+
+---
+
+## CM-ADR-028 — Security analysis includes misuse resistance and agentic taint flow
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** Secure engineering must consider whether interfaces/configuration make unsafe use easy and must trace untrusted inputs through prompts/context, agent capabilities, tools, and side effects rather than checking only direct prompt interpolation or implementation bugs.
+
+**Rationale:** Dangerous defaults, configuration cliffs, indirect environment/log flows, and tool-mediated side effects create security failures invisible to conventional local code review.
+
+**Consequences:** CM-R-002/003/004/008/014/023 and CM-R-027 incorporate misuse-resistance, system-invariant, and agentic taint/dataflow analysis as appropriate.
+
+---
+
+## CM-ADR-029 — Agent evals distinguish task, trajectory, side-effect, and evidence contracts
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** CodeMaestro agent/Skill evaluation will distinguish required task outcome, allowed/required trajectory, permitted side effects, and evidence required for the verdict. Hard safety/privacy/authorization invariants cannot be averaged away by higher aggregate quality scores.
+
+**Rationale:** Final-answer quality alone cannot evaluate tool use, state mutation, authorization, recovery, or safety behavior.
+
+**Consequences:** CM-R-012 and CM-R-020 incorporate versioned datasets, provenance, slices, comparable baselines, uncertainty, failures/timeouts, hard gates, and reviewed incident/near-miss regression cases.
+
+---
+
+## CM-ADR-030 — Skill discovery and loading must be fault-isolated
+
+**Status:** Accepted — 2026-09-04
+
+**Decision:** A future CodeMaestro Skill ecosystem must tolerate broken, stale, unreadable, conflicting, or untrusted individual Skills without making the entire capability catalog unusable.
+
+**Rationale:** Large Skill ecosystems require explicit validation status, precedence, diagnostics, and safe exclusion rather than assuming every discovered Skill is healthy.
+
+**Consequences:** CM-R-001, CM-R-018, and CM-R-023 study per-Skill load/validation status, precedence/conflicts, cache/snapshot freshness, diagnostics, and safe exclusion. This decision does not require CodeMaestro to reimplement the Codex loader.
