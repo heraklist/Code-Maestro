@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This backlog tracks research that must be completed before related guidance becomes canonical CodeMaestro architecture or Skill reference material.
+This backlog is the canonical queue/index for CodeMaestro research tracks. It tracks research that must be completed before related guidance becomes canonical CodeMaestro architecture or Skill reference material and records accepted working tracks that remain active inputs to implementation/evals.
 
 Research findings are evidence, not automatic project decisions. Material changes to the architecture must be recorded in `docs/architecture/DECISIONS.md` and incorporated into `docs/architecture/ARCHITECTURE.md` after review.
 
@@ -12,7 +12,7 @@ Research findings are evidence, not automatic project decisions. Material change
 - `IN RESEARCH` — active evidence collection.
 - `SYNTHESIS` — sources gathered; conclusions being compared.
 - `REVIEW` — recommendation ready for architectural review.
-- `ACCEPTED` — findings incorporated into canonical architecture/reference guidance.
+- `ACCEPTED` — findings/direction accepted into architecture or an accepted working track exists.
 - `REJECTED` — researched but not adopted.
 
 ## Authority preference
@@ -24,7 +24,7 @@ For all research:
 3. primary repositories, release notes, advisories, and maintainers;
 4. high-quality secondary technical sources where primary evidence is insufficient.
 
-Fast-changing claims should be date/version scoped.
+Fast-changing claims should be date/version scoped. Where pre-CM-ADR-018 research lacks exact SHA/version/timestamp provenance, that limitation must be stated rather than reconstructed from memory.
 
 ---
 
@@ -100,7 +100,7 @@ Fast-changing claims should be date/version scoped.
 
 **Question:** What testing methodology should CodeMaestro use across bug fixes, features, refactors, distributed systems, APIs, databases, and agentic software?
 
-**Expected output:** Decision framework spanning unit, integration, contract, property-based, fuzz, mutation, end-to-end, regression, and environment-specific validation without dogmatically requiring every test type everywhere.
+**Expected output:** Decision framework spanning unit, integration, contract, property-based, fuzz, mutation, end-to-end, regression, reconciliation/control evidence, resilience regression, and environment-specific validation without dogmatically requiring every test type everywhere.
 
 **Preferred authorities:** primary framework documentation, established testing literature, standards and project guidance where applicable.
 
@@ -137,7 +137,7 @@ Fast-changing claims should be date/version scoped.
 **Priority:** P1
 **Status:** QUEUED
 
-**Question:** What production-readiness and observability methodology should CodeMaestro apply across logging, metrics, traces, alerting, SLOs, error budgets, incident response, rollback, and release verification?
+**Question:** What production-readiness and observability methodology should CodeMaestro apply across logging, metrics, traces, alerting, SLOs, error budgets, incident response, rollback, release verification, telemetry semantics, and user-boundary closure?
 
 **Expected output:** Observability/SRE review domain and operational handoff criteria.
 
@@ -176,9 +176,9 @@ Fast-changing claims should be date/version scoped.
 **Priority:** P0
 **Status:** QUEUED
 
-**Question:** How should CodeMaestro evaluate an engineering Skill for instruction following, safety, coding quality, debugging, research, tool use, evidence honesty, and regression resistance?
+**Question:** How should CodeMaestro evaluate an engineering Skill for instruction following, safety, coding quality, debugging, research, tool use, evidence honesty, side effects, trajectory constraints, and regression resistance?
 
-**Expected output:** Eval taxonomy, baseline methodology, scoring approach, pressure scenarios, and regression suite design.
+**Expected output:** Eval taxonomy, baseline methodology, scoring approach, pressure scenarios, task/trajectory/side-effect/evidence contracts, dataset governance, and regression suite design.
 
 **Preferred authorities:** OpenAI official eval guidance, Agent Skills guidance/specifications, primary research where useful.
 
@@ -189,7 +189,7 @@ Fast-changing claims should be date/version scoped.
 **Priority:** P0
 **Status:** QUEUED
 
-**Question:** What general debugging methodology best supports evidence-first root-cause analysis across software stacks, including reproduction, hypothesis discrimination, tracing, concurrency issues, and regression prevention?
+**Question:** What general debugging methodology best supports evidence-first root-cause analysis across software stacks, including reproduction, hypothesis discrimination, tracing, concurrency issues, counterexample-driven repair, and regression prevention?
 
 **Expected output:** Debugging workflow suitable for a core engineering reference and evaluation scenarios.
 
@@ -204,7 +204,7 @@ Fast-changing claims should be date/version scoped.
 
 **Question:** How should CodeMaestro identify and reason about race conditions, idempotency, ordering, retries, consistency, leases/locks, distributed transactions, queues, and failure modes?
 
-**Expected output:** Review checklist driven by system invariants rather than technology-specific recipes.
+**Expected output:** Review checklist and System Invariant Contract driven by system invariants rather than technology-specific recipes.
 
 **Preferred authorities:** primary platform documentation and established distributed-systems literature.
 
@@ -217,7 +217,7 @@ Fast-changing claims should be date/version scoped.
 
 **Question:** What evidence should CodeMaestro require or recommend before calling software release-ready or production-ready?
 
-**Expected output:** Release-readiness model covering validation, security, migrations, observability, rollback, dependency/supply chain, configuration, and operational ownership.
+**Expected output:** Release-readiness model covering validation, security, migrations, observability, user/business-boundary closure, rollback, dependency/supply chain, configuration, and operational ownership.
 
 **Preferred authorities:** relevant official platform guidance and established production engineering practices.
 
@@ -234,14 +234,14 @@ Fast-changing claims should be date/version scoped.
 
 **Preferred authorities:** official language specifications and documentation; primary language/toolchain repositories; vendor-maintained Agent Skills where available; GitHub Linguist for discovery metadata; other catalogs only as discovery aids rather than correctness authorities.
 
-**Working record:** `docs/research/CM-R-016-universal-language-intelligence.md`
+**Working record:** `CM-R-016-universal-language-intelligence.md`
 
 ---
 
 ## CM-R-017 — Research & Experimental Engineering
 
 **Priority:** P0
-**Status:** IN RESEARCH
+**Status:** ACCEPTED
 
 **Question:** What evidence-driven research lifecycle should CodeMaestro use for surveys, comparisons, investigations, bounded experiments, replication, and experimental technical evolution?
 
@@ -251,7 +251,7 @@ Fast-changing claims should be date/version scoped.
 
 **Accepted direction:** Autonomous Research Lab capability with durable evidence state and explicit separation between research result and project authority.
 
-**Design record:** `docs/superpowers/specs/2026-09-04-research-experimental-engineering-design.md`
+**Design record:** `../superpowers/specs/2026-09-04-research-experimental-engineering-design.md`
 
 ---
 
@@ -260,7 +260,7 @@ Fast-changing claims should be date/version scoped.
 **Priority:** P0
 **Status:** IN RESEARCH
 
-**Question:** How should CodeMaestro divide responsibility among the orchestrator, autonomous skills, shared knowledge/intelligence systems, optional runtime roles, subagents, plugins, and native tools without duplicating policy or introducing hidden dependencies?
+**Question:** How should CodeMaestro divide responsibility among the orchestrator, internal capability modules, shared knowledge/intelligence systems, optional runtime roles, subagents, plugins, and native tools without duplicating policy or introducing hidden dependencies?
 
 **Expected output:** Skill-vs-role-vs-agent-vs-tool model, role contract, delegation policy, parallelism rules, fresh-context patterns, result-review rules, failure propagation, and portability strategy.
 
@@ -273,7 +273,7 @@ Fast-changing claims should be date/version scoped.
 ## CM-R-019 — Programming-Language Evolution & Specification Governance
 
 **Priority:** P0
-**Status:** IN RESEARCH
+**Status:** ACCEPTED
 
 **Question:** How should CodeMaestro research and assist the evolution of experimental languages while preserving clear separation among ideas, observations, characterization, proposals, accepted design, normative specification, implementation, and stable/released behavior?
 
@@ -288,24 +288,190 @@ Fast-changing claims should be date/version scoped.
 ## CM-R-020 — Evidence, Provenance, Citations & Reproducibility
 
 **Priority:** P0
-**Status:** IN RESEARCH
+**Status:** ACCEPTED
 
 **Question:** How should CodeMaestro bind research and engineering claims to retrievable sources, repository snapshots, experiment conditions, validation runs, and reproducible artifacts?
 
-**Expected output:** Claim/evidence model, provenance ledger, source capture rules, snapshot/run metadata contract, uncertainty representation, evidence verification rules, and report integration.
+**Expected output:** Claim/evidence model, provenance ledger, source capture rules, target/source fidelity, coverage-bounded conclusions, reconciliation/run evidence, uncertainty representation, evidence verification rules, and report integration.
 
 **Preferred authorities:** reproducible research/software practices; source-ledger systems; Cusp snapshot/evidence model; deterministic citation/evidence workflows; primary tooling where applicable.
 
 ---
 
+## CM-R-021 — Context Engineering & Long-Horizon State
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro preserve useful project state, resume safely across long tasks/sessions, manage context freshness, and avoid replay/stale-context failures?
+
+**Expected output:** durable-state hierarchy, phase fingerprints, resumability protocol, fresh-context recovery, context-loading rules, and baseline evals.
+
+**Working record:** `CM-R-021-context-engineering-long-horizon-state.md`
+
+---
+
+## CM-R-022 — Repository Comprehension, Impact & Architecture Drift
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro understand repository/system structure, dependency topology, behavioral boundaries, blast radius, recovered specifications, and bidirectional architecture drift before judgment or mutation?
+
+**Expected output:** repository-comprehension workflow, dependency/impact model, recovered-spec semantics, architecture-drift detection, and affected-validation methodology.
+
+**Working record:** `CM-R-022-repository-comprehension-impact-drift.md`
+
+---
+
+## CM-R-023 — Skill / Plugin Security & Supply Chain
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro evaluate third-party Skills/plugins/repositories before adoption, including provenance, prompt injection, executable scripts, dependencies, filesystem/network/credential access, permissions, and catalog fault isolation?
+
+**Expected output:** quarantine/adoption gate, risk model, permission review, dependency/supply-chain checks, untrusted-content analysis, and adopt/adapt/reject criteria.
+
+**Working record:** `CM-R-023-skill-plugin-security-supply-chain.md`
+
+---
+
+## CM-R-024 — Finding Refutation & Spec-to-Code Compliance
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro verify or refute candidate findings and compare implementation with normative specifications without promoting speculation to fact?
+
+**Expected output:** finding state machine, counter-evidence workflow, verification/refutation rules, spec-to-code verdict vocabulary, and assurance escalation.
+
+**Working record:** `CM-R-024-finding-refutation-spec-compliance.md`
+
+---
+
+## CM-R-025 — Intent-to-Evidence Traceability
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro preserve bidirectional traceability among intent, requirements, specifications, decisions, plans, implementation, tests/evals, and observed outcomes?
+
+**Expected output:** traceability model, stale-artifact invalidation, orphan detection, recovered-spec links, source-target fidelity integration, and proportional-rigor rules.
+
+**Working record:** `CM-R-025-intent-to-evidence-traceability.md`
+
+---
+
+## CM-R-026 — Migration, Compatibility & Cutover Engineering
+
+**Priority:** P1; P0 for consequential/irreversible migrations
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro plan and validate migrations across runtimes, frameworks, schemas, APIs/protocols, infrastructure, and platforms while preserving compatibility and rollback capability?
+
+**Expected output:** inventory, characterization, reversible/dual-compatible transition, old/new comparison, cutover/rollback gates, replay/backfill semantics, reconciliation, and delayed cleanup.
+
+**Working record:** `CM-R-026-migration-compatibility-cutover.md`
+
+---
+
+## CM-R-027 — Interface, Protocol & Contract Engineering
+
+**Priority:** P1
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro design, review, evolve, and verify consumer-facing and system-to-system contracts across APIs, RPC, events, streams, webhooks, and data/schema boundaries?
+
+**Expected output:** semantic contract model, ownership/authority, sync/async delivery semantics, error/idempotency/retry/concurrency guidance, consumer-aware compatibility, multi-boundary verification, deprecation/evolution, misuse resistance, and eval scenarios.
+
+**Working record:** `CM-R-027-interface-protocol-contract-engineering.md`
+
+---
+
+## CM-R-028 — Performance, Benchmarking & Capacity Engineering
+
+**Priority:** P1; P0 for performance/resource-critical workloads
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro measure, diagnose, optimize, benchmark, and capacity-plan software systems without relying on premature optimization or stale platform-specific thresholds?
+
+**Expected output:** workload/baseline contract, profiling, benchmark reproducibility, load/stress/soak methodology, capacity/headroom/elasticity, cost-performance reasoning, regression gates, and eval scenarios.
+
+**Working record:** `CM-R-028-performance-benchmarking-capacity-engineering.md`
+
+---
+
+## CM-R-029 — Cross-Runtime Portability, Capability Discovery & Conformance
+
+**Priority:** P0
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro preserve equivalent engineering behavior across Chat, Work, Codex, and future surfaces while capability availability, permission, execution mechanics, and connected-app support differ?
+
+**Expected output:** runtime capability discovery, availability-vs-authorization contract, graceful degradation/recovery, handoff/evidence semantics, and cross-runtime conformance evals.
+
+**Working record:** `CM-R-029-cross-runtime-portability-conformance.md`
+
+---
+
+## CM-R-030 — Product, UX/UI & Visual Interface Engineering
+
+**Priority:** P1 by default; P0 for user-facing/product-critical work
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro design, audit, implement, and validate user-facing software across product framing, UX, interaction, visual design, accessibility, responsive behavior, design systems, and visual/interaction QA without fabricating user research?
+
+**Expected output:** product/UX workflow, research-integrity boundary, interaction/visual design guidance, accessibility, design-system governance, design-to-code, visual/interaction QA, and eval scenarios.
+
+**Working record:** `CM-R-030-product-ux-ui-visual-interface-engineering.md`
+
+---
+
+## CM-R-031 — Build, Toolchain & Environment Engineering
+
+**Priority:** P1 by default; P0 for consequential build/release integrity or reproducibility
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro reason about build systems, compilers/toolchains, environment parity, reproducibility, generated artifacts, caches, cross-compilation, target platforms, and build provenance independently from CI/CD orchestration?
+
+**Expected output:** build/toolchain discovery, pinning, environment parity, hermeticity/reproducibility, codegen/cache correctness, target-platform reasoning, provenance, debugging/performance, and eval scenarios.
+
+**Working record:** `CM-R-031-build-toolchain-environment-engineering.md`
+
+---
+
+## CM-R-032 — Privacy & Data Lifecycle Engineering
+
+**Priority:** P1 by default; P0 for personal/sensitive/high-impact data
+**Status:** ACCEPTED
+
+**Question:** How should CodeMaestro reason about privacy risk and the lifecycle of personal, sensitive, or user-derived data even where access is authorized and no cybersecurity compromise exists?
+
+**Expected output:** data inventory/flows, purpose/use, minimization, collection boundaries, retention/deletion, backups/logs/telemetry/caches/replicas, derived/training/eval datasets, third parties, user control, privacy-by-design, and disposal.
+
+**Working record:** `CM-R-032-privacy-data-lifecycle-engineering.md`
+
+---
+
+## Comparative research passes and acceptance checkpoints
+
+- Pass 3: `2026-09-04-comparative-research-pass-3.md`
+- Pass 4: `2026-09-04-comparative-research-pass-4.md`
+- Pass 4 acceptance: `../architecture/2026-09-04-pass-4-acceptance-and-canonicalization.md`
+- Pass 5: `2026-09-04-comparative-research-pass-5.md`
+- Pass 5 acceptance / Capability Freeze: `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
+
 ## Comparative reference registry
 
 The external reference set and study priorities are maintained in:
 
-`docs/research/COMPARATIVE-REFERENCE-REGISTRY.md`
+`COMPARATIVE-REFERENCE-REGISTRY.md`
 
 References are research inputs, not CodeMaestro dependencies or automatic architectural authority.
 
 ## Prioritization principle
 
-P0 research should be resolved before the first production-quality CodeMaestro Skill is considered stable. P1 areas should be resolved before the corresponding specialized references are declared canonical. P2 areas may be added incrementally as the Skill expands.
+P0 research must be sufficiently resolved for the affected behaviors before the first production-quality CodeMaestro Skill is considered stable. P1 areas must be sufficiently resolved before the corresponding specialized capability/reference guidance is declared canonical for consequential use. P2 areas may be added incrementally as the Skill stabilizes.
+
+Accepted tracks may still contain implementation-time freshness work; `ACCEPTED` means the architectural direction/track is accepted, not that every future version-sensitive question is permanently answered.
