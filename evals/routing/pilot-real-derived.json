@@ -1,0 +1,122 @@
+[
+  {
+    "id": "build-ci-debug-001",
+    "cluster": "build-ci-debug",
+    "prompt": "The application builds locally, but CI starts failing immediately after a dependency bump. Find the primary engineering responsibility before changing the pipeline.",
+    "expected_primary": "build-toolchain-environment",
+    "expected_supporting": ["cicd-platform-delivery", "debugging-diagnostics"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "current-project-task",
+    "source_ref": "docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md#11-eval-first-routing-corpus",
+    "source_transform": "Normalized the external-review example into repository-neutral wording while preserving local-build versus CI-after-dependency-bump ambiguity."
+  },
+  {
+    "id": "implementation-debug-001",
+    "cluster": "implementation-debug",
+    "prompt": "A documentation checker silently misses a positive research reference whenever the same file also contains a sentence saying that reference is not opened. Diagnose the failure and make the smallest behavior-preserving fix.",
+    "expected_primary": "debugging-diagnostics",
+    "expected_supporting": ["software-implementation", "testing-assurance"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "current-project-task",
+    "source_ref": "docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md#6-checker-hardening",
+    "source_transform": "Converted the confirmed per-file CM-R negation false negative into a direct engineering request."
+  },
+  {
+    "id": "testing-review-001",
+    "cluster": "testing-review",
+    "prompt": "Audit a test suite that mostly asserts prose contains exact strings. Decide whether the assurance is meaningful and identify which claims should become machine-checkable without implementing the rewrite yet.",
+    "expected_primary": "review-audit-compliance",
+    "expected_supporting": ["testing-assurance"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "current-project-task",
+    "source_ref": "docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md#6-checker-hardening",
+    "source_transform": "Derived from the external review of documentation-lock tests; phrased as an audit rather than an implementation request."
+  },
+  {
+    "id": "security-privacy-001",
+    "cluster": "security-privacy",
+    "prompt": "The repository policy forbids persisting secrets or sensitive values in project logs, but there is no automated scanner. Add an enforceable repository gate without weakening the data-minimization policy.",
+    "expected_primary": "security-trust",
+    "expected_supporting": ["privacy-data-lifecycle", "testing-assurance"],
+    "clarification_required": false,
+    "high_risk": true,
+    "source_kind": "current-project-task",
+    "source_ref": "docs/superpowers/specs/2026-09-04-pre-registry-hardening-eval-first-design-v2.md#8-secret-scanning",
+    "source_transform": "Normalized the confirmed policy-versus-enforcement gap into an implementation-neutral security task."
+  },
+  {
+    "id": "database-interface-001",
+    "cluster": "database-interface",
+    "prompt": "A multi-tenant API returns rows belonging to another tenant because the underlying query has no tenant filter. Review where the primary defect belongs and what adjacent contract boundary also needs verification.",
+    "expected_primary": "database-data",
+    "expected_supporting": ["interface-protocol-contract", "security-trust"],
+    "clarification_required": false,
+    "high_risk": true,
+    "source_kind": "legacy-eval",
+    "source_ref": "heraklist/Custom-ChatGPT---Code-maesto-v2:gpt-package/runtime-knowledge/REPOSITORY_AUDIT_PLAYBOOK.md#database-and-data",
+    "source_transform": "Derived from the legacy audit finding for a missing tenant filter; removed framework-specific names and retained the database-versus-API boundary."
+  },
+  {
+    "id": "migration-implementation-001",
+    "cluster": "migration-implementation",
+    "prompt": "Move a repository from one package-manager workflow to another while preserving runtime behavior, lockfile reproducibility, and existing validation gates. Treat compatibility and rollback as first-class requirements.",
+    "expected_primary": "migration-compatibility",
+    "expected_supporting": ["build-toolchain-environment", "software-implementation", "testing-assurance"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "legacy-request",
+    "source_ref": "heraklist/Custom-ChatGPT---Code-maesto-v2:gpt-package/runtime-knowledge/DEPENDENCY_MAINTENANCE_PLAYBOOK.md",
+    "source_transform": "Generalized the legacy package-manager migration workflow into a behavior-preserving migration request."
+  },
+  {
+    "id": "performance-reliability-001",
+    "cluster": "performance-reliability",
+    "prompt": "A service is correct at low traffic but develops high latency and timeouts under sustained load. Determine the primary investigation owner while preserving observability and incident-safety support.",
+    "expected_primary": "performance-capacity",
+    "expected_supporting": ["reliability-observability-sre-incident"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "legacy-eval",
+    "source_ref": "heraklist/Custom-ChatGPT---Code-maesto-v2:gpt-package/runtime-knowledge/VALIDATION_RULES.md#performance-gate-when-relevant",
+    "source_transform": "Converted the legacy performance-gate bottleneck requirement into a load-induced latency case that deliberately touches reliability."
+  },
+  {
+    "id": "product-frontend-001",
+    "cluster": "product-frontend",
+    "prompt": "The current screen works technically, but users cannot tell what action to take next. Redesign the interaction hierarchy and flow first; implementation of components comes only after the experience direction is accepted.",
+    "expected_primary": "product-ux-ui",
+    "expected_supporting": ["software-implementation"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "current-project-task",
+    "source_ref": "docs/superpowers/specs/2026-09-04-codemaestro-v3-consolidated-design-v2.md",
+    "source_transform": "Normalized a recurring real project pattern—UX/design direction before frontend implementation—without retaining product-specific names."
+  },
+  {
+    "id": "research-language-freshness-001",
+    "cluster": "research-language-freshness",
+    "prompt": "Implement a fix in an unfamiliar niche language whose package and compiler behavior may have changed recently. Do not guess APIs or flags; establish current authoritative language/toolchain facts before proposing code.",
+    "expected_primary": "research-experimental-language",
+    "expected_supporting": ["build-toolchain-environment", "software-implementation"],
+    "clarification_required": false,
+    "high_risk": false,
+    "source_kind": "legacy-request",
+    "source_ref": "heraklist/Custom-ChatGPT---Code-maesto-v2:gpt-package/MAINTAINER_INSTRUCTIONS_FULL.md",
+    "source_transform": "Derived from the legacy rule to research unfamiliar/version-sensitive technology rather than invent APIs, versions, packages, or CLI flags."
+  },
+  {
+    "id": "ai-interface-security-001",
+    "cluster": "ai-interface-security",
+    "prompt": "Review an LLM-powered feature that retrieves untrusted documents and can call external tools. Assess prompt injection, tool authorization, secrets and PII handling, and the provider/interface boundary.",
+    "expected_primary": "ai-llm-agent-mcp",
+    "expected_supporting": ["interface-protocol-contract", "privacy-data-lifecycle", "security-trust"],
+    "clarification_required": false,
+    "high_risk": true,
+    "source_kind": "legacy-request",
+    "source_ref": "heraklist/Custom-ChatGPT---Code-maesto-v2:gpt-package/CONVERSATION_STARTERS.md#7",
+    "source_transform": "Expanded the legacy LLM-feature review starter only enough to preserve its explicit prompt-injection, tool-use, secrets, PII, and output/interface concerns."
+  }
+]
