@@ -6,9 +6,11 @@ The project preserves useful engineering methodology, safety boundaries, validat
 
 ## Current phase
 
-**Written specification approved; Milestone 0 — Repository Work-Session Logging Foundation is executing inline under the Superpowers implementation plan.**
+**Written specification approved; Milestone 0 — Repository Work-Session Logging Foundation is operational.**
 
-The documentation-consistency gate, narrow logging privacy/retention decision, canonical logging schemas, and repository work-session protocol are being established before the actual logging filesystem is declared operational. Production Skill files, runtime capability modules, full executable Skill eval suites, and the Self-Evolution Controller have **not** been created yet.
+The repository now has a status-aware documentation consistency/CI gate, a narrow CM-R-032 logging privacy/retention decision, canonical logging schemas, a mandatory real-time repository work-session protocol, the actual logging filesystem, live public-safe session/project records, and verified correction/redaction/resume/handoff behavior.
+
+Production Skill files, runtime capability modules, full executable Skill eval suites, and the Self-Evolution Controller have **not** been created yet.
 
 ## Start here — current authority
 
@@ -22,7 +24,7 @@ The consolidated v2 Status section defines the authority relationship among earl
 
 ## Repository work-session governance
 
-Every Chat / Work / Codex session that develops or maintains this repository must follow the repository work-session protocol once the Milestone-0 filesystem is operational. These instructions govern **development of CodeMaestro itself** and are not generic portable behavior of the future Skill.
+Every Chat / Work / Codex session that develops or maintains this repository must follow the repository work-session protocol. These instructions govern **development of CodeMaestro itself** and are not generic portable behavior of the future Skill.
 
 - [Repository work-session logging protocol](docs/project-governance/SESSION-LOGGING-PROTOCOL.md)
 - [Canonical logging schemas](docs/project-governance/LOGGING-SCHEMAS.md)
@@ -30,6 +32,41 @@ Every Chat / Work / Codex session that develops or maintains this repository mus
 - [Milestone 0 implementation plan](docs/superpowers/plans/2026-09-04-repository-work-session-logging-foundation.md)
 
 The protocol requires a Session Admission Gate, real-time/event-time logging, progressive history loading, privacy/redaction checks, explicit `LOG WRITE FAILED` behavior, and checkpoint/handoff records.
+
+## Live logging layout
+
+```text
+logs/
+├── conversations/          # repository project-working session history
+└── logs/
+    ├── project/            # repository mutation/state-event history
+    └── self-evolution/     # reserved for future Skill Self-Evolution audit behavior
+```
+
+Ownership remains deliberately separate:
+
+- `logs/conversations/` — user-visible, public-safe continuity history for the user's project-working Chat / Work / Codex sessions;
+- `logs/logs/project/` — what actually changed in the CodeMaestro repository/project;
+- `logs/logs/self-evolution/` — reserved namespace owned by the future CodeMaestro Self-Evolution Controller, not ordinary project sessions.
+
+The nested `logs/logs/` path is intentional.
+
+## Milestone 0 verification
+
+Milestone 0 established and validated:
+
+1. status-aware ADR uniqueness with historical/absorbed handling;
+2. CM-R backlog/record existence and status parity;
+3. internal Markdown link resolution;
+4. public-repository logging privacy/retention/public-sanitization policy;
+5. canonical transcript/project-event/correction/redaction/checkpoint schemas with stable `EVENT ID`;
+6. mandatory real-time project-working-session protocol;
+7. actual logging roots and first live sanitized session/project records;
+8. RED→GREEN correction/supersession and redaction drills;
+9. progressive resume/handoff using durable state rather than full conversation replay;
+10. ownership separation with no fabricated Self-Evolution run.
+
+The documentation consistency workflow runs unit tests and the repository checker on the exact GitHub branch/PR checkout.
 
 ## Research and acceptance checkpoints
 
@@ -49,10 +86,6 @@ The protocol requires a Session Admission Gate, real-time/event-time logging, pr
 - [Context, Repository & Evidence hardening design](docs/superpowers/specs/2026-09-04-context-repository-evidence-hardening-design.md)
 - [Logging ownership & timing amendment — absorbed into v2](docs/superpowers/specs/2026-09-04-logging-ownership-and-timing-amendment.md)
 - [Initial consolidated design — superseded pointer](docs/superpowers/specs/2026-09-04-codemaestro-v3-capability-runtime-consolidated-design.md)
-
-## Architecture foundation plan
-
-- [Architecture Documentation Foundation plan](docs/superpowers/plans/2026-09-04-architecture-documentation-foundation.md) — completed for its original five-file foundation scope; it does not claim to have planned the later architecture/research expansion.
 
 ## Architectural direction
 
@@ -83,32 +116,25 @@ Research execution status is distinct from architectural disposition.
 
 A direction may be accepted while its track remains `IN RESEARCH`. `ACCEPTED` is reserved for research whose expected outputs have been sufficiently completed, reviewed, and incorporated for the stated scope.
 
-CM-R-021 through CM-R-032 remain `IN RESEARCH` with accepted architectural direction. For CM-R-032, the narrow Milestone-0 repository logging lifecycle sub-question is resolved by the logging privacy policy, while the broader Privacy & Data Lifecycle Engineering track remains open.
+CM-R-021 through CM-R-032 remain `IN RESEARCH` with accepted architectural direction. For CM-R-032, the narrow repository logging lifecycle prerequisite is resolved by the logging privacy policy, while the broader Privacy & Data Lifecycle Engineering track remains open.
 
-## Logging ownership
+## Next implementation stage
 
-Repository-development logging and portable Skill behavior are deliberately separate:
+With Milestone 0 operational, subsequent CodeMaestro implementation may proceed in the canonical order from the approved v2:
 
-- `logs/conversations/` — real-time session history for the user's Chat / Work / Codex sessions developing this repository once the filesystem is bootstrapped;
-- `logs/logs/project/` — real-time project mutation/state history maintained by those project-working sessions;
-- `logs/logs/self-evolution/` — reserved dedicated audit stream owned by the CodeMaestro Self-Evolution protocol when that controller is implemented.
+```text
+canonical architecture/documentation integration
+-> capability contracts + Capability Registry
+-> RED eval implementation
+-> final physical Skill packaging
+-> compact orchestrator
+-> progressive capability/intelligence modules
+-> Self-Evolution Controller + dedicated Self-Evolution audit behavior
+-> cross-runtime validation
+-> stabilization
+```
 
-The nested `logs/logs/` name is intentional under the project owner's chosen root/subfolder structure, not an accidental typo.
-
-Because this repository is public, committed session history must be public-safe. Secrets and non-public sensitive/confidential payloads are never persisted for transcript completeness.
-
-## Milestone 0 ordering
-
-Milestone 0 executes in this order:
-
-1. documentation-consistency checker and CI gate;
-2. narrow CM-R-032 privacy/retention/public-sanitization decision;
-3. canonical logging schemas;
-4. canonical real-time project-working-session protocol;
-5. actual `logs/` filesystem and first live sanitized records;
-6. append/correction/redaction/resume/handoff end-to-end validation.
-
-Milestone 0 is not operational until the complete verification gate passes.
+Each subsequent implementation slice requires its own executable plan/checkpoints under the selected inline Superpowers workflow.
 
 ## Legacy systems
 
