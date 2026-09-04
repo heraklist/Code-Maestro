@@ -2,13 +2,26 @@
 
 ## Status
 
-**Status:** WRITTEN-SPEC REVIEW CANDIDATE
+**Status:** WRITTEN-SPEC APPROVED — conditions N1/N2 repaired 2026-09-04
 
 **Date:** 2026-09-04
 
-This is the canonical consolidated design candidate after the first full-branch written-spec review. It supersedes `2026-09-04-codemaestro-v3-capability-runtime-consolidated-design.md` and incorporates the accepted logging ownership/timing amendment directly rather than relying on precedence between conflicting documents.
+This is the canonical consolidated design after full-branch written-spec review. It supersedes `2026-09-04-codemaestro-v3-capability-runtime-consolidated-design.md` and incorporates the accepted logging ownership/timing amendment directly rather than relying on precedence between conflicting documents.
 
-This document remains a design specification. It does **not** authorize production Skill implementation until the written-spec gate is explicitly approved.
+The written-spec gate is considered passed once the N1/N2 repair verification succeeds. Production implementation still follows the Superpowers `writing-plans` gate and the Milestone 0 ordering in §21.
+
+### Authority hierarchy
+
+| Artifact | Current authority |
+| --- | --- |
+| `2026-09-04-codemaestro-v3-consolidated-design-v2.md` | Canonical consolidated written specification. |
+| `../../architecture/DECISIONS.md` | Canonical ADR wording; controls where a dated checkpoint uses the same ADR ID. |
+| `../../research/RESEARCH-BACKLOG.md` | Canonical research execution-status/index; research status is distinct from architectural disposition. |
+| `../../architecture/ARCHITECTURE.md` | Architecture gateway; points to this consolidated specification pending later living-architecture synthesis. |
+| `2026-09-04-codemaestro-v3-architecture-design.md` | Earlier accepted baseline; historical/focused input, superseded by this document where they differ. |
+| `2026-09-04-research-experimental-engineering-design.md` | Accepted focused research/experimental design; remains supporting detail unless this document or later ADR supersedes it. |
+| `2026-09-04-context-repository-evidence-hardening-design.md` | Accepted focused hardening design; remains supporting detail unless this document or later ADR supersedes it. |
+| `2026-09-04-logging-ownership-and-timing-amendment.md` | Absorbed into this v2; historical amendment only. |
 
 ### Evidence chain
 
@@ -689,7 +702,7 @@ Documentation/knowledge maintenance is an explicit cross-cutting workflow rather
 
 # 14. Pass 5 and Capability Freeze
 
-Pass 5 is now a durable research record at:
+Pass 5 is a durable research record at:
 
 `../../research/2026-09-04-comparative-research-pass-5.md`
 
@@ -697,12 +710,12 @@ Acceptance/Capability Freeze is recorded at:
 
 `../../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
 
-Accepted final tracks:
+Pass 5 accepted the architectural directions and **opened** these tracks; it did not mark their research execution complete:
 
-- CM-R-029 — Cross-Runtime Portability, Capability Discovery & Conformance
-- CM-R-030 — Product, UX/UI & Visual Interface Engineering
-- CM-R-031 — Build, Toolchain & Environment Engineering
-- CM-R-032 — Privacy & Data Lifecycle Engineering
+- CM-R-029 — Cross-Runtime Portability, Capability Discovery & Conformance — `IN RESEARCH`, `DIRECTION ACCEPTED`
+- CM-R-030 — Product, UX/UI & Visual Interface Engineering — `IN RESEARCH`, `DIRECTION ACCEPTED`
+- CM-R-031 — Build, Toolchain & Environment Engineering — `IN RESEARCH`, `DIRECTION ACCEPTED`
+- CM-R-032 — Privacy & Data Lifecycle Engineering — `IN RESEARCH`, `DIRECTION ACCEPTED`
 
 No CM-R-033 is opened by Pass 5.
 
@@ -729,6 +742,7 @@ Required dimensions:
 7. Evidence quality
 8. User/operational outcome
 9. Self-Evolution integrity
+10. **Logging integrity** — repository session/project history and Self-Evolution audit records preserve required schema, event-time updates, correction/supersession semantics, redaction/privacy boundaries, continuity/handoff evidence, and ownership separation.
 
 Agent eval contracts distinguish:
 
@@ -762,13 +776,31 @@ evals/
 ├── evidence/
 ├── authority/
 ├── quality-contract/
+├── logging/
 ├── self-evolution/
 ├── adversarial/
 ├── regression/
 └── end-to-end/
 ```
 
-Representative scenarios include concurrency debugging, migration, auth bypass candidates, user-facing UI redesign/QA, transaction bugs, local-pass/CI-fail environment drift, untrusted prompt/tool misuse, experimental-language conflicting authorities, privacy propagation, cross-runtime conformance, no-change self-audit, and adversarial self-upgrade attempts.
+Representative scenarios include:
+
+- concurrency debugging;
+- migration;
+- auth bypass candidates;
+- user-facing UI redesign/QA;
+- transaction bugs;
+- local-pass/CI-fail environment drift;
+- untrusted prompt/tool misuse;
+- experimental-language conflicting authorities;
+- privacy propagation;
+- cross-runtime conformance;
+- no-change self-audit;
+- adversarial self-upgrade attempts;
+- session handoff where transcript/project logs preserve enough state to resume without relying on model memory;
+- correction of a false prior log entry by appending `CORRECTION / SUPERSEDES` rather than rewriting history;
+- secret or sensitive material appearing in visible content and being omitted/redacted from durable public history using the canonical marker;
+- a Self-Evolution run that does not read conversations when they add no evidentiary value, and one that records the reason/scope when it does consult them.
 
 ---
 
@@ -937,9 +969,62 @@ The repeated `logs/logs/` path is **intentional, not a typo**: the outer `logs/`
 
 `logs/conversations/` preserves user-visible project-working dialogue and relevant observable action summaries for continuity. It never stores hidden chain-of-thought.
 
+### Canonical session header
+
+Each new project-working transcript begins with an immutable historical header equivalent to:
+
+```text
+# CodeMaestro Conversation Transcript
+
+Session started: 2026-09-04 11:32:00 +03:00
+Surface: Chat
+Repository: heraklist/Code-Maestro
+Initial branch: docs/architecture-foundation-v0.1
+Initial SHA: <sha>
+Purpose: <session purpose>
+Transcript policy: semantic append-only / public-safe
+```
+
+If branch/SHA/scope later changes, the original header is not rewritten; append a timestamped `STATE CHANGE` record.
+
 ### Project events
 
 `logs/logs/project/` records what actually changed in the CodeMaestro project: files, branches, commits, PRs, approvals, eval state, corrections, rollbacks, and other material state transitions.
+
+A material project-event record uses these canonical fields when applicable:
+
+```text
+TIMESTAMP
+SESSION
+EVENT / TYPE
+TARGET
+ACTION
+REASON
+BEFORE
+AFTER
+EVIDENCE
+AUTHORITY
+RESULT
+RELATED COMMIT / ARTIFACT
+```
+
+Fields may be omitted when genuinely not applicable, but the record must remain unambiguous and reconstructable.
+
+### Timestamp convention
+
+Prefer offset-aware timestamps:
+
+```text
+YYYY-MM-DD HH:mm:ss ±HH:MM
+```
+
+for example:
+
+```text
+2026-09-04 11:43:17 +03:00
+```
+
+UTC/ISO-8601 may additionally be stored for cross-runtime correlation.
 
 ### Real-time/event-time rule
 
@@ -947,7 +1032,9 @@ The repository work-session protocol must require updates **as work happens**, n
 
 ```text
 SESSION START
--> initialize/resume history
+-> locate/read repository work-session protocol
+-> initialize/resume session transcript
+-> identify relevant recent project-event state using progressive disclosure
 -> capture repo/branch/SHA
 -> work
 -> append conversation history as it progresses
@@ -956,7 +1043,32 @@ SESSION START
 -> checkpoint before handoff/end
 ```
 
-This requirement will live in a canonical repository instruction loaded by project-working chats.
+History loading is also progressively disclosed: a session reads only the recent/relevant transcript/event material needed for continuity rather than ingesting the entire historical corpus by default.
+
+### Correction / supersession format
+
+Semantic append-only means a historical entry is not silently edited to make the record cleaner. A correction is appended, for example:
+
+```text
+CORRECTION / SUPERSEDES EVENT <event-id>
+Previous statement: <bounded description>
+Corrected state: <new state>
+Evidence: <source/commit/result>
+```
+
+The old entry remains part of ordinary audit history, except where the privacy/security deletion exception below requires authorized sanitation.
+
+### Checkpoint / handoff minimum
+
+Before session end or cross-surface handoff, append a checkpoint containing when material:
+
+- current branch/SHA;
+- last completed action;
+- decisions/approvals;
+- mutations;
+- evidence/validation state;
+- unresolved issues/risks;
+- next expected or authorized action.
 
 ## 17.2 Self-Evolution Audit — Skill behavior
 
@@ -1000,9 +1112,17 @@ Committed conversation records must be **public-safe**:
 - where preserving a raw transcript is necessary, it must live in an authorized private/local store, while the public repository may retain a sanitized transcript or digest/reference;
 - redactions are explicit so the public record does not falsely claim verbatim completeness.
 
+Canonical redaction marker for a secret that must not be persisted:
+
+```text
+[REDACTED SECRET — not persisted]
+```
+
+Equivalent typed redaction markers may be used for non-secret sensitive/private information, but must not themselves reveal the removed payload.
+
 The ordinary append-only rule does not override a legitimate privacy/security/legal deletion requirement. If data must be purged, the project follows an authorized sanitation/history-rewrite process as required and records a non-sensitive purge event without retaining the removed payload.
 
-Retention/deletion policy for these development records is finalized under CM-R-032 before Milestone 0 logging is declared operational.
+Retention/deletion policy for these development records is **not yet resolved**. CM-R-032 is `IN RESEARCH`; this policy must be researched, decided, and recorded before Milestone 0 logging is declared operational.
 
 ## 17.5 Logs are evidence, not authority
 
@@ -1098,9 +1218,9 @@ Repository work-session conversation/project logging is a development-governance
 
 # 21. Sequence after written-spec approval
 
-This section is authoritative for post-review ordering and removes the prior contradiction between canonicalization-first and logging-first sequences.
+This section is authoritative for post-review ordering.
 
-Superpowers process still requires `writing-plans` before implementation. Therefore:
+Superpowers process requires `writing-plans` before implementation:
 
 ```text
 WRITTEN SPEC APPROVED
@@ -1113,15 +1233,25 @@ WRITTEN SPEC APPROVED
 **Before any other implementation work:**
 
 ```text
-create logs/conversations/
-create logs/logs/project/
-create canonical transcript/project-event schemas/templates
-create canonical real-time project-working-chat instruction
-resolve CM-R-032 retention/deletion/public-sanitization policy required for these records
-verify append/correction/redaction/checkpoint workflow
+1. create documentation-consistency checker FIRST
+   - ADR ID uniqueness with status/authority awareness
+   - every referenced CM-R has backlog entry and record where required
+   - backlog Status equals record Status
+   - internal repository links resolve
+2. run checker against current branch and repair any detected drift
+3. create logs/conversations/
+4. create logs/logs/project/
+5. create canonical transcript/project-event schemas/templates from §17
+6. create canonical real-time project-working-chat instruction
+7. resolve CM-R-032 retention/deletion/public-sanitization policy required for these records
+8. verify append/correction/redaction/checkpoint/handoff workflow
 ```
 
+The consistency checker must understand historical/superseded/absorbed ADR occurrences: for example, CM-ADR-019…022 may legally appear in `DECISIONS-2026-09-04-PASS3.md` when that file marks them `ABSORBED INTO DECISIONS.md`. The checker rejects multiple **active/canonical** definitions, not every repeated token.
+
 `logs/logs/self-evolution/` may be reserved structurally, but the **Skill-owned Self-Evolution logging behavior is implemented later with the Self-Evolution Controller**, not conflated with Milestone 0 project-chat governance.
+
+Milestone 0 is not operational until its consistency checks pass and the CM-R-032 logging retention/deletion/public-sanitization decision exists.
 
 ## Only after Milestone 0 is operational
 
@@ -1139,20 +1269,17 @@ canonical architecture/documentation integration
 -> stabilization
 ```
 
-A documentation-consistency check (ADR ID uniqueness, CM-R record/backlog completeness, status consistency, internal-link checks) should be introduced early after Milestone 0 so the drift found during this review becomes mechanically detectable regression evidence.
-
 ---
 
-# 22. Out of scope before written-spec approval
+# 22. Out of scope before implementation planning
 
-Before this written-spec gate passes, do not:
+Before the implementation plan is written, do not:
 
 - create production `SKILL.md`;
 - implement capability modules/references;
-- implement runtime scripts/evals;
-- implement Self-Evolution Controller;
+- implement the Self-Evolution Controller;
 - perform an actual Self-Evolution upgrade;
 - publish/install the final plugin/Skill;
 - merge the architecture PR.
 
-The repository documentation repairs required to make this review candidate internally consistent are allowed before gate approval because they are part of the written-spec review process itself.
+The documentation repairs required to close the written-spec review are part of the design-review process and do not count as production implementation.
