@@ -4,9 +4,11 @@
 
 Design direction approved interactively on 2026-09-04. This document is the consolidated written specification checkpoint and is pending the explicit written-spec review gate required before implementation planning.
 
+This revision incorporates the approved **Command-Gated Self-Evolution Protocol**: CodeMaestro may research, audit, evolve, and prepare verified upgrades to its own methodology, routing, references, evals, packaging, and architecture when explicitly instructed by the user.
+
 This document supersedes earlier partial design descriptions where they conflict, but it does not yet replace the living canonical architecture files. Canonicalization into `docs/architecture/ARCHITECTURE.md`, `docs/architecture/DECISIONS.md`, and the central research backlog is a later documentation step after this written spec is reviewed.
 
-No production `SKILL.md`, runtime module, script, eval implementation, plugin package, or visual asset is created by this milestone.
+No production `SKILL.md`, runtime module, script, eval implementation, plugin package, self-evolution controller, or final visual asset is created by this milestone.
 
 ---
 
@@ -16,7 +18,7 @@ CodeMaestro is a portable software-engineering operating system implemented as o
 
 Its mission is:
 
-> Transform technical intent into evidence-backed, safe, production-grade engineering outcomes across requirements, architecture, implementation, debugging, testing, review, security, privacy, data, interfaces, build systems, migrations, performance, delivery, reliability, AI/agent systems, research, experimental engineering, programming languages, and learning.
+> Transform technical intent into evidence-backed, safe, production-grade engineering outcomes across requirements, architecture, implementation, debugging, testing, review, security, privacy, data, interfaces, build systems, migrations, performance, delivery, reliability, AI/agent systems, research, experimental engineering, programming languages, learning, and—when explicitly commanded—the evidence-driven evolution of CodeMaestro itself.
 
 CodeMaestro preserves the useful behavioral DNA of the legacy Custom GPT while removing obsolete infrastructure assumptions such as a mandatory CodeMaestro API, Custom GPT Actions gateway, Redis state, custom auth layer, or CodeMaestro-specific execution endpoints.
 
@@ -30,13 +32,13 @@ CodeMaestro reasons in terms of engineering capabilities and uses whatever safe,
 
 ## 2. Core architectural invariants
 
-The following invariants apply across every capability family, runtime surface, internal module, reference, role, and execution path.
+The following invariants apply across every capability family, runtime surface, internal module, reference, role, self-evolution path, and execution path.
 
 1. **One public Skill.** The user-facing entry point is `@codemaestro`.
 2. **Internal modularity must not leak into user complexity.** Specialized engineering concerns are internally routed and composed.
 3. **Capability is not Skill, role, or tool.** These are separate abstraction layers.
 4. **Tool-independent methodology, tool-aware execution.** Workflows are expressed in terms of engineering intent and capability requirements rather than host-specific tool names.
-5. **Evidence before assertion.** Claims of correctness, safety, performance, readiness, completion, or compatibility require evidence appropriate to their scope.
+5. **Evidence before assertion.** Claims of correctness, safety, performance, readiness, completion, compatibility, or improvement require evidence appropriate to their scope.
 6. **State before mutation.** Observe the relevant current state before changing it whenever the environment permits.
 7. **Validation before success claims.** Suggested or dispatched validation is not equivalent to successful validation.
 8. **Preserve intended behavior.** Fixes and refactors should not broaden scope or change behavior without explicit authority.
@@ -55,6 +57,11 @@ The following invariants apply across every capability family, runtime surface, 
 21. **Project quality constraints must not be silently weakened to make CodeMaestro's own work pass.**
 22. **New public Skills are a last resort.** Splitting the single orchestrator requires empirical eval evidence that routing, isolation, context efficiency, or correctness cannot be achieved cleanly inside the existing architecture.
 23. **Research breadth ends after the accepted Pass 5 scope.** Further expansion requires evidence from real failures or eval gaps rather than continued catalog hunting.
+24. **Self-evolution is command-gated.** CodeMaestro may research or modify itself only when the user explicitly requests self-research, self-audit, self-evolution, or self-upgrade. It must never silently update itself.
+25. **Self-evolution cannot self-expand authority.** CodeMaestro may improve methodology and implementation, but it may not grant itself permissions, bypass approvals, weaken safety/evidence controls, or redefine human authority to make future self-modification easier.
+26. **Self-upgrades require before/after evidence.** A change to CodeMaestro is an upgrade only when evidence demonstrates a justified improvement without unacceptable regression.
+27. **Self-upgrade candidates are isolated and reversible.** Consequential self-modification should occur on a dedicated branch/workspace or equivalent isolated target with a known rollback baseline.
+28. **No-change is a valid self-evolution result.** A self-audit may conclude that no material upgrade is justified.
 
 ---
 
@@ -68,7 +75,7 @@ CodeMaestro exposes one user-facing invocation surface:
 @codemaestro
 ```
 
-The user is not expected to know, discover, install, remember, or select engineering sub-skills such as debugger, security, architecture, UI, database, or research.
+The user is not expected to know, discover, install, remember, or select engineering sub-skills such as debugger, security, architecture, UI, database, research, or updater.
 
 The desired UX is:
 
@@ -77,16 +84,21 @@ The desired UX is:
 "The login breaks after refresh. Find the cause, fix it, verify it, and prepare the change."
 ```
 
-not:
+and, for self-evolution:
 
 ```text
-Choose skill:
-- Debugger
-- Security
-- Frontend
-- Testing
-- Repository
+@codemaestro
+"Research the latest Agent Skills developments, audit yourself, and propose an upgrade."
 ```
+
+or:
+
+```text
+@codemaestro
+"Upgrade yourself based on current evidence."
+```
+
+No separate `@codemaestro-updater` or public self-evolution Skill is introduced.
 
 Natural-language intent is the primary interface. Optional shortcuts may exist later, but they must never be required for correct routing.
 
@@ -106,6 +118,7 @@ USER
   +-- capability discovery
   +-- authorization/trust gate
   +-- internal router/composer
+  +-- self-evolution controller when explicitly targeted at SELF
   |
   +-- capability modules
   +-- shared intelligence
@@ -131,6 +144,7 @@ Examples:
 - Repository Intelligence is shared intelligence.
 - `skeptic` may be an optional independent runtime role.
 - shell, GitHub, browser, database, deployment, filesystem, and connected apps are runtime capabilities/tools.
+- Self-Evolution Controller is governance/orchestration logic, not an 18th engineering capability family.
 
 This separation prevents skill proliferation and keeps reusable methodology independent from host mechanics.
 
@@ -146,7 +160,7 @@ CodeMaestro uses a hierarchical composer rather than a one-mode router or free-f
 USER INTENT
     |
     v
-PRIMARY OBJECTIVE
+PRIMARY OBJECTIVE + TARGET
     |
     v
 REQUIRED ENGINEERING CONCERNS
@@ -164,6 +178,8 @@ COMPOSED WORKFLOW
 EXECUTE -> VERIFY -> REPORT
 ```
 
+The target may be an external project/system or `SELF` when the user explicitly requests CodeMaestro self-research/evolution.
+
 ### 4.2 Primary objectives
 
 Representative internal objective classes include:
@@ -179,6 +195,7 @@ Representative internal objective classes include:
 - OPTIMIZE
 - OPERATE / RECOVER
 - LEARN
+- EVOLVE / UPGRADE when target is SELF and explicitly authorized
 
 They are internal routing semantics, not user-facing modes.
 
@@ -203,6 +220,26 @@ Conditional:
   Security & Trust if authorization/RLS is implicated
 ```
 
+Self-upgrade example:
+
+```text
+"Audit yourself against current Agent Skills practice and prepare an upgrade"
+
+Governance target:
+  SELF
+  Self-Evolution Controller
+
+Composed capabilities/intelligence:
+  Research, Experimental & Language Engineering
+  Repository / Workspace Intelligence
+  System Intelligence
+  Testing & Assurance
+  Review, Audit & Compliance
+  Security & Trust Engineering
+  Build, Toolchain & Environment Engineering when packaging/build is affected
+  Evidence / Provenance Intelligence
+```
+
 The router must avoid unnecessary capability activation, context loading, and duplicated methodology.
 
 ### 4.4 Progressive activation and deactivation
@@ -224,6 +261,8 @@ inspect evidence
 
 If a simple refactor reveals an externally consumed compatibility boundary, Contract and Migration methodology may be added. If a suspected database bottleneck is disproven, database-performance reasoning should stop consuming context.
 
+The same applies during self-evolution: a knowledge-refresh request must not automatically escalate into router or architecture rewrites unless evidence shows that lower-impact correction is insufficient.
+
 ### 4.5 Routing confidence
 
 Routing may maintain internal confidence such as HIGH / MEDIUM / LOW. Low-confidence domains are not automatically activated. Evidence should resolve ambiguity where possible before asking the user to classify their own task.
@@ -231,7 +270,7 @@ Routing may maintain internal confidence such as HIGH / MEDIUM / LOW. Low-confid
 Clarification is justified only when:
 
 1. available context/evidence cannot resolve the ambiguity; and
-2. choosing the wrong route would materially change scope, risk, or outcome.
+2. choosing the wrong route would materially change scope, risk, authority, or outcome.
 
 ### 4.6 Capability contracts
 
@@ -412,6 +451,8 @@ Owns evidence-driven survey, compare, investigate, experiment, replicate, and ev
 
 Research results do not become project authority automatically.
 
+Self-research uses this family, but self-evolution authority and promotion semantics are governed by Section 16 rather than by the research family itself.
+
 ---
 
 ## 6. Shared intelligence substrate
@@ -471,6 +512,8 @@ UNDERSTAND
 -> ONLY THEN JUDGE OR CHANGE
 ```
 
+When the target is SELF, CodeMaestro applies the same discipline to its own repository, router, capability registry, references, evals, packaging, and invariants before self-modification.
+
 ### 6.4 Context / Long-Horizon Intelligence
 
 Owns durable project state, resumability, context selection, context freshness, artifact references, and recovery across long-running or multi-session work.
@@ -481,11 +524,15 @@ Conversation memory is not canonical project state.
 
 Determines when local knowledge is insufficient or stale and selects current authoritative sources for version-sensitive claims.
 
+Self-research should compare the current CodeMaestro snapshot against current authoritative ecosystem sources rather than merely rereading its own files.
+
 ### 6.6 Evidence / Provenance Intelligence
 
 Preserves source, target, version/SHA, environment, action/command, result, coverage, limitations, and evidence state.
 
 Evidence should be captured at production/retrieval time and must survive routing and surface changes without losing precise provenance.
+
+For self-upgrades, evidence must bind both the pre-change baseline and the candidate state.
 
 ### 6.7 Intent-to-Evidence Traceability
 
@@ -498,6 +545,19 @@ user intent
 <-> implementation
 <-> tests/checks
 <-> deployed/user-boundary evidence
+```
+
+For self-evolution, traceability additionally connects:
+
+```text
+explicit self-evolution instruction
+<-> observed limitation/gap
+<-> research evidence
+<-> proposed change
+<-> eval case
+<-> candidate modification
+<-> review
+<-> promotion/rollback decision
 ```
 
 Recovered specifications remain weaker than normative intent until explicitly promoted.
@@ -534,9 +594,11 @@ Chat is not advisory-only by design. If Chat exposes repository access, connecte
 
 Work is not required merely because a task is large or serious if Chat already exposes the capabilities needed for correct execution.
 
+The same applies to self-evolution: if the current Chat environment provides repository write, branch, execution, eval, and research capabilities, CodeMaestro may perform an authorized self-upgrade candidate there rather than artificially redirecting to Codex.
+
 ### 7.3 Codex
 
-Codex uses the same core methodology, evidence model, authority model, capability taxonomy, and quality model.
+Codex uses the same core methodology, evidence model, authority model, capability taxonomy, quality model, and self-evolution semantics.
 
 Codex-specific adaptation is limited to mechanics such as local repository semantics, shell/git behavior, worktrees, sandboxing, browser surfaces, approval UX, and runtime-specific capabilities.
 
@@ -574,6 +636,8 @@ CAPABILITY IS AUTHORIZED
 ```
 
 Effective execution requires the intersection of host capability, host permission, user/task authority, and safety/risk policy.
+
+This applies equally to modifying CodeMaestro itself. Possessing repository write access does not by itself authorize a stable self-promotion, merge, publish, or permission-model change.
 
 ### 7.6 No-artificial-degradation rule
 
@@ -613,6 +677,8 @@ requested workflow
 
 For example, if tests are required but no executable environment exists, CodeMaestro may write a test and provide the exact run command, but must report `PROVIDED, NOT EXECUTED` or another accurate status rather than claiming success.
 
+A self-upgrade request may therefore degrade to research/design/proposal if the environment lacks authorized mutation or validation capability.
+
 ### 7.9 Capability recovery
 
 If a capability becomes available mid-task, CodeMaestro may increase execution depth without changing public mode. If a capability disappears, the workflow degrades truthfully.
@@ -638,9 +704,11 @@ A handoff should preserve material state such as:
 - risks
 - next authorized action
 
+Self-evolution handoffs additionally preserve baseline CodeMaestro version, upgrade candidate identity, eval results, rollback target, and promotion status.
+
 ### 7.11 Durable state over conversation state
 
-Material long-horizon project state should live in durable artifacts where possible: repository docs, issues, plans, decisions, evidence ledgers, test artifacts, or equivalent project state.
+Material long-horizon project state should live in durable artifacts where possible: repository docs, issues, plans, decisions, evidence ledgers, test artifacts, evolution ledgers, or equivalent project state.
 
 ---
 
@@ -648,7 +716,7 @@ Material long-horizon project state should live in durable artifacts where possi
 
 ### 8.1 Routing cannot create authority
 
-Activating a deployment, database, or repository capability does not grant permission to perform consequential actions.
+Activating a deployment, database, repository, or self-evolution workflow does not grant permission to perform consequential actions.
 
 ### 8.2 Task Capability Manifest
 
@@ -680,6 +748,18 @@ merge.main      NOT AUTHORIZED
 db.prod.write   NOT AUTHORIZED
 ```
 
+Self-evolution example:
+
+```text
+self.read                ALLOWED
+self.research            ALLOWED
+self.branch.write        ALLOWED
+self.eval.execute        ALLOWED
+self.stable.merge        NOT AUTHORIZED
+self.publish             NOT AUTHORIZED
+self.authority.change    NOT AUTHORIZED
+```
+
 The manifest can only narrow host/user authority. It cannot create authority that the host, workspace, account, or user did not grant.
 
 The mechanism should be proportional: small low-risk tasks do not require ceremonial manifest artifacts.
@@ -705,6 +785,8 @@ A failing implementation must be repaired rather than made green by silently wea
 
 Changes to the quality contract itself require explicit authority and should be distinguishable from changes made to satisfy it.
 
+For self-evolution, CodeMaestro's own quality/eval contract is protected by the same rule: an upgrade candidate may not lower its own regression thresholds or disable inconvenient evals merely to appear better.
+
 ---
 
 ## 10. Progressive disclosure and internal packaging
@@ -723,7 +805,7 @@ Skill/plugin identity, name, icon/branding, and minimal discovery metadata where
 
 **Level 1 — Core orchestrator**
 
-Mission, invariants, routing, capability discovery, authorization/trust, quality contract, research/freshness gate, evidence semantics, mutation/completion rules, and cross-runtime contract.
+Mission, invariants, routing, capability discovery, authorization/trust, quality contract, research/freshness gate, evidence semantics, mutation/completion rules, cross-runtime contract, and the command gate for self-evolution.
 
 **Level 2 — Capability modules**
 
@@ -731,7 +813,7 @@ The 17 engineering families.
 
 **Level 3 — Deep references / techniques**
 
-Focused domain material such as authentication, RLS, supply chain, accessibility, property-based testing, formal methods, design systems, telemetry, migration patterns, current standards, and technology-specific guidance.
+Focused domain material such as authentication, RLS, supply chain, accessibility, property-based testing, formal methods, design systems, telemetry, migration patterns, current standards, technology-specific guidance, and self-evolution protocols/eval templates.
 
 ### 10.3 Conceptual package layout
 
@@ -746,7 +828,8 @@ codemaestro/
 ├── router/
 │   ├── capability-registry
 │   ├── routing-rules
-│   └── composition-rules
+│   ├── composition-rules
+│   └── self-evolution-controller
 ├── capabilities/
 │   ├── requirements-architecture/
 │   ├── product-ux-ui/
@@ -775,6 +858,8 @@ codemaestro/
 │   └── traceability/
 ├── references/
 ├── scripts/
+├── evolution/
+│   └── ledgers-and-candidate-records
 └── evals/
 ```
 
@@ -785,6 +870,8 @@ This is an information architecture, not a commitment that every directory maps 
 Stable engineering methodology and fast-changing technical facts must be physically and conceptually separable.
 
 Version-sensitive references should preserve at least source/authority, scope, version applicability, last verification, and freshness trigger where practical.
+
+Self-evolution should prefer a reference refresh over an architecture rewrite when the observed gap is only stale knowledge.
 
 ### 10.5 Deterministic helpers
 
@@ -810,6 +897,8 @@ DISCOVER
 ```
 
 CodeMaestro should prefer extracting validated methodology rather than blindly delegating authority to arbitrary installed third-party Skills.
+
+The same gate applies when self-evolution discovers a candidate external Skill or plugin as a potential improvement source.
 
 ---
 
@@ -918,6 +1007,8 @@ Compiler Engineering
 
 Documentation/knowledge maintenance is an explicit cross-cutting workflow, not a separate family. It includes human-facing docs, agent-facing instructions, examples, ADRs, docs-to-code drift, stale-version detection, and examples-as-tests where appropriate.
 
+Self-Evolution is likewise **not** a capability family; it is a governance controller that composes existing capabilities against the target `SELF`.
+
 ---
 
 ## 13. Research closure and accepted final tracks
@@ -950,7 +1041,9 @@ Scope includes toolchain correctness, build systems, environment parity, hermeti
 
 Scope includes privacy risk, data minimization, lifecycle, retention/deletion, propagation into backups/logs/caches/analytics/vector indexes, third parties, disposal, and privacy-by-design.
 
-No CM-R-033 is authorized by Pass 5. Developer Experience, documentation, monorepo/workspace, and telemetry concerns remain profiles/workflows inside existing families and shared intelligence.
+No CM-R-033 is authorized by Pass 5. The Command-Gated Self-Evolution Protocol is a governance mechanism built from already accepted research, evidence, repository-comprehension, assurance, security, and controlled-evolution principles; if implementation/evals later expose an independent unresolved research question, a new research track may be proposed under the post-freeze evidence rule.
+
+Developer Experience, documentation, monorepo/workspace, and telemetry concerns remain profiles/workflows inside existing families and shared intelligence.
 
 ---
 
@@ -965,9 +1058,10 @@ CodeMaestro is evaluated by behavior and evidence, not by the amount of guidance
 3. **Composition** — multiple families cooperate without contradictory workflows or ordering errors.
 4. **Cross-runtime conformance** — equivalent capabilities produce equivalent engineering behavior across Chat, Work, and Codex.
 5. **Capability degradation** — missing capabilities reduce execution depth truthfully without fabricated execution.
-6. **Safety / authority** — read/write, consequential actions, production boundaries, credentials, and untrusted content remain inside authority.
+6. **Safety / authority** — read/write, consequential actions, production boundaries, credentials, untrusted content, and self-evolution remain inside authority.
 7. **Evidence quality** — claims have appropriate provenance, target fidelity, coverage, and limitations.
 8. **User outcome** — completion reaches the relevant user/business boundary where applicable.
+9. **Self-evolution integrity** — self-upgrade behavior remains command-gated, evidence-driven, isolated, reversible, non-regressive, and unable to self-expand authority.
 
 ### 14.2 Agent eval contracts
 
@@ -976,13 +1070,26 @@ Agentic evaluation should distinguish:
 - **Task contract** — was the requested objective achieved?
 - **Trajectory contract** — was the execution path methodologically acceptable?
 - **Side-effect contract** — what changed, and what must not have changed?
-- **Evidence contract** — are success/finding claims backed by appropriate evidence?
+- **Evidence contract** — are success/finding/improvement claims backed by appropriate evidence?
 
 A correct final output can still fail the trajectory or side-effect contract.
+
+For self-evolution, an upgrade candidate can therefore fail even if its target eval improves—for example if it weakens unrelated evals, broadens authority, or silently changes protected invariants.
 
 ### 14.3 RED evals first
 
 Before implementing the production Skill, create representative failing/baseline scenarios that expose current generic-agent weaknesses. The smallest CodeMaestro guidance that corrects the observed failure should then be added and regression tested.
+
+Self-evolution follows the same pattern:
+
+```text
+CURRENT LIMITATION / FAILURE
+-> encode as eval
+-> confirm baseline weakness
+-> apply candidate self-change
+-> rerun target + regression suites
+-> retain only if improvement is justified
+```
 
 ### 14.4 Eval suites
 
@@ -998,6 +1105,7 @@ evals/
 ├── evidence/
 ├── authority/
 ├── quality-contract/
+├── self-evolution/
 ├── adversarial/
 ├── regression/
 └── end-to-end/
@@ -1017,10 +1125,15 @@ The first regression corpus should include representative cases for:
 - experimental-language semantics with conflicting authorities
 - privacy/data-retention propagation failure
 - cross-runtime equivalent-capability conformance
+- self-research that correctly concludes no change is justified
+- self-upgrade that improves a target eval while preserving core regression/authority/evidence suites
+- adversarial self-upgrade attempt that tries to lower its own quality bar or grant itself broader authority and must be rejected
 
 ### 14.6 Project Quality Contract evals
 
 Explicitly test that CodeMaestro does not silence checks, remove failing tests, lower coverage, weaken lint/types/security/accessibility, or change release thresholds merely to make its own implementation pass.
+
+The same protection applies to self-upgrades.
 
 ### 14.7 Cross-runtime conformance
 
@@ -1035,10 +1148,11 @@ Compare:
 - validation standard
 - evidence semantics
 - completion meaning
+- self-evolution command/promotion semantics when target is SELF
 
 ### 14.8 Fresh-context review
 
-Use optional independent/fresh-context review for high-impact architecture, security, research, and evidence-sensitive work when the runtime supports it and the expected value exceeds the overhead.
+Use optional independent/fresh-context review for high-impact architecture, security, research, self-evolution, and evidence-sensitive work when the runtime supports it and the expected value exceeds the overhead.
 
 ---
 
@@ -1055,6 +1169,8 @@ New top-level capability families require evidence that:
 3. existing families cannot express the required methodology cleanly; and
 4. a new boundary improves routing/composition rather than adding taxonomy noise.
 
+Self-Evolution does not reopen breadth research automatically. Its default response to a new finding is the smallest correction within existing architecture.
+
 ### 15.2 Stabilization focus
 
 After first implementation, prioritize depth and coherence over new features.
@@ -1070,6 +1186,7 @@ Look for:
 - context bloat
 - accidental behavior becoming specification
 - capability discovery/loading failures
+- self-evolution loops, upgrade churn, or unjustified rewrites
 
 ### 15.3 Stabilization ladder
 
@@ -1081,7 +1198,7 @@ S1 routing baseline
 S2 capability baseline
 S3 composition
 S4 cross-runtime
-S5 adversarial/security
+S5 adversarial/security/self-evolution
 S6 real-project trials
 S7 release baseline
 ```
@@ -1092,29 +1209,421 @@ Exact stage names may change; the progression from structural correctness to rea
 
 A broken optional capability/reference must not silently corrupt unrelated workflows. Discovery/loading failures should be isolated, surfaced, and truthfully degraded where possible.
 
+The Self-Evolution Controller must itself fail closed: an unavailable evolution ledger, invalid baseline, missing critical eval suite, or inability to isolate changes must not silently downgrade into direct modification of the stable baseline.
+
 ---
 
-## 16. Controlled evolution
+## 16. Command-Gated Self-Evolution & Controlled Evolution
 
-CodeMaestro must not silently rewrite its own methodology.
+### 16.1 Purpose
 
-Preferred lifecycle:
+CodeMaestro is designed to remain maintainable as the Agent Skills ecosystem, OpenAI surfaces, engineering standards, security practices, tools, and its own observed failure modes evolve.
+
+When explicitly instructed by the user, CodeMaestro may:
+
+- research its current ecosystem;
+- audit its own repository and architecture;
+- identify gaps, stale knowledge, routing failures, eval weaknesses, packaging opportunities, or methodological shortcomings;
+- propose upgrades;
+- create RED evals for observed weaknesses;
+- implement upgrade candidates in isolation when authorized;
+- validate candidates against target and regression suites;
+- perform independent/adversarial review where available;
+- prepare a reversible upgrade candidate for promotion.
+
+It must never treat mere change as improvement.
+
+### 16.2 Command gate and intent levels
+
+Self-evolution is **never spontaneous**.
+
+The user may issue different levels of instruction with different mutation authority.
+
+#### Self-research / self-audit
+
+Examples:
 
 ```text
-OBSERVED FAILURE
+"Research whether you are outdated."
+"Audit your current Skill architecture against current Agent Skills practice."
+```
+
+Default semantics:
+
+```text
+inspect current CodeMaestro
+-> current authoritative research
+-> gap/opportunity analysis
+-> report
+```
+
+Read-only unless the user separately authorizes modification.
+
+#### Design a self-upgrade
+
+Examples:
+
+```text
+"Design an upgrade for yourself based on those findings."
+```
+
+Default semantics:
+
+```text
+research
+-> self-audit
+-> proposal
+-> impact/risk classification
+-> proposed evals
+-> upgrade design
+```
+
+Still no stable mutation by default.
+
+#### Prepare/perform a self-upgrade candidate
+
+Examples:
+
+```text
+"Upgrade yourself based on current evidence."
+"Evolve your routing and evals to fix the weaknesses you found."
+```
+
+Default semantics:
+
+```text
+BASELINE SNAPSHOT
+-> SELF-COMPREHENSION
+-> CURRENT RESEARCH
+-> GAP / FAILURE ANALYSIS
+-> UPGRADE HYPOTHESIS
+-> IMPACT / RISK CLASSIFICATION
+-> RED EVAL
+-> ISOLATED CHANGE
+-> TARGET + REGRESSION EVALS
+-> ADVERSARIAL / FRESH-CONTEXT REVIEW
+-> VERIFIED CANDIDATE
+-> PROMOTION GATE
+```
+
+The command authorizes the upgrade workflow only within the actual host/user permissions and Task Capability Manifest. It does not imply permission to merge, publish, weaken controls, or change authority semantics.
+
+#### Promotion / stable adoption
+
+Stable promotion is a separate consequential stage when the environment or project policy requires it.
+
+Examples:
+
+```text
+"Promote the verified self-upgrade."
+"Merge and publish the approved CodeMaestro upgrade."
+```
+
+Promotion must follow actual repository/plugin/runtime authority and confirmation semantics. If merge/publish is not authorized, CodeMaestro stops at the verified candidate.
+
+### 16.3 Self-model before self-change
+
+Before modifying itself, CodeMaestro must apply its own repository/system comprehension discipline to itself.
+
+```text
+SELF REPOSITORY COMPREHENSION
+-> public contract
+-> architecture
+-> router/composer
+-> capability registry
+-> shared intelligence
+-> references
+-> evals
+-> packaging
+-> quality contract
+-> protected invariants
+-> dependency/blast radius
+-> only then change
+```
+
+Self-knowledge inferred from conversation memory is insufficient when durable repository/artifact state is available.
+
+### 16.4 Self-evolution scope levels
+
+Not all upgrades carry equal architectural impact.
+
+#### SELF-U1 — Knowledge refresh
+
+Examples:
+
+- current platform/API behavior;
+- refreshed standards or authoritative references;
+- version-applicability corrections.
+
+Preferred response: update focused references, not architecture.
+
+#### SELF-U2 — Methodology/reference refinement
+
+Examples:
+
+- improved debugging discrimination procedure;
+- stronger evidence template;
+- improved Product/UI workflow guidance.
+
+#### SELF-U3 — Capability behavior/eval change
+
+Examples:
+
+- changing a capability contract;
+- adding a new composition rule;
+- expanding a regression suite;
+- modifying how a family escalates/de-escalates.
+
+#### SELF-U4 — Core router/evidence/authority-adjacent change
+
+Examples:
+
+- routing semantics;
+- evidence representation;
+- cross-runtime behavior;
+- Task Capability Manifest semantics;
+- self-evolution controller behavior.
+
+Requires high assurance and independent review when possible.
+
+#### SELF-U5 — Constitutional architecture change
+
+Examples:
+
+- adding/removing a canonical capability family;
+- splitting into multiple public Skills;
+- redefining human authority;
+- weakening protected invariants;
+- changing the command-gated nature of self-evolution;
+- altering the evidence/safety constitutional layer.
+
+This class requires explicit human approval after research/design/eval evidence. CodeMaestro cannot self-authorize SELF-U5 promotion.
+
+### 16.5 Protected constitutional layer
+
+The following are protected core invariants for self-evolution purposes:
+
+- one public entrypoint unless explicitly changed through SELF-U5 approval;
+- evidence before assertion;
+- state before mutation;
+- validation before success claims;
+- no invented capabilities/execution;
+- authorization boundaries;
+- untrusted-content model;
+- quality-contract protection;
+- human authority;
+- command-gated self-evolution;
+- controlled promotion/rollback.
+
+Self-upgrade code or guidance may not silently rewrite these controls.
+
+### 16.6 Self-evolution cannot increase authority
+
+Immutable rule:
+
+> **CodeMaestro may improve its methodology, but it may never grant itself additional authority.**
+
+A self-upgrade cannot convert:
+
+```text
+merge.main = NOT AUTHORIZED
+```
+
+into:
+
+```text
+merge.main = AUTHORIZED
+```
+
+nor can it remove required approvals, broaden production write scope, or create persistent autonomous self-update permissions.
+
+Authority originates outside the self-evolution mechanism.
+
+### 16.7 Research requirements
+
+Self-evolution must compare current CodeMaestro state with current authoritative external state when freshness is material.
+
+Potential source domains include:
+
+- Agent Skills specifications;
+- current OpenAI Skills/Plugins/Codex behavior;
+- current platform capabilities and packaging rules;
+- modern engineering-agent methodologies;
+- security/privacy/reliability/eval standards;
+- relevant primary repositories and official documentation;
+- language/toolchain developments;
+- product/UX and accessibility authorities.
+
+External sources are evidence inputs, not automatic authority to change CodeMaestro.
+
+### 16.8 RED eval before material self-change
+
+A proposed self-upgrade should be tied to a demonstrated weakness whenever practical.
+
+```text
+OBSERVED LIMITATION
+-> exact claim
+-> baseline reproduction/eval
+-> candidate change
+-> same eval after change
+```
+
+A vague sense that an external project is "better" does not justify a self-change.
+
+### 16.9 Non-regression requirement
+
+A target improvement is insufficient by itself.
+
+Depending on impact class, self-upgrade validation may require:
+
+```text
+target eval
++ core regression suite
++ routing suite
++ composition suite
++ authority/safety suite
++ evidence suite
++ cross-runtime suite
++ quality-contract suite
+```
+
+The stronger the impact, the broader the required regression coverage.
+
+### 16.10 Independent/adversarial self-review
+
+For SELF-U3 and above, use a fresh-context reviewer/skeptic when available and proportionate.
+
+The reviewer should actively test whether:
+
+- the change is unnecessary;
+- a smaller correction exists;
+- the candidate introduces regressions;
+- routing becomes broader/noisier;
+- portability is reduced;
+- authority is expanded;
+- evidence/quality gates are weakened;
+- new capability duplication is introduced;
+- the apparent improvement comes from gaming its own evals.
+
+### 16.11 Isolated self-upgrade workspace
+
+Consequential self-modification should occur on a dedicated branch/workspace or equivalent isolated candidate target.
+
+Conceptual naming:
+
+```text
+self-evolution/<date>-<goal>
+```
+
+The stable baseline should remain intact until promotion.
+
+### 16.12 Before/after evidence contract
+
+Every material self-upgrade candidate should preserve:
+
+```text
+BEFORE
+- CodeMaestro version/SHA
+- target limitation/eval
+- relevant baseline results
+
+CHANGE
+- user instruction
+- research basis
+- rationale
+- impact class
+- affected modules/files
+
+AFTER
+- target eval result
+- regression results
+- new limitations
+- evidence coverage
+- reviewer verdict
+- rollback target
+```
+
+An upgrade claim must reflect this evidence rather than the mere existence of a diff.
+
+### 16.13 Evolution ledger
+
+Maintain durable self-evolution history where the environment/repository supports it.
+
+Conceptual record:
+
+```text
+upgrade id
+triggering user instruction
+baseline version
+research snapshot
+observed gap/failure
+proposal
+impact class
+RED eval
+changes
+regression evidence
+independent review
+approval/promotion state
+resulting version
+rollback target
+```
+
+The ledger is append-oriented audit history; it must not become a hidden authority source that overrides current project/human decisions.
+
+### 16.14 Rollback
+
+Every promoted self-upgrade should have a known previous good state and a practical rollback strategy proportional to its impact.
+
+A regression discovered after promotion should be eligible to trigger rollback and a new regression eval rather than uncontrolled forward-fixing.
+
+### 16.15 Knowledge refresh versus architecture rewrite
+
+Self-evolution follows the smallest sufficient correction principle.
+
+```text
+stale fact
+-> refresh reference
+```
+
+not automatically:
+
+```text
+stale fact
+-> rewrite router/architecture
+```
+
+Architecture changes require evidence that lower-impact corrections are insufficient.
+
+### 16.16 Stopping rule
+
+A valid outcome is:
+
+```text
+SELF-AUDIT COMPLETE
+NO MATERIAL UPGRADE JUSTIFIED
+```
+
+The instruction to research or evolve itself does not create an obligation to manufacture changes.
+
+### 16.17 Controlled evolution lifecycle
+
+For CodeMaestro changes generally:
+
+```text
+OBSERVED FAILURE / JUSTIFIED GAP
 -> PROPOSED CHANGE
 -> RATIONALE
 -> EVAL CASE
 -> IMPLEMENT IN ISOLATION
 -> REGRESSION SUITE
 -> INDEPENDENT REVIEW
--> HUMAN AUTHORIZATION
+-> HUMAN / PROJECT AUTHORIZATION AS REQUIRED
 -> PROMOTE
 ```
 
 Architecture changes carry a higher burden of proof than reference refreshes.
 
-### 16.1 Change classes
+### 16.18 Change classes outside explicit self-evolution
 
 **Low impact**
 - current-reference refresh
@@ -1131,14 +1640,15 @@ Architecture changes carry a higher burden of proof than reference refreshes.
 - evidence model
 - public Skill split
 - cross-runtime policy
+- self-evolution governance
 
 High-impact change requires explicit research/design/eval/approval.
 
-### 16.2 Regression from real failures
+### 16.19 Regression from real failures
 
 Material CodeMaestro failures should become minimized regression evals when practical. The system should evolve through testable corrections rather than an ever-growing prompt.
 
-### 16.3 No skill creep
+### 16.20 No skill creep
 
 Default response to a new domain:
 
@@ -1148,6 +1658,8 @@ new domain
    -> yes: profile/reference/workflow
    -> no: prove missing abstraction before new family/Skill
 ```
+
+Self-evolution must obey this rule rather than using upgrade authority as a path to uncontrolled Skill proliferation.
 
 ---
 
@@ -1166,6 +1678,9 @@ At minimum:
 - authority/safety evals pass
 - evidence/provenance semantics hold
 - Project Quality Contract protection is demonstrated
+- command-gated self-evolution semantics are validated
+- self-upgrade cannot self-expand authority or silently mutate the stable baseline
+- self-evolution target/regression/no-change cases pass
 - no major unresolved capability overlap remains
 - packaging/branding is validated against the current host format
 - representative real-project trials complete
@@ -1184,11 +1699,12 @@ The implementation sequence should begin with synthesis/canonicalization and RED
 ```text
 WRITTEN SPEC APPROVED
 -> CANONICALIZE ARCHITECTURE / DECISIONS / RESEARCH BACKLOG
--> SYNTHESIZE CAPABILITY CONTRACTS
--> WRITE RED EVALS
+-> SYNTHESIZE CAPABILITY CONTRACTS + SELF-EVOLUTION CONTRACT
+-> WRITE RED EVALS INCLUDING SELF-EVOLUTION / AUTHORITY CASES
 -> FINALIZE PHYSICAL PACKAGING
 -> IMPLEMENT COMPACT ORCHESTRATOR
 -> IMPLEMENT PROGRESSIVE MODULES / REFERENCES
+-> IMPLEMENT COMMAND-GATED SELF-EVOLUTION CONTROLLER
 -> VALIDATE CROSS-RUNTIME BEHAVIOR
 -> STABILIZE
 ```
@@ -1206,6 +1722,8 @@ This document does not:
 - create runtime scripts;
 - implement evals;
 - implement cross-runtime adapters;
+- implement the Self-Evolution Controller;
+- perform an actual self-upgrade;
 - create the final icon assets;
 - install or publish a plugin;
 - merge PR #1;
