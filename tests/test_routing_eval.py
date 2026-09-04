@@ -213,5 +213,66 @@ class DeterministicGraderTests(unittest.TestCase):
         self.assertEqual(metrics.supporting_exact_correct, 1)
 
 
+class CorpusCompositionTests(unittest.TestCase):
+    def _case(self, idx: int, cluster: str, source_kind: str = "legacy-request"):
+        module = load_module()
+        return module.RoutingCase(
+            id=f"{cluster}-{idx:03d}",
+            cluster=cluster,
+            prompt="boundary example",
+            expected_primary="build-toolchain-environment",
+            expected_supporting=(),
+            clarification_required=False,
+            high_risk=False,
+            source_kind=source_kind,
+            source_ref="legacy:example" if source_kind != "synthetic" else "",
+            source_transform="Normalized fixture.",
+        )
+
+    def test_rejects_fewer_than_100_cases(self):
+        module = load_module()
+        cases = [self._case(i + 1, "build-ci-debug") for i in range(99)]
+        with self.assertRaises(ValueError):
+            module.validate_corpus_composition(cases)
+
+    def test_rejects_cluster_with_fewer_than_10_cases(self):
+        module = load_module()
+        clusters = sorted(CLUSTERS)
+        cases = []
+        for cluster in clusters:
+            count = 9 if cluster == clusters[0] else 11
+            cases.extend(self._case(len(cases) + i + 1, cluster) for i in range(count))
+        with self.assertRaises(ValueError):
+            module.validate_corpus_composition(cases)
+
+    def test_rejects_real_derived_share_below_one_third(self):
+        module = load_module()
+        clusters = sorted(CLUSTERS)
+        cases = []
+        idx = 1
+        for cluster in clusters:
+            for _ in range(10):
+                source_kind = "legacy-request" if idx <= 33 else "synthetic"
+                cases.append(self._case(idx, cluster, source_kind=source_kind))
+                idx += 1
+        with self.assertRaises(ValueError):
+            module.validate_corpus_composition(cases)
+
+    def test_accepts_100_cases_with_10_per_cluster_and_34_real_derived(self):
+        module = load_module()
+        clusters = sorted(CLUSTERS)
+        cases = []
+        idx = 1
+        for cluster in clusters:
+            for _ in range(10):
+                source_kind = "current-project-task" if idx <= 34 else "synthetic"
+                cases.append(self._case(idx, cluster, source_kind=source_kind))
+                idx += 1
+        summary = module.validate_corpus_composition(cases)
+        self.assertEqual(summary["case_count"], 100)
+        self.assertEqual(summary["real_derived_count"], 34)
+        self.assertTrue(all(count >= 10 for count in summary["cluster_counts"].values()))
+
+
 if __name__ == "__main__":
     unittest.main()
