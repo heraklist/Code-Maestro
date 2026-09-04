@@ -11,6 +11,10 @@ NON_CANONICAL_MARKERS = ("ABSORBED", "SUPERSEDED", "HISTORICAL", "NON-CANONICAL"
 RESEARCH_HEADING_RE = re.compile(r"^##\s+(CM-R-\d{3})\b", re.MULTILINE)
 WORKING_RECORD_RE = re.compile(r"\*\*Working record:\*\*\s*`([^`]+)`")
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
+FENCED_CODE_RE = re.compile(
+    r"(^|\n)(`{3,}|~{3,}).*?\n.*?\n\2[ \t]*(?=\n|$)",
+    re.MULTILINE | re.DOTALL,
+)
 
 
 @dataclass(frozen=True)
@@ -119,13 +123,17 @@ def check_research_index(root: Path) -> list[Finding]:
     return findings
 
 
+def _without_fenced_code(text: str) -> str:
+    return FENCED_CODE_RE.sub("\n", text)
+
+
 def check_markdown_links(root: Path) -> list[Finding]:
     findings: list[Finding] = []
     files = [root / "README.md", *_markdown_files(root)]
     for path in files:
         if not path.exists():
             continue
-        text = path.read_text(encoding="utf-8")
+        text = _without_fenced_code(path.read_text(encoding="utf-8"))
         for raw_target in MARKDOWN_LINK_RE.findall(text):
             target = raw_target.strip().split("#", 1)[0]
             if not target or "://" in target or target.startswith("mailto:"):
