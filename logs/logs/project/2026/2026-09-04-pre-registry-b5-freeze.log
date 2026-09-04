@@ -1,0 +1,27 @@
+EVENT ID: PRE-REG-B5-004
+TIMESTAMP: 2026-09-04 21:04:30 +03:00
+SESSION: chat-inline-pre-registry-eval-b5
+EVENT / TYPE: CORPUS FREEZE
+TARGET: Eval Readiness B5 corpus-v1
+ACTION: Validated and froze the 100-case provenance-balanced routing corpus before any full-corpus routing run.
+REASON: B5 requires expectations and provenance to become immutable evidence before repeated model/runtime evaluation.
+BEFORE: 100 expectations and provenance were authored; final exact-branch corpus validation was pending.
+AFTER: corpus-v1 is the frozen v1 challenge set. Changes to prompts, expected primary/supporting labels, clarification flags, high-risk flags, or provenance require explicit correction/versioning.
+EVIDENCE: GitHub Actions run 33903873173: unit tests success; pilot validation success; frozen corpus-v1 validation success; pilot skeleton reproduction success; repository checker success; append-only guard success. Corpus composition: 100 total, 10 per cluster, 40 real-derived, 60 synthetic adversarial.
+AUTHORITY: Approved pre-registry Eval Readiness plan Task B5.
+RESULT: B5 VALIDATED / FROZEN
+RELATED COMMIT / ARTIFACT: 28c1924710b8ca422b04b201ca2852ba3d71c984; evals/routing/corpus-v1.json; docs/evals/ROUTING-CORPUS-PROVENANCE.md
+
+EVENT ID: PRE-REG-B5-005
+TIMESTAMP: 2026-09-04 21:04:45 +03:00
+SESSION: chat-inline-pre-registry-eval-b5
+EVENT / TYPE: CHECKPOINT
+TARGET: Pre-registry Eval Readiness execution
+ACTION: Recorded B5 completion boundary and next authorized task.
+REASON: Preserve restart-safe continuity before moving to repeated-run manifest/aggregation semantics.
+BEFORE: B1-B4 complete; B5 corpus construction in progress.
+AFTER: B1-B5 complete at the evidence level; B6 is next and B7 full-corpus routing has not started.
+EVIDENCE: corpus-v1 and provenance are committed; exact-branch run 33903873173 succeeded before this checkpoint commit. A fresh exact-head CI run is required before claiming branch-head GREEN.
+AUTHORITY: Approved pre-registry Eval Readiness plan.
+RESULT: CHECKPOINT WRITTEN
+RELATED COMMIT / ARTIFACT: logs/logs/project/2026/2026-09-04-pre-registry-b5-freeze.log
