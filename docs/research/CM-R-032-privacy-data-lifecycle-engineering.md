@@ -1,9 +1,10 @@
 # CM-R-032 — Privacy & Data Lifecycle Engineering
 
 **Priority:** P1 by default; P0 for personal/sensitive/high-impact data
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 **Opened:** 2026-09-04
-**Accepted by:** `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
+**Direction accepted by:** `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
 
 ## Question
 
@@ -31,6 +32,10 @@ Security asks whether access/use is authorized and protected. Privacy additional
 
 Exact legal obligations remain jurisdiction- and time-sensitive research rather than hardcoded global rules.
 
+## Milestone 0 open requirement
+
+The repository work-session logging retention/deletion/public-sanitization policy is **not yet resolved**. This track remains `IN RESEARCH`, and Milestone 0 logging must not be declared operational until that specific policy has been researched, decided, and recorded.
+
 ## Primary authorities
 
 - NIST Privacy Engineering: https://www.nist.gov/privacy-engineering
@@ -42,4 +47,4 @@ Exact legal obligations remain jurisdiction- and time-sensitive research rather 
 
 ## Evidence limitations
 
-Privacy requirements depend on data type, system purpose, jurisdiction, deployment context, and current regulation. This track establishes durable engineering methodology; legal conclusions require current authoritative research.
+Privacy requirements depend on data type, system purpose, jurisdiction, deployment context, and current regulation. This track establishes an accepted architectural direction but its full engineering methodology and the Milestone 0 retention/deletion policy remain open research.
