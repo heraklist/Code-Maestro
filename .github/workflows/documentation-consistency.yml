@@ -2,12 +2,11 @@ name: Documentation Consistency
 
 on:
   push:
-    branches:
-      - docs/architecture-foundation-v0.1
   pull_request:
     paths:
       - 'README.md'
       - 'docs/**'
+      - 'logs/**'
       - 'tools/doc_consistency.py'
       - 'tests/test_doc_consistency.py'
       - '.github/workflows/documentation-consistency.yml'
