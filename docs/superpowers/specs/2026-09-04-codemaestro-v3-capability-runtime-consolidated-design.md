@@ -4,11 +4,11 @@
 
 Design direction approved interactively on 2026-09-04. This document is the consolidated written specification checkpoint and is pending the explicit written-spec review gate required before implementation planning.
 
-This revision incorporates the approved **Command-Gated Self-Evolution Protocol**: CodeMaestro may research, audit, evolve, and prepare verified upgrades to its own methodology, routing, references, evals, packaging, and architecture when explicitly instructed by the user.
+This revision incorporates the approved **Command-Gated Self-Evolution Protocol** and **Durable Session & Audit Logging Contract**. CodeMaestro may research, audit, evolve, and prepare verified upgrades to its own methodology, routing, references, evals, packaging, and architecture when explicitly instructed by the user. Project-working sessions must also preserve append-only conversation and project-event history when repository write capability is available and authorized.
 
 This document supersedes earlier partial design descriptions where they conflict, but it does not yet replace the living canonical architecture files. Canonicalization into `docs/architecture/ARCHITECTURE.md`, `docs/architecture/DECISIONS.md`, and the central research backlog is a later documentation step after this written spec is reviewed.
 
-No production `SKILL.md`, runtime module, script, eval implementation, plugin package, self-evolution controller, or final visual asset is created by this milestone.
+No production `SKILL.md`, runtime module, script, eval implementation, plugin package, self-evolution controller, final visual asset, or production logging filesystem is created by this milestone.
 
 ---
 
@@ -62,6 +62,12 @@ The following invariants apply across every capability family, runtime surface, 
 26. **Self-upgrades require before/after evidence.** A change to CodeMaestro is an upgrade only when evidence demonstrates a justified improvement without unacceptable regression.
 27. **Self-upgrade candidates are isolated and reversible.** Consequential self-modification should occur on a dedicated branch/workspace or equivalent isolated target with a known rollback baseline.
 28. **No-change is a valid self-evolution result.** A self-audit may conclude that no material upgrade is justified.
+29. **Project-working sessions preserve durable history.** When repository write capability is available and authorized, CodeMaestro sessions working on this project maintain append-only conversation and project-event records under the repository `logs/` area.
+30. **Logging is semantically append-only.** Existing historical entries are not silently deleted, rewritten, reordered, or replaced. Corrections, supersessions, refutations, and rollbacks are new timestamped events.
+31. **Conversation transcripts are continuity evidence, not canonical authority.** They preserve user-visible project dialogue but do not outrank current code, normative specs, ADRs, or approved project state.
+32. **Self-evolution has its own audit stream.** Self-research, hypotheses, evals, candidate changes, no-change outcomes, promotion decisions, and rollback evidence are recorded separately from ordinary project-change events.
+33. **Conversation transcripts are optional self-evolution evidence.** The Self-Evolution Controller reads them only when a specific evidentiary need justifies the context, privacy exposure, and processing cost.
+34. **Secret and privacy protection outrank verbatim persistence.** Credentials, tokens, private keys, and other material that should not be committed are redacted or omitted with an explicit redaction marker rather than persisted for transcript completeness.
 
 ---
 
@@ -516,9 +522,9 @@ When the target is SELF, CodeMaestro applies the same discipline to its own repo
 
 ### 6.4 Context / Long-Horizon Intelligence
 
-Owns durable project state, resumability, context selection, context freshness, artifact references, and recovery across long-running or multi-session work.
+Owns durable project state, resumability, context selection, context freshness, artifact references, session continuity, and recovery across long-running or multi-session work.
 
-Conversation memory is not canonical project state.
+Conversation memory is not canonical project state. Repository-maintained session transcripts and event logs may preserve continuity, but normative project truth remains in the current repository state, accepted specifications, decisions, and evidence artifacts.
 
 ### 6.5 Research / Freshness Intelligence
 
@@ -560,6 +566,8 @@ explicit self-evolution instruction
 <-> promotion/rollback decision
 ```
 
+Session/event logs may add provenance links between user-visible discussion, decisions, mutations, commits, and evidence, but they do not become normative simply because they are durable.
+
 Recovered specifications remain weaker than normative intent until explicitly promoted.
 
 ---
@@ -598,7 +606,7 @@ The same applies to self-evolution: if the current Chat environment provides rep
 
 ### 7.3 Codex
 
-Codex uses the same core methodology, evidence model, authority model, capability taxonomy, quality model, and self-evolution semantics.
+Codex uses the same core methodology, evidence model, authority model, capability taxonomy, quality model, self-evolution semantics, and durable logging contract.
 
 Codex-specific adaptation is limited to mechanics such as local repository semantics, shell/git behavior, worktrees, sandboxing, browser surfaces, approval UX, and runtime-specific capabilities.
 
@@ -679,6 +687,8 @@ For example, if tests are required but no executable environment exists, CodeMae
 
 A self-upgrade request may therefore degrade to research/design/proposal if the environment lacks authorized mutation or validation capability.
 
+If repository write access is unavailable, required durable logging also degrades truthfully: the session may maintain a provisional handoff record in the best available artifact but must not claim the repository log was updated.
+
 ### 7.9 Capability recovery
 
 If a capability becomes available mid-task, CodeMaestro may increase execution depth without changing public mode. If a capability disappears, the workflow degrades truthfully.
@@ -708,7 +718,243 @@ Self-evolution handoffs additionally preserve baseline CodeMaestro version, upgr
 
 ### 7.11 Durable state over conversation state
 
-Material long-horizon project state should live in durable artifacts where possible: repository docs, issues, plans, decisions, evidence ledgers, test artifacts, evolution ledgers, or equivalent project state.
+Material long-horizon project state should live in durable artifacts where possible: repository docs, issues, plans, decisions, evidence ledgers, test artifacts, session transcripts, project-event logs, self-evolution logs, or equivalent project state.
+
+Conversation memory alone is not sufficient continuity for ongoing CodeMaestro project work.
+
+### 7.12 Durable Session & Audit Logging Contract
+
+Every Chat, Work, Codex, or future CodeMaestro session that performs material work on the CodeMaestro repository should maintain a repository-level audit/continuity area when repository write capability is available and authorized.
+
+The required logical structure is:
+
+```text
+logs/
+├── conversations/
+│   └── YYYY/
+│       └── YYYY-MM-DD_<session-id>.md
+└── logs/
+    ├── project/
+    │   └── YYYY/
+    │       └── YYYY-MM-DD.log
+    └── self-evolution/
+        └── YYYY/
+            └── YYYY-MM-DD_<evolution-id>.log
+```
+
+The two required root subfolders remain `conversations/` and `logs/`; `project/` and `self-evolution/` partition the engineering event stream by responsibility.
+
+#### 7.12.1 Conversation transcript stream
+
+Each project-working conversation/session receives a transcript file. The transcript preserves the complete **user-visible project dialogue** and relevant observable engineering actions needed for continuity.
+
+A transcript may include:
+
+- timestamp;
+- role;
+- visible message content;
+- relevant attachment/file references;
+- surface/runtime when known;
+- session/conversation identifier when available;
+- repository/branch/SHA context;
+- material observable tool/action summaries where they are needed to reconstruct the work.
+
+It does **not** attempt to persist hidden chain-of-thought or other non-user-visible private model reasoning.
+
+A transcript starts with a session header recording the initial state, for example:
+
+```text
+# CodeMaestro Conversation Transcript
+
+Session started: 2026-09-04 11:32:00 +03:00
+Surface: Chat
+Repository: heraklist/Code-Maestro
+Initial branch: docs/architecture-foundation-v0.1
+Initial SHA: <sha>
+Purpose: CodeMaestro architecture design
+Transcript policy: append-only
+```
+
+The header is historical. If branch/SHA/scope later changes, the original header is not rewritten; a new timestamped `STATE CHANGE` event is appended.
+
+#### 7.12.2 Project event stream
+
+`logs/logs/project/` is the ordinary engineering/project event ledger.
+
+It records material project mutations and state transitions, including when relevant:
+
+- files created/modified/deleted/moved;
+- branches and commits;
+- PR creation/update;
+- dependency/configuration changes;
+- architecture/spec/decision changes;
+- research accepted/rejected/promoted;
+- eval additions/results;
+- Skill/reference/asset changes;
+- deployment/database mutations;
+- rollback/recovery events;
+- `DESIGN_APPROVED`, `CAPABILITY_FROZEN`, `EVAL_FAILED`, `EVAL_PASSED`, or equivalent material state transitions.
+
+A material event should preserve enough structured information to reconstruct why the change occurred. Canonical fields may include:
+
+```text
+TIMESTAMP
+SESSION
+EVENT / TYPE
+TARGET
+ACTION
+REASON
+BEFORE
+AFTER
+EVIDENCE
+AUTHORITY
+RESULT
+RELATED COMMIT / ARTIFACT
+```
+
+Fields may be omitted when not applicable, but the event must remain unambiguous.
+
+#### 7.12.3 Self-evolution audit stream
+
+`logs/logs/self-evolution/` is a dedicated audit stream for runs targeting CodeMaestro itself.
+
+A self-evolution record captures research and decision history even when no repository change is ultimately made.
+
+A record may contain:
+
+```text
+SELF-EVOLUTION RUN
+ID
+STARTED
+BASELINE SHA
+USER COMMAND
+MODE: SELF-RESEARCH / SELF-AUDIT / SELF-UPGRADE
+OBJECTIVE
+SOURCES
+CURRENT-STATE FINDINGS
+HYPOTHESES
+CONVERSATIONS CONSULTED
+RED EVALS
+CANDIDATE CHANGES
+REGRESSION RESULTS
+REVIEW VERDICT
+PROMOTION STATUS
+ROLLBACK BASELINE
+```
+
+Valid outcomes include `NO MATERIAL UPGRADE JUSTIFIED`, rejected candidate, verified-not-promoted candidate, promoted upgrade, or rollback.
+
+Self-evolution research activity and actual project mutation are distinct. If a self-evolution run changes the repository, the self-evolution record and ordinary project-event record cross-reference each other using the evolution ID, session, commit, and/or artifact path.
+
+#### 7.12.4 Append-only semantics
+
+Logging is semantically append-only.
+
+Existing historical entries must not be silently:
+
+- deleted;
+- rewritten;
+- reordered;
+- cleaned up to make history appear more successful;
+- replaced by a corrected version.
+
+If an earlier entry is wrong, append a new record such as:
+
+```text
+CORRECTION / SUPERSEDES EVENT <id>
+Previous statement: ...
+Corrected state: ...
+Evidence: ...
+```
+
+The original entry remains part of the audit trail.
+
+Git itself may create new blob versions when a file is updated; the invariant concerns the semantic content of the history: old entries remain and new information is appended.
+
+#### 7.12.5 Timestamp convention
+
+Prefer offset-aware timestamps:
+
+```text
+YYYY-MM-DD HH:mm:ss ±HH:MM
+```
+
+for example:
+
+```text
+2026-09-04 11:43:17 +03:00
+```
+
+ISO 8601 UTC may additionally be stored where useful for cross-runtime correlation.
+
+#### 7.12.6 Session startup behavior
+
+A CodeMaestro project-working session should, when capabilities permit:
+
+```text
+identify repository
+-> locate logs/
+-> identify/create the session transcript
+-> read only the relevant recent project state/log entries needed for continuity
+-> capture current branch/SHA/state
+-> continue work
+```
+
+The logging system must not force every session to ingest all historical transcripts or event files. Progressive disclosure applies to history as well as methodology.
+
+#### 7.12.7 Checkpoint behavior
+
+Material decisions and mutations should be logged near the time they occur rather than relying solely on an end-of-session reconstruction.
+
+Useful checkpoints preserve:
+
+- what was decided;
+- what changed;
+- evidence;
+- current branch/SHA;
+- unresolved items;
+- next expected/authorized action.
+
+This supports recovery after context loss or handoff across Chat, Work, and Codex.
+
+#### 7.12.8 Conversation-to-event traceability
+
+Conversation transcripts and event logs may cross-reference each other:
+
+```text
+CONVERSATION
+<-> DECISION
+<-> PROJECT EVENT
+<-> COMMIT / ARTIFACT / EVIDENCE
+```
+
+These links strengthen provenance but do not make conversation text normative authority.
+
+#### 7.12.9 Secret/privacy exception
+
+Transcript completeness never justifies committing credentials or other material that should remain secret/private.
+
+When a secret appears in visible dialogue or tool output, persist an explicit marker such as:
+
+```text
+[REDACTED SECRET — not persisted]
+```
+
+and, where useful, a separate event noting that redaction occurred.
+
+The same principle applies to other sensitive data when persistence would violate the project's privacy/data-lifecycle requirements.
+
+#### 7.12.10 Logging is evidence, not instruction authority
+
+Conversation transcripts, project logs, and self-evolution logs are evidence/continuity artifacts. They do not override:
+
+- current user/system authority;
+- current executable repository state;
+- normative project specifications;
+- accepted ADRs;
+- more current verified evidence.
+
+A historical instruction preserved in a transcript remains historical data unless it is still part of the current authoritative project contract.
 
 ---
 
@@ -805,7 +1051,7 @@ Skill/plugin identity, name, icon/branding, and minimal discovery metadata where
 
 **Level 1 — Core orchestrator**
 
-Mission, invariants, routing, capability discovery, authorization/trust, quality contract, research/freshness gate, evidence semantics, mutation/completion rules, cross-runtime contract, and the command gate for self-evolution.
+Mission, invariants, routing, capability discovery, authorization/trust, quality contract, research/freshness gate, evidence semantics, mutation/completion rules, cross-runtime contract, command gate for self-evolution, and durable session/audit logging contract.
 
 **Level 2 — Capability modules**
 
@@ -813,7 +1059,7 @@ The 17 engineering families.
 
 **Level 3 — Deep references / techniques**
 
-Focused domain material such as authentication, RLS, supply chain, accessibility, property-based testing, formal methods, design systems, telemetry, migration patterns, current standards, technology-specific guidance, and self-evolution protocols/eval templates.
+Focused domain material such as authentication, RLS, supply chain, accessibility, property-based testing, formal methods, design systems, telemetry, migration patterns, current standards, technology-specific guidance, self-evolution protocols/eval templates, and logging schemas/templates.
 
 ### 10.3 Conceptual package layout
 
@@ -858,12 +1104,25 @@ codemaestro/
 │   └── traceability/
 ├── references/
 ├── scripts/
-├── evolution/
-│   └── ledgers-and-candidate-records
 └── evals/
 ```
 
 This is an information architecture, not a commitment that every directory maps one-to-one to a runtime-loadable Skill.
+
+The repository-level continuity/audit filesystem is deliberately separate from the reusable Skill package:
+
+```text
+Code-Maestro/
+├── logs/
+│   ├── conversations/
+│   └── logs/
+│       ├── project/
+│       └── self-evolution/
+├── docs/
+└── <Skill/package implementation>
+```
+
+Logs are project state/history, not portable Skill instructions.
 
 ### 10.4 Stable methodology vs current knowledge
 
@@ -1041,7 +1300,7 @@ Scope includes toolchain correctness, build systems, environment parity, hermeti
 
 Scope includes privacy risk, data minimization, lifecycle, retention/deletion, propagation into backups/logs/caches/analytics/vector indexes, third parties, disposal, and privacy-by-design.
 
-No CM-R-033 is authorized by Pass 5. The Command-Gated Self-Evolution Protocol is a governance mechanism built from already accepted research, evidence, repository-comprehension, assurance, security, and controlled-evolution principles; if implementation/evals later expose an independent unresolved research question, a new research track may be proposed under the post-freeze evidence rule.
+No CM-R-033 is authorized by Pass 5. The Command-Gated Self-Evolution Protocol and Durable Session & Audit Logging Contract are governance/context/evidence mechanisms built from already accepted research, repository-comprehension, assurance, security, privacy, provenance, and controlled-evolution principles. If implementation/evals later expose an independent unresolved research question, a new research track may be proposed under the post-freeze evidence rule.
 
 Developer Experience, documentation, monorepo/workspace, and telemetry concerns remain profiles/workflows inside existing families and shared intelligence.
 
@@ -1062,6 +1321,7 @@ CodeMaestro is evaluated by behavior and evidence, not by the amount of guidance
 7. **Evidence quality** — claims have appropriate provenance, target fidelity, coverage, and limitations.
 8. **User outcome** — completion reaches the relevant user/business boundary where applicable.
 9. **Self-evolution integrity** — self-upgrade behavior remains command-gated, evidence-driven, isolated, reversible, non-regressive, and unable to self-expand authority.
+10. **Logging integrity** — transcripts/event streams preserve append-only semantics, traceability, redaction boundaries, cross-runtime continuity, and separation between project changes and self-evolution research.
 
 ### 14.2 Agent eval contracts
 
@@ -1105,6 +1365,7 @@ evals/
 ├── evidence/
 ├── authority/
 ├── quality-contract/
+├── logging/
 ├── self-evolution/
 ├── adversarial/
 ├── regression/
@@ -1125,7 +1386,12 @@ The first regression corpus should include representative cases for:
 - experimental-language semantics with conflicting authorities
 - privacy/data-retention propagation failure
 - cross-runtime equivalent-capability conformance
+- session handoff in which transcript/project logs preserve enough state to resume without relying on model memory
+- correction of a false prior log entry by append-only superseding event rather than rewrite
+- secret appearing in visible content and being redacted from durable transcript
 - self-research that correctly concludes no change is justified
+- self-evolution run that does not read conversations because they add no evidentiary value
+- self-evolution run that reads a narrowly scoped conversation segment and records why it was needed
 - self-upgrade that improves a target eval while preserving core regression/authority/evidence suites
 - adversarial self-upgrade attempt that tries to lower its own quality bar or grant itself broader authority and must be rejected
 
@@ -1148,6 +1414,7 @@ Compare:
 - validation standard
 - evidence semantics
 - completion meaning
+- logging/continuity semantics
 - self-evolution command/promotion semantics when target is SELF
 
 ### 14.8 Fresh-context review
@@ -1186,6 +1453,7 @@ Look for:
 - context bloat
 - accidental behavior becoming specification
 - capability discovery/loading failures
+- missing/duplicated/corrupted log entries or logging that overwhelms useful context
 - self-evolution loops, upgrade churn, or unjustified rewrites
 
 ### 15.3 Stabilization ladder
@@ -1197,7 +1465,7 @@ S0 structural health
 S1 routing baseline
 S2 capability baseline
 S3 composition
-S4 cross-runtime
+S4 cross-runtime + logging continuity
 S5 adversarial/security/self-evolution
 S6 real-project trials
 S7 release baseline
@@ -1210,6 +1478,8 @@ Exact stage names may change; the progression from structural correctness to rea
 A broken optional capability/reference must not silently corrupt unrelated workflows. Discovery/loading failures should be isolated, surfaced, and truthfully degraded where possible.
 
 The Self-Evolution Controller must itself fail closed: an unavailable evolution ledger, invalid baseline, missing critical eval suite, or inability to isolate changes must not silently downgrade into direct modification of the stable baseline.
+
+Logging failures must also be surfaced. An inability to append a required repository record must not be silently reported as logged; the work may continue only to the degree allowed by the active task/risk model, with the continuity gap made explicit.
 
 ---
 
@@ -1232,6 +1502,8 @@ When explicitly instructed by the user, CodeMaestro may:
 - prepare a reversible upgrade candidate for promotion.
 
 It must never treat mere change as improvement.
+
+Every self-evolution run maintains its own append-only audit record under `logs/logs/self-evolution/` when repository logging capability is available and authorized.
 
 ### 16.2 Command gate and intent levels
 
@@ -1343,6 +1615,8 @@ SELF REPOSITORY COMPREHENSION
 
 Self-knowledge inferred from conversation memory is insufficient when durable repository/artifact state is available.
 
+Conversation transcripts are **not** part of the mandatory self-model load. They are consulted only under the evidence-selective rules in Section 16.7.
+
 ### 16.4 Self-evolution scope levels
 
 Not all upgrades carry equal architectural impact.
@@ -1413,7 +1687,9 @@ The following are protected core invariants for self-evolution purposes:
 - quality-contract protection;
 - human authority;
 - command-gated self-evolution;
-- controlled promotion/rollback.
+- controlled promotion/rollback;
+- append-only self-evolution audit history;
+- conversation transcripts remain optional evidence rather than mandatory self-evolution context.
 
 Self-upgrade code or guidance may not silently rewrite these controls.
 
@@ -1439,7 +1715,7 @@ nor can it remove required approvals, broaden production write scope, or create 
 
 Authority originates outside the self-evolution mechanism.
 
-### 16.7 Research requirements
+### 16.7 Research requirements and source priority
 
 Self-evolution must compare current CodeMaestro state with current authoritative external state when freshness is material.
 
@@ -1455,6 +1731,32 @@ Potential source domains include:
 - product/UX and accessibility authorities.
 
 External sources are evidence inputs, not automatic authority to change CodeMaestro.
+
+Default self-evolution evidence priority is:
+
+```text
+1. current executable/repository state
+2. canonical architecture, ADRs, specifications, and protected invariants
+3. current eval evidence/results
+4. relevant project event logs
+5. relevant previous self-evolution logs
+6. current authoritative external research
+7. conversation transcripts — only when a specific evidentiary need justifies them
+```
+
+The exact ordering of items 2–6 may vary with the research question, but conversation history is not a default corpus.
+
+The Self-Evolution Controller should not ingest conversation transcripts unless their expected evidentiary value justifies additional context, privacy exposure, and processing cost.
+
+Justified examples include:
+
+- reconstructing the rationale for a decision that is missing from canonical artifacts;
+- resolving a contradiction between current docs and historical user intent;
+- investigating recurring user corrections/friction as a candidate methodology failure;
+- verifying the exact scope of a prior explicit instruction;
+- a user explicitly asking that a conversation be considered.
+
+When conversation material is consulted, the self-evolution log records at least the reason, files/segments consulted where practical, scope, and evidentiary result. Historical conversation material remains evidence rather than normative authority.
 
 ### 16.8 RED eval before material self-change
 
@@ -1485,6 +1787,7 @@ target eval
 + evidence suite
 + cross-runtime suite
 + quality-contract suite
++ self-evolution logging integrity
 ```
 
 The stronger the impact, the broader the required regression coverage.
@@ -1545,14 +1848,18 @@ AFTER
 
 An upgrade claim must reflect this evidence rather than the mere existence of a diff.
 
-### 16.13 Evolution ledger
+### 16.13 Dedicated self-evolution ledger
 
-Maintain durable self-evolution history where the environment/repository supports it.
+Maintain durable self-evolution history under the dedicated append-only stream:
+
+```text
+logs/logs/self-evolution/YYYY/YYYY-MM-DD_<evolution-id>.log
+```
 
 Conceptual record:
 
 ```text
-upgrade id
+upgrade/evolution id
 triggering user instruction
 baseline version
 research snapshot
@@ -1560,21 +1867,30 @@ observed gap/failure
 proposal
 impact class
 RED eval
-changes
+changes/candidate state
 regression evidence
+conversations consulted + justification, if any
 independent review
 approval/promotion state
 resulting version
 rollback target
 ```
 
+The self-evolution ledger is distinct from the ordinary project event ledger. A research/audit run that makes no change still receives a self-evolution record, but no project mutation event is required.
+
+When self-evolution causes a real repository mutation, the self-evolution record and `logs/logs/project/` event cross-reference each other.
+
 The ledger is append-oriented audit history; it must not become a hidden authority source that overrides current project/human decisions.
+
+A self-evolution record must not be rewritten later to make an unsuccessful hypothesis or rejected candidate appear successful. Refutations/corrections are appended.
 
 ### 16.14 Rollback
 
 Every promoted self-upgrade should have a known previous good state and a practical rollback strategy proportional to its impact.
 
 A regression discovered after promotion should be eligible to trigger rollback and a new regression eval rather than uncontrolled forward-fixing.
+
+Rollback itself is appended to both the relevant self-evolution record and the ordinary project-event stream when it changes repository state.
 
 ### 16.15 Knowledge refresh versus architecture rewrite
 
@@ -1604,6 +1920,8 @@ NO MATERIAL UPGRADE JUSTIFIED
 ```
 
 The instruction to research or evolve itself does not create an obligation to manufacture changes.
+
+This no-change outcome remains recorded in the dedicated self-evolution audit stream.
 
 ### 16.17 Controlled evolution lifecycle
 
@@ -1641,12 +1959,15 @@ Architecture changes carry a higher burden of proof than reference refreshes.
 - public Skill split
 - cross-runtime policy
 - self-evolution governance
+- durable logging authority/integrity semantics
 
 High-impact change requires explicit research/design/eval/approval.
 
 ### 16.19 Regression from real failures
 
 Material CodeMaestro failures should become minimized regression evals when practical. The system should evolve through testable corrections rather than an ever-growing prompt.
+
+Project logs and self-evolution logs may help identify recurring failures, but conversation transcripts are only consulted when evidence-selective rules justify them.
 
 ### 16.20 No skill creep
 
@@ -1678,6 +1999,8 @@ At minimum:
 - authority/safety evals pass
 - evidence/provenance semantics hold
 - Project Quality Contract protection is demonstrated
+- durable session/project/self-evolution logging semantics are validated
+- append-only correction/redaction/handoff cases pass
 - command-gated self-evolution semantics are validated
 - self-upgrade cannot self-expand authority or silently mutate the stable baseline
 - self-evolution target/regression/no-change cases pass
@@ -1699,13 +2022,14 @@ The implementation sequence should begin with synthesis/canonicalization and RED
 ```text
 WRITTEN SPEC APPROVED
 -> CANONICALIZE ARCHITECTURE / DECISIONS / RESEARCH BACKLOG
+-> DEFINE + CREATE REPOSITORY LOGGING STRUCTURE / APPEND-ONLY SCHEMAS
 -> SYNTHESIZE CAPABILITY CONTRACTS + SELF-EVOLUTION CONTRACT
--> WRITE RED EVALS INCLUDING SELF-EVOLUTION / AUTHORITY CASES
+-> WRITE RED EVALS INCLUDING LOGGING / SELF-EVOLUTION / AUTHORITY CASES
 -> FINALIZE PHYSICAL PACKAGING
 -> IMPLEMENT COMPACT ORCHESTRATOR
 -> IMPLEMENT PROGRESSIVE MODULES / REFERENCES
 -> IMPLEMENT COMMAND-GATED SELF-EVOLUTION CONTROLLER
--> VALIDATE CROSS-RUNTIME BEHAVIOR
+-> VALIDATE CROSS-RUNTIME + LOGGING CONTINUITY
 -> STABILIZE
 ```
 
@@ -1724,6 +2048,7 @@ This document does not:
 - implement cross-runtime adapters;
 - implement the Self-Evolution Controller;
 - perform an actual self-upgrade;
+- create the final `logs/` filesystem or transcript/event files;
 - create the final icon assets;
 - install or publish a plugin;
 - merge PR #1;
