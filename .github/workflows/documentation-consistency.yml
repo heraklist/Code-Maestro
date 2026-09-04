@@ -10,6 +10,7 @@ on:
       - 'tools/doc_consistency.py'
       - 'tools/check_append_only_logs.py'
       - 'tests/test_doc_consistency.py'
+      - 'tests/test_routing_eval.py'
       - '.github/workflows/documentation-consistency.yml'
 
 permissions:
@@ -30,7 +31,7 @@ jobs:
           python-version: '3.12'
 
       - name: Run unit tests
-        run: python -m unittest tests.test_doc_consistency -v
+        run: python -m unittest discover -s tests -v
 
       - name: Run repository documentation checker
         run: python tools/doc_consistency.py
