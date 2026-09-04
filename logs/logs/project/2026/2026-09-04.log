@@ -182,3 +182,19 @@ EVIDENCE: fresh reads of `docs/project-governance/SESSION-LOGGING-PROTOCOL.md`, 
 AUTHORITY: Session resume protocol and state-before-mutation invariant.
 RESULT: PASS
 RELATED COMMIT / ARTIFACT: PR #1; active transcript/project ledger; head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T133229+0300-state-sync-001
+TIMESTAMP: 2026-09-04 13:32:29 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: STATE_CHANGE
+TARGET: Repository-facing Milestone 0 status surfaces
+ACTION: Updated README from execution-in-progress to operational Milestone 0 state and updated PR #1 title/description to reflect the implemented logging/CI foundation rather than the earlier documentation-only scope.
+REASON: Prevent immediate documentation/PR-description drift after Milestone 0 completion evidence.
+BEFORE: README said Milestone 0 was executing; PR body said the actual logging filesystem did not exist and `writing-plans` was still next.
+AFTER: README documents operational logging foundation and next implementation ordering; PR is titled `docs/infra: establish CodeMaestro v3 architecture and logging foundation` and accurately describes current implemented scope.
+EVIDENCE: README commit `369260831ac6e3c8297ec625766a551f1562967f`; PR #1 metadata update confirmed by GitHub.
+AUTHORITY: Documentation consistency/governance rules and verified Milestone 0 evidence.
+RESULT: PENDING — final exact-head verification must pass after repository-facing status synchronization.
+RELATED COMMIT / ARTIFACT: `369260831ac6e3c8297ec625766a551f1562967f`; PR #1.
