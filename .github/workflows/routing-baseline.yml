@@ -1,0 +1,124 @@
+name: Routing Pre-Contract Baseline
+
+on:
+  push:
+    paths:
+      - '.github/workflows/routing-baseline.yml'
+      - 'evals/routing/corpus-v1.json'
+      - 'evals/routing/skeleton-v0.json'
+      - 'tools/routing_eval.py'
+      - 'tools/routing_skeleton.py'
+
+permissions:
+  contents: read
+
+jobs:
+  repeated-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate frozen corpus
+        run: python tools/routing_eval.py validate evals/routing/corpus-v1.json
+
+      - name: Execute three independent skeleton runs and aggregate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/routing-baseline
+          CORPUS_SHA="$(sha256sum evals/routing/corpus-v1.json | awk '{print $1}')"
+          SKELETON_SHA="$(sha256sum evals/routing/skeleton-v0.json | awk '{print $1}')"
+          export CORPUS_SHA SKELETON_SHA
+
+          for RUN in 01 02 03; do
+            python tools/routing_skeleton.py \
+              --cases evals/routing/corpus-v1.json \
+              --output "/tmp/routing-baseline/skeleton-v0-run-${RUN}.json"
+
+            set +e
+            python tools/routing_eval.py grade \
+              --cases evals/routing/corpus-v1.json \
+              --results "/tmp/routing-baseline/skeleton-v0-run-${RUN}.json" \
+              --report "/tmp/routing-baseline/skeleton-v0-run-${RUN}.metrics.json"
+            STATUS=$?
+            set -e
+            if [ "$STATUS" -gt 1 ]; then
+              echo "Unexpected grader failure for run ${RUN}: exit ${STATUS}" >&2
+              exit "$STATUS"
+            fi
+
+            STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            export RUN STARTED_AT
+            python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          run = os.environ["RUN"]
+          manifest = {
+              "run_id": f"skeleton-v0-run-{run}",
+              "runtime_surface": "GitHub Actions ubuntu-latest / Python 3.12",
+              "provider": "CodeMaestro deterministic routing skeleton",
+              "model_id": "NOT AVAILABLE",
+              "model_version": "NOT AVAILABLE",
+              "configuration": "skeleton-v0-frozen-pre-contract",
+              "corpus_sha256": os.environ["CORPUS_SHA"],
+              "skeleton_sha256": os.environ["SKELETON_SHA"],
+              "grader_version": "routing-eval-b6",
+              "started_at": os.environ["STARTED_AT"],
+              "result_path": f"evals/routing/results/skeleton-v0-run-{run}.json",
+          }
+          Path(f"/tmp/routing-baseline/skeleton-v0-run-{run}.manifest.json").write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          done
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.routing_eval import RunManifest, aggregate_runs, grade_run, load_cases, load_results
+
+          root = Path('/tmp/routing-baseline')
+          cases = load_cases(Path('evals/routing/corpus-v1.json'))
+          manifests = []
+          metrics = []
+          for run in ('01', '02', '03'):
+              manifests.append(RunManifest(**json.loads((root / f'skeleton-v0-run-{run}.manifest.json').read_text(encoding='utf-8'))))
+              results = load_results(root / f'skeleton-v0-run-{run}.json')
+              metrics.append(grade_run(cases, results))
+          aggregate = aggregate_runs(manifests, metrics)
+          payload = {
+              'run_count': aggregate.run_count,
+              'worst_run_id': aggregate.worst_run_id,
+              'primary_min': aggregate.primary_min,
+              'primary_max': aggregate.primary_max,
+              'primary_mean': aggregate.primary_mean,
+              'primary_pstdev': aggregate.primary_pstdev,
+              'supporting_min': aggregate.supporting_min,
+              'supporting_max': aggregate.supporting_max,
+              'supporting_mean': aggregate.supporting_mean,
+              'supporting_pstdev': aggregate.supporting_pstdev,
+              'clarification_min': aggregate.clarification_min,
+              'clarification_max': aggregate.clarification_max,
+              'clarification_mean': aggregate.clarification_mean,
+              'clarification_pstdev': aggregate.clarification_pstdev,
+              'green': aggregate.green,
+          }
+          (root / 'aggregate.json').write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload immutable baseline evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: routing-pre-contract-baseline
+          path: /tmp/routing-baseline
+          if-no-files-found: error
