@@ -71,3 +71,23 @@ EVIDENCE / VALIDATION STATE: PASS — GitHub Actions run `33863023688`
 UNRESOLVED ISSUES / RISKS: Task 6 correction/redaction/resume/handoff drills not yet executed
 ACTIVE SELF-EVOLUTION ID: NOT APPLICABLE
 NEXT EXPECTED / AUTHORIZED ACTION: Execute Milestone 0 Task 6 end-to-end logging integrity validation
+
+### 2026-09-04 13:29:42 +03:00 — STATE CHANGE / RESUME VALIDATED
+
+Session ID: CM-SESSION-20260904T132119+0300-chat-inline-m0
+Previous state: Latest written checkpoint recorded SHA `09a38dcc5eed8c9f98b3cc65bb4d62c7f95ad78e` before Task 6 changes.
+Current state: Fresh PR inspection resolved branch head `62ac90a8967bda4d29aec3e224d02cdedb6f29eb`; PR #1 is open, draft, unmerged, and mergeable. Task 6 correction/redaction live-record tests are GREEN.
+Reason: The canonical resume protocol requires comparing durable checkpoint state with actual repository state rather than trusting the latest checkpoint blindly.
+Evidence: fresh reads of the session protocol, this transcript checkpoint, project-event tail, PR #1 metadata, and GitHub Actions run `33863359988` (`success`).
+
+### 2026-09-04 13:29:42 +03:00 — ASSISTANT / TASK 6 STATUS
+
+Task 6 executed a real RED→GREEN sequence:
+
+- RED run `33863247483`: 15 tests, exactly 2 intended failures — missing correction/supersession drill and missing redaction drill;
+- appended a harmless source event plus `CORRECTION / SUPERSEDES EVENT` while preserving the source;
+- appended only `[REDACTED SECRET — not persisted]`, with no real or realistic secret fixture;
+- GREEN run `33863359988`: exact-branch workflow completed successfully;
+- fresh resume/handoff retrieval reconstructed actual state and next action without loading the pre-bootstrap conversation corpus.
+
+The project log contains the detailed evidence and stable `EVENT ID` references.
