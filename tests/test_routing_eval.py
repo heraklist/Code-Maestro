@@ -1,58 +1,19 @@
 from __future__ import annotations
 
-import importlib.util
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
+import tools.routing_eval as routing_eval
 
-ROOT = Path(__file__).resolve().parents[1]
-MODULE_PATH = ROOT / "tools/routing_eval.py"
 
-CANONICAL_IDS = {
-    "requirements-architecture-systems",
-    "product-ux-ui",
-    "software-implementation",
-    "debugging-diagnostics",
-    "testing-assurance",
-    "review-audit-compliance",
-    "security-trust",
-    "privacy-data-lifecycle",
-    "database-data",
-    "interface-protocol-contract",
-    "build-toolchain-environment",
-    "migration-compatibility",
-    "performance-capacity",
-    "cicd-platform-delivery",
-    "reliability-observability-sre-incident",
-    "ai-llm-agent-mcp",
-    "research-experimental-language",
-}
-
-CLUSTERS = {
-    "build-ci-debug",
-    "implementation-debug",
-    "testing-review",
-    "security-privacy",
-    "database-interface",
-    "migration-implementation",
-    "performance-reliability",
-    "product-frontend",
-    "research-language-freshness",
-    "ai-interface-security",
-}
+CANONICAL_IDS = routing_eval.CAPABILITY_IDS
+CLUSTERS = routing_eval.CLUSTERS
 
 
 def load_module():
-    if not MODULE_PATH.exists():
-        raise AssertionError(f"missing production module: {MODULE_PATH}")
-    spec = importlib.util.spec_from_file_location("routing_eval_under_test", MODULE_PATH)
-    if spec is None or spec.loader is None:
-        raise AssertionError("could not load routing_eval module")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    return routing_eval
 
 
 def valid_case(case_id: str = "build-ci-debug-001") -> dict:
