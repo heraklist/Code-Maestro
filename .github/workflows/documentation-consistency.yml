@@ -7,8 +7,10 @@ on:
       - 'README.md'
       - 'docs/**'
       - 'logs/**'
+      - 'evals/**'
       - 'tools/doc_consistency.py'
       - 'tools/check_append_only_logs.py'
+      - 'tools/routing_eval.py'
       - 'tests/test_doc_consistency.py'
       - 'tests/test_routing_eval.py'
       - '.github/workflows/documentation-consistency.yml'
@@ -32,6 +34,9 @@ jobs:
 
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
+
+      - name: Validate routing pilot
+        run: python tools/routing_eval.py validate evals/routing/pilot-real-derived.json
 
       - name: Run repository documentation checker
         run: python tools/doc_consistency.py
