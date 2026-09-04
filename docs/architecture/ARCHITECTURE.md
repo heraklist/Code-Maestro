@@ -28,6 +28,8 @@ CodeMaestro should behave like a disciplined senior engineering partner rather t
 10. **Security principles are durable; implementation guidance may age.** Stable principles may be local references, while fast-changing practices should be researched before becoming canonical.
 11. **Progressive disclosure.** The main Skill remains concise; specialized guidance lives in focused references loaded only when relevant.
 12. **Behavioral parity over implementation parity.** The new system preserves useful intent and safeguards, not obsolete APIs or deployment machinery.
+13. **Autonomous engineering sub-skills.** Specialized engineering skills must remain safe, strict, evidence-aware, and usable without hidden parent-orchestrator behavior.
+14. **Universal language coverage through intelligence, not enumeration.** Language support is driven by detection, profiles, toolchain discovery, authoritative research, and verification rather than one permanently installed Skill per language.
 
 ## Target runtime architecture
 
@@ -46,6 +48,10 @@ CodeMaestro Skill
     |-- evidence/validation policy
     |-- reporting contract
     |
+    +--> autonomous engineering sub-skills
+    |
+    +--> shared Language Intelligence
+    |
     v
 Authorized native capabilities
     |
@@ -60,28 +66,35 @@ There is no required CodeMaestro-specific API layer in the target architecture.
 
 ## Skill packaging direction
 
-The initial architecture is one orchestrator Skill with focused supporting references.
+The project starts with one orchestrator Skill, focused supporting references, and independently defined engineering sub-skills where separation improves reliability and reuse.
+
+The exact physical packaging of sub-skills is intentionally deferred until Skill packaging research and baseline evals confirm the lowest-overhead design.
+
+The target information architecture is conceptually:
 
 ```text
 codemaestro/
 ├── SKILL.md
 ├── references/
 │   ├── operating-model.md
-│   ├── engineering-workflows.md
-│   ├── repository-work.md
 │   ├── validation-and-evidence.md
 │   ├── research-and-freshness.md
-│   ├── security-engineering.md
-│   ├── repository-auditing.md
-│   ├── database-and-supabase.md
-│   ├── ci-and-supply-chain.md
-│   ├── llm-agent-engineering.md
-│   ├── incident-and-recovery.md
-│   ├── language-and-toolchains.md
-│   └── reporting-contracts.md
+│   ├── reporting-contracts.md
+│   └── language-intelligence/
 ├── assets/
 ├── scripts/
 └── evals/
+
+engineering sub-skills /
+├── debugging
+├── testing
+├── refactoring
+├── security
+├── architecture
+├── performance
+├── repository-review
+├── ci-devops
+└── other domains justified by evals
 ```
 
 This tree is architectural direction, not yet an implementation commitment. It may change after research and baseline evals.
@@ -126,6 +139,31 @@ Composed concerns
   + Testing
   + Delivery
 ```
+
+## Autonomous engineering sub-skill contract
+
+Each future engineering sub-skill must define its behavior explicitly rather than relying on undocumented parent behavior.
+
+Required contract dimensions:
+
+- trigger conditions
+- scope
+- non-goals
+- required context
+- source hierarchy
+- workflow
+- tool/capability requirements
+- failure behavior when capabilities are absent
+- freshness gate
+- output contract
+- verification contract
+- evidence/status vocabulary
+- required and optional dependencies
+- standalone fallback behavior
+- eval scenarios
+- regression expectations
+
+The CodeMaestro orchestrator may route and compose sub-skills, but it must not compensate for a sub-skill that is unsafe, vague, or unverifiable when used independently.
 
 ## Environment and capability discovery
 
@@ -255,22 +293,128 @@ Scope
 
 A finding should distinguish observed evidence from inference.
 
-## Language and toolchain adaptation
+## Universal Language Intelligence
 
 CodeMaestro is language-agnostic by methodology rather than by claiming memorized expertise in every language or DSL.
 
-For each project it should identify, when material:
+Universal language coverage is implemented through a shared Language Intelligence subsystem plus selective standalone correction/orientation skills when justified by evidence.
 
-- language and version
-- runtime
-- build system
-- dependency/package manager
-- test framework
-- formatter/linter/static analysis
-- framework/platform
-- deployment target
+### Responsibilities
 
-For unknown, niche, private, or fast-changing languages and DSLs, it should inspect project evidence and research authoritative documentation rather than guess syntax or behavior.
+The shared subsystem owns:
+
+- language identification and aliases;
+- domain classification;
+- maturity classification;
+- project and language version discovery;
+- compiler/interpreter/runtime discovery;
+- package/build/test/format/lint/debug toolchain discovery;
+- source-of-truth routing;
+- freshness requirements;
+- language profiles;
+- reliability levels;
+- unknown/private/experimental language research;
+- handoff of verified language context to engineering sub-skills.
+
+### Language Profile Contract
+
+A profile may describe, when relevant:
+
+- canonical name, aliases, extensions, and significant filenames;
+- domain classifications and maturity status;
+- official specification, documentation, repository, and registry sources;
+- compiler/interpreter, runtime, build system, package manager, test runner, formatter, linter/static analysis, language server, and debugger;
+- project/dependency manifests and common source layout;
+- paradigms, type system, memory/ownership model, error model, concurrency model, module/package model, FFI, and targets;
+- idiomatic conventions, known anti-patterns, model misconceptions, security-sensitive constructs, version-sensitive areas, validation commands, and freshness policy.
+
+Profiles are reference/data contracts. They do not automatically become Skills.
+
+### Language maturity model
+
+Language maturity is tracked independently of domain:
+
+- `STABLE`
+- `EVOLVING`
+- `FAST-MOVING`
+- `EXPERIMENTAL`
+- `LEGACY`
+- `HISTORICAL`
+- `DEPRECATED`
+
+More volatile maturity states require stronger current-source verification for exact syntax, API, and toolchain claims.
+
+### Language reliability levels
+
+- **L1 — Locally Verified:** relevant behavior was validated using the target project/toolchain/build/tests or direct execution.
+- **L2 — Current Officially Verified:** exact syntax/API/tool behavior was checked against current authoritative documentation/specification but not locally executed.
+- **L3 — Reference Grounded:** reliable guidance exists, but exact current behavior has not been directly verified.
+- **L4 — Research Required:** current research is required before exact implementation claims.
+- **L5 — Recognition Only:** CodeMaestro can identify or explain the language but lacks enough evidence for production-correct code claims.
+
+No response may imply a stronger reliability level than the available evidence supports.
+
+### Unknown-language protocol
+
+Unknown, rare, private, or experimental languages are not automatically unsupported.
+
+```text
+Detect identity
+→ inspect project/version evidence
+→ locate authoritative spec/docs/repository
+→ classify maturity
+→ discover compiler/runtime/toolchain
+→ discover build/test/format workflow
+→ learn the smallest task-relevant syntax/semantics
+→ implement narrowly when justified
+→ compile/test when possible
+→ report actual evidence level
+```
+
+### Source hierarchy for language claims
+
+For exact language and toolchain claims, prefer:
+
+1. local project files and installed toolchain behavior representing the actual target environment;
+2. official language specification;
+3. official language/toolchain documentation;
+4. official repositories, releases, changelogs, and maintainer guidance;
+5. official package registries or API documentation;
+6. high-quality community material when primary evidence is insufficient.
+
+Discovery catalogs may identify a language but do not establish syntax or API correctness.
+
+### Standalone language-skill promotion
+
+A language receives a dedicated CodeMaestro correction/orientation Skill only when generic Language Intelligence is demonstrably insufficient and evals justify the context and maintenance cost.
+
+Useful promotion signals include:
+
+- rapidly changing syntax/semantics;
+- repeatable and material model misconceptions;
+- substantially different mental model;
+- unusual procedural toolchain requirements;
+- sufficient real CodeMaestro usage;
+- strong authoritative sources;
+- meaningful regression/eval scenarios;
+- observed failure of the generic profile approach.
+
+Popularity alone is insufficient.
+
+### Universal code-quality contract
+
+When generating or modifying code in any language, CodeMaestro targets:
+
+- correctness for the detected version and environment;
+- idiomatic ecosystem usage where evidence permits;
+- the smallest necessary change;
+- no invented APIs or unchecked exact calls presented as facts;
+- no unexplained unsafe behavior;
+- consistency with project toolchain and formatting conventions;
+- validation appropriate to the change when capabilities exist;
+- explicit distinction between plausible code and code that actually compiled, executed, or passed tests.
+
+Detailed research and open questions are tracked in `../research/CM-R-016-universal-language-intelligence.md`.
 
 ## Research and freshness policy
 
@@ -286,6 +430,8 @@ Typical triggers include:
 - model/tool/MCP APIs
 - deployment requirements
 - unfamiliar technologies or DSLs
+- experimental or fast-moving programming languages
+- exact toolchain behavior that may differ by installed version
 
 Authority preference:
 
@@ -373,6 +519,11 @@ Initial evaluation domains:
 - refactoring behavior preservation
 - security review quality
 - language/toolchain adaptation
+- stable-language profile routing
+- fast-moving language freshness
+- experimental/unknown-language research
+- multi-language repository composition
+- private/embedded DSL handling
 - research freshness
 - validation honesty
 - reporting clarity
@@ -403,6 +554,7 @@ Canonical project memory is stored in this repository.
 - `MIGRATION-INVENTORY.md` — source-to-target disposition ledger.
 - `DECISIONS.md` — accepted architecture decisions and consequences.
 - `../research/RESEARCH-BACKLOG.md` — unresolved research queue.
+- `../research/CM-R-016-universal-language-intelligence.md` — active universal language research record.
 - `../superpowers/specs/` — dated design checkpoints.
 - `../superpowers/plans/` — implementation plans for approved milestones.
 
