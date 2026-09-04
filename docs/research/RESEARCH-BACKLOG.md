@@ -31,13 +31,13 @@ Fast-changing claims should be date/version scoped.
 ## CM-R-001 — Agent Skills and Codex engineering workflows
 
 **Priority:** P0
-**Status:** QUEUED
+**Status:** IN RESEARCH
 
-**Question:** What are the current authoritative design, packaging, progressive-disclosure, testing, tool-use, and workflow patterns for Agent Skills and Codex-oriented engineering work?
+**Question:** What are the current authoritative design, packaging, progressive-disclosure, testing, tool-use, agent-role, and workflow patterns for Agent Skills and Codex-oriented engineering work?
 
-**Expected output:** Recommended Skill structure, trigger design, reference-loading strategy, script boundaries, eval strategy, and portability constraints for CodeMaestro.
+**Expected output:** Recommended Skill structure, trigger design, reference-loading strategy, script boundaries, eval strategy, subagent-role boundary, plugin evolution path, and portability constraints for CodeMaestro.
 
-**Preferred authorities:** OpenAI official documentation and specifications; Agent Skills specification where applicable.
+**Preferred authorities:** OpenAI official Codex repository/documentation, OpenAI plugin examples, Agent Skills specification where applicable.
 
 ---
 
@@ -235,6 +235,76 @@ Fast-changing claims should be date/version scoped.
 **Preferred authorities:** official language specifications and documentation; primary language/toolchain repositories; vendor-maintained Agent Skills where available; GitHub Linguist for discovery metadata; other catalogs only as discovery aids rather than correctness authorities.
 
 **Working record:** `docs/research/CM-R-016-universal-language-intelligence.md`
+
+---
+
+## CM-R-017 — Research & Experimental Engineering
+
+**Priority:** P0
+**Status:** IN RESEARCH
+
+**Question:** What evidence-driven research lifecycle should CodeMaestro use for surveys, comparisons, investigations, bounded experiments, replication, and experimental technical evolution?
+
+**Expected output:** Research Lab operating model, epistemic state machine, proportional-rigor rules, hypothesis/experiment/decision workflow, stopping criteria, durable artifact model, and baseline eval scenarios.
+
+**Preferred authorities:** primary research-method sources where relevant; rigorous agent-research systems; Cusp experimental engineering records; reproducible software-engineering practice.
+
+**Accepted direction:** Autonomous Research Lab capability with durable evidence state and explicit separation between research result and project authority.
+
+**Design record:** `docs/superpowers/specs/2026-09-04-research-experimental-engineering-design.md`
+
+---
+
+## CM-R-018 — Subagent and Skill Orchestration
+
+**Priority:** P0
+**Status:** IN RESEARCH
+
+**Question:** How should CodeMaestro divide responsibility among the orchestrator, autonomous skills, shared knowledge/intelligence systems, optional runtime roles, subagents, plugins, and native tools without duplicating policy or introducing hidden dependencies?
+
+**Expected output:** Skill-vs-role-vs-agent-vs-tool model, role contract, delegation policy, parallelism rules, fresh-context patterns, result-review rules, failure propagation, and portability strategy.
+
+**Preferred authorities:** OpenAI Codex and plugin architecture; Superpowers; Microsoft skill/agent patterns; other portable agent systems with explicit evals and evidence models.
+
+**Candidate roles under study:** research-scout, experimentalist, skeptic, replicator.
+
+---
+
+## CM-R-019 — Programming-Language Evolution & Specification Governance
+
+**Priority:** P0
+**Status:** IN RESEARCH
+
+**Question:** How should CodeMaestro research and assist the evolution of experimental languages while preserving clear separation among ideas, observations, characterization, proposals, accepted design, normative specification, implementation, and stable/released behavior?
+
+**Expected output:** Language Evolution Protocol, proposal template, authority/state taxonomy, comparative language-study method, compatibility/security/resource review requirements, and promotion/acceptance gates.
+
+**Preferred authorities:** Cusp project records; Rust RFCs; Swift Evolution; Carbon proposals/governance; Python PEPs; Kotlin KEEP; Go proposals; TC39 proposals; other mature or experimental language projects where useful.
+
+**Primary stress case:** Cusp.
+
+---
+
+## CM-R-020 — Evidence, Provenance, Citations & Reproducibility
+
+**Priority:** P0
+**Status:** IN RESEARCH
+
+**Question:** How should CodeMaestro bind research and engineering claims to retrievable sources, repository snapshots, experiment conditions, validation runs, and reproducible artifacts?
+
+**Expected output:** Claim/evidence model, provenance ledger, source capture rules, snapshot/run metadata contract, uncertainty representation, evidence verification rules, and report integration.
+
+**Preferred authorities:** reproducible research/software practices; source-ledger systems; Cusp snapshot/evidence model; deterministic citation/evidence workflows; primary tooling where applicable.
+
+---
+
+## Comparative reference registry
+
+The external reference set and study priorities are maintained in:
+
+`docs/research/COMPARATIVE-REFERENCE-REGISTRY.md`
+
+References are research inputs, not CodeMaestro dependencies or automatic architectural authority.
 
 ## Prioritization principle
 
