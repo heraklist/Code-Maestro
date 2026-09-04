@@ -34,3 +34,19 @@ EVIDENCE: Transcript header `Coverage` field and existing branch history.
 AUTHORITY: Canonical logging schemas/protocol and evidence-before-assertion invariant.
 RESULT: PASS
 RELATED COMMIT / ARTIFACT: `logs/conversations/2026/2026-09-04T132119+0300_chat_inline-milestone0.md`.
+
+---
+
+EVENT ID: CM-EVENT-20260904T132319+0300-test-001
+TIMESTAMP: 2026-09-04 13:23:19 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: FILE_MODIFIED
+TARGET: `tests/test_doc_consistency.py`
+ACTION: Added `LoggingFilesystemTests` requiring the three logging namespace README artifacts to exist on the real repository checkout.
+REASON: Milestone 0 Task 5 filesystem contract verification after the required RED test demonstrated the roots were absent before bootstrap.
+BEFORE: Test suite covered documentation consistency, privacy policy, schemas, and session protocol but did not assert logging roots.
+AFTER: Test suite includes the logging filesystem root contract.
+EVIDENCE: pre-bootstrap local RED: `LoggingFilesystemTests` failed because `logs/conversations/README.md` was absent; branch mutation commit `115fee7000df88fc0d98d2919c27f1c5ae1431b4`.
+AUTHORITY: Milestone 0 implementation plan Task 5 and canonical v2 §21.
+RESULT: PENDING — branch CI has not yet completed for this mutation.
+RELATED COMMIT / ARTIFACT: `115fee7000df88fc0d98d2919c27f1c5ae1431b4`; `tests/test_doc_consistency.py`.
