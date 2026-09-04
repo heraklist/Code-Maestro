@@ -11,7 +11,9 @@ Research record:
 
 `../research/2026-09-04-comparative-research-pass-5.md`
 
-## Accepted research tracks
+## Research tracks opened / architectural direction accepted
+
+Pass 5 accepts the architectural direction and opens the following research tracks. It does **not** mark their research execution complete; their current research `Status` is maintained in `../research/RESEARCH-BACKLOG.md` and the individual records.
 
 - CM-R-029 — Cross-Runtime Portability, Capability Discovery & Conformance
 - CM-R-030 — Product, UX/UI & Visual Interface Engineering
