@@ -1,9 +1,10 @@
 # CM-R-030 — Product, UX/UI & Visual Interface Engineering
 
 **Priority:** P1 by default; P0 for user-facing/product-critical work
-**Status:** ACCEPTED
+**Status:** IN RESEARCH
+**Disposition:** DIRECTION ACCEPTED
 **Opened:** 2026-09-04
-**Accepted by:** `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
+**Direction accepted by:** `../architecture/2026-09-04-pass-5-acceptance-and-capability-freeze.md`
 
 ## Question
 
