@@ -1,0 +1,39 @@
+name: Documentation Consistency
+
+on:
+  push:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - 'logs/**'
+      - 'tools/doc_consistency.py'
+      - 'tools/check_append_only_logs.py'
+      - 'tests/test_doc_consistency.py'
+      - '.github/workflows/documentation-consistency.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  documentation-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run unit tests
+        run: python -m unittest tests.test_doc_consistency -v
+
+      - name: Run repository documentation checker
+        run: python tools/doc_consistency.py
+
+      - name: Enforce append-only project ledgers
+        run: python tools/check_append_only_logs.py HEAD^
