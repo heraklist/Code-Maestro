@@ -56,16 +56,19 @@ class ResearchIndexTests(unittest.TestCase):
             root = Path(tmp)
             research = root / "docs/research"
             research.mkdir(parents=True)
-            (research / "RESEARCH-BACKLOG.md").write_text(
-                "## CM-R-032 — Privacy\n\n**Status:** IN RESEARCH\n",
-                encoding="utf-8",
-            )
-            (root / "docs/design.md").write_text(
-                "Depends on CM-R-999 for a future decision.\n",
-                encoding="utf-8",
-            )
+            (research / "RESEARCH-BACKLOG.md").write_text("## CM-R-032 — Privacy\n\n**Status:** IN RESEARCH\n", encoding="utf-8")
+            (root / "docs/design.md").write_text("Depends on CM-R-999 for a future decision.\n", encoding="utf-8")
             findings = check_research_references(root)
             self.assertEqual([f.code for f in findings], ["RESEARCH_REFERENCE_UNINDEXED"])
+
+    def test_explicit_no_track_statement_is_allowed(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            research = root / "docs/research"
+            research.mkdir(parents=True)
+            (research / "RESEARCH-BACKLOG.md").write_text("## CM-R-032 — Privacy\n\n**Status:** IN RESEARCH\n", encoding="utf-8")
+            (root / "docs/design.md").write_text("No CM-R-033 is opened by this pass.\n", encoding="utf-8")
+            self.assertEqual(check_research_references(root), [])
 
 
 class MarkdownLinkTests(unittest.TestCase):
@@ -126,11 +129,7 @@ class WorkflowCoverageTests(unittest.TestCase):
 class LoggingFilesystemTests(unittest.TestCase):
     def test_logging_roots_exist(self):
         root = Path(__file__).resolve().parents[1]
-        required = (
-            root / "logs/conversations/README.md",
-            root / "logs/logs/project/README.md",
-            root / "logs/logs/self-evolution/README.md",
-        )
+        required = (root / "logs/conversations/README.md", root / "logs/logs/project/README.md", root / "logs/logs/self-evolution/README.md")
         for path in required:
             self.assertTrue(path.exists(), path)
 
@@ -141,10 +140,7 @@ class LoggingIntegrityCheckerTests(unittest.TestCase):
             root = Path(tmp)
             project = root / "logs/logs/project/2026"
             project.mkdir(parents=True)
-            (project / "2026-09-04.log").write_text(
-                "# Project Log\n\n---\nTIMESTAMP: 2026-09-04 14:00:00 +03:00\nSESSION: s1\n",
-                encoding="utf-8",
-            )
+            (project / "2026-09-04.log").write_text("# Project Log\n\n---\nTIMESTAMP: 2026-09-04 14:00:00 +03:00\nSESSION: s1\n", encoding="utf-8")
             findings = check_logging_integrity(root)
             self.assertIn("LOG_EVENT_ID_MISSING", [f.code for f in findings])
 
@@ -163,18 +159,7 @@ class LoggingLiveRecordsTests(unittest.TestCase):
 
     def test_live_transcript_has_header_and_checkpoint(self):
         text = (self._root() / self.SESSION_PATH).read_text(encoding="utf-8")
-        for token in (
-            "Session ID:",
-            "Session started:",
-            "Surface: Chat",
-            "Repository: heraklist/Code-Maestro",
-            "Initial branch:",
-            "Initial SHA:",
-            "Transcript policy: semantic append-only / public-safe",
-            "Coverage:",
-            "## CHECKPOINT",
-            "NEXT EXPECTED / AUTHORIZED ACTION:",
-        ):
+        for token in ("Session ID:", "Session started:", "Surface: Chat", "Repository: heraklist/Code-Maestro", "Initial branch:", "Initial SHA:", "Transcript policy: semantic append-only / public-safe", "Coverage:", "## CHECKPOINT", "NEXT EXPECTED / AUTHORIZED ACTION:"):
             self.assertIn(token, text)
 
     def test_project_events_have_stable_ids_and_offset_timestamps(self):
