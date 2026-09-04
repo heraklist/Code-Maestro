@@ -188,5 +188,24 @@ class LoggingLiveRecordsTests(unittest.TestCase):
         self.assertEqual(list(root.rglob("*.log")), [])
 
 
+class LivingArchitectureTests(unittest.TestCase):
+    def test_architecture_is_current_living_synthesis(self):
+        root = Path(__file__).resolve().parents[1]
+        text = (root / "docs/architecture/ARCHITECTURE.md").read_text(encoding="utf-8")
+        self.assertNotIn("detailed canonicalization pending written-spec approval", text.lower())
+        for token in (
+            "**Status:** CURRENT LIVING ARCHITECTURE",
+            "## Authority hierarchy",
+            "## Runtime architecture",
+            "## Canonical engineering capability families",
+            "## Shared Intelligence",
+            "## Execution and governance",
+            "## Evaluation and quality",
+            "## Repository work-session governance",
+            "## Implementation sequence",
+        ):
+            self.assertIn(token, text)
+
+
 if __name__ == "__main__":
     unittest.main()
