@@ -34,3 +34,19 @@ EVIDENCE: local execution probe `command -v codex; codex --version; codex exec -
 AUTHORITY: amended B7 Step 2; evidence-before-assertion; state-before-mutation; no-artificial-degradation.
 RESULT: BLOCKED at interactive execution preflight in this Chat surface. Do not write or run the B7 model loop here. Resume B7 in an authorized Codex CLI/Codex App surface with ChatGPT sign-in, verify installed help/model exposure/reasoning defaults, then run the 10-case quota pilot before the 300-invocation configuration.
 RELATED COMMIT / ARTIFACT: `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md`; OpenAI Codex source commit `459a79eb85400af759e9220c7bafb4429ae07516`.
+
+---
+
+EVENT ID: CM-EVENT-20260905T093200+0300-part1-scope-correction-001
+TIMESTAMP: 2026-09-05 09:32:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: ARCHITECTURE_SCOPE_CORRECTION
+TARGET: CM-ADR-031 Part 1/Part 2 boundary and B7 coverage boundary
+ACTION: Recorded the user-approved scope correction that Part 1 development/evals are subscription-only with ChatGPT sign-in, while host authentication is outside Skill authority; deferred non-OpenAI validation to a separately derived Part 2 workstream without removing provider-neutral abstractions; and made B7/Capability Freeze evidence explicitly OpenAI-surface coverage-bounded.
+REASON: A literal runtime ban on API-authenticated hosts would cause artificial degradation, while treating deferred portability as permission for Codex-specific methodology would turn the future Part 2 into a rewrite. B7 evidence also must not be generalized beyond assessed OpenAI surfaces under CM-ADR-025.
+BEFORE: CM-ADR-031 allowed optional project API use when already authorized and did not define canonical authority between a future Part 1 repository and Part 2 portability fork; B7 did not carry the coverage boundary in every qualifying manifest requirement.
+AFTER: Part 1 project development/evals do not initiate OpenAI API execution or API billing; Part 1 runtime neither requires nor initiates API calls and ignores host-authentication choice as a refusal criterion; `heraklist/Code-Maestro` remains canonical for shared methodology; future Part 2 records source commit and propagates shared-methodology corrections through the canonical Part 1 record; B7 manifests and Capability Freeze state `OpenAI Chat / Work / Codex surfaces only; not evidence for other LLM providers`.
+EVIDENCE: `docs/architecture/CM-ADR-031-SCOPE-CORRECTION.md` commit `286803c323e129dde00fc317f6f16b9c2e9c5738`; B7 plan coverage update commit `afca2e3ac6a416d8455fed4c813d400b98010792`; user-approved three-point scope correction in current session.
+AUTHORITY: CM-ADR-019 bidirectional traceability; CM-ADR-025 coverage-bounded/target-faithful evidence; CM-ADR-031 accepted correction; user authority.
+RESULT: PASS — scope correction recorded without changing frozen corpus, expectations, skeleton, or deterministic grader. B7 interactive preflight remains blocked on installed Codex target-surface access.
+RELATED COMMIT / ARTIFACT: `docs/architecture/CM-ADR-031-SCOPE-CORRECTION.md`; `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md`; this ledger.
