@@ -1,0 +1,74 @@
+name: Routing Harness Grader Conformance Regression
+
+on:
+  push:
+    paths:
+      - '.github/workflows/routing-conformance.yml'
+      - 'evals/routing/corpus-v1.json'
+      - 'evals/routing/skeleton-v0.json'
+      - 'tools/routing_eval.py'
+      - 'tools/routing_skeleton.py'
+  pull_request:
+    paths:
+      - '.github/workflows/routing-conformance.yml'
+      - 'evals/routing/corpus-v1.json'
+      - 'evals/routing/skeleton-v0.json'
+      - 'tools/routing_eval.py'
+      - 'tools/routing_skeleton.py'
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate frozen corpus
+        run: python tools/routing_eval.py validate evals/routing/corpus-v1.json
+
+      - name: Generate deterministic skeleton conformance output
+        run: |
+          python tools/routing_skeleton.py \
+            --cases evals/routing/corpus-v1.json \
+            --output /tmp/routing-skeleton-conformance.json
+
+      - name: Exercise unchanged deterministic grader
+        shell: bash
+        run: |
+          set +e
+          python tools/routing_eval.py grade \
+            --cases evals/routing/corpus-v1.json \
+            --results /tmp/routing-skeleton-conformance.json \
+            --report /tmp/routing-skeleton-conformance.metrics.json
+          STATUS=$?
+          set -e
+          # Exit 1 means the intentionally minimal skeleton is RED against
+          # model-quality thresholds; that is valid conformance evidence.
+          # Any exit >1 is an execution/grader failure.
+          if [ "$STATUS" -gt 1 ]; then
+            exit "$STATUS"
+          fi
+
+      - name: Reproduce skeleton output byte-identically
+        run: |
+          python tools/routing_skeleton.py \
+            --cases evals/routing/corpus-v1.json \
+            --output /tmp/routing-skeleton-conformance-repeat.json
+          cmp /tmp/routing-skeleton-conformance.json /tmp/routing-skeleton-conformance-repeat.json
+
+      - name: Upload deterministic conformance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: routing-harness-grader-conformance
+          path: |
+            /tmp/routing-skeleton-conformance.json
+            /tmp/routing-skeleton-conformance.metrics.json
+          if-no-files-found: error
