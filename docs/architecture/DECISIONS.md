@@ -365,3 +365,23 @@ Each decision has a stable ID, status, rationale, and consequences. If a later d
 **Rationale:** Large Skill ecosystems require explicit validation status, precedence, diagnostics, and safe exclusion rather than assuming every discovered Skill is healthy.
 
 **Consequences:** CM-R-001, CM-R-018, and CM-R-023 study per-Skill load/validation status, precedence/conflicts, cache/snapshot freshness, diagnostics, and safe exclusion. This decision does not require CodeMaestro to reimplement the Codex loader.
+
+---
+
+## CM-ADR-031 — Zero paid external dependency
+
+**Status:** Accepted — 2026-09-05
+
+**Decision:** CodeMaestro development governance uses only capabilities included in the project's existing ChatGPT / Codex / Work subscriptions; it does not depend on paid external services or API billing. As a product property, CodeMaestro **does not require** paid API access to operate. This is not a prohibition on API use: when an authorized user or runtime already exposes additional API capability, capability discovery may use it rather than artificially degrading execution.
+
+**Rationale:** The project must remain reproducible and operable without creating a second paid infrastructure dependency, while preserving the constitutional rule that available and authorized capability must not be ignored merely to maintain artificial parity with a weaker surface.
+
+**Consequences:**
+
+1. **Development governance vs product property:** repository development is constrained to subscription-provided surfaces, while the portable Skill remains tool-aware and may use optional authorized API access when present. Availability still does not imply authorization.
+2. **Eval split:** deterministic checks execute in CI; model-based evals execute only in an authorized interactive session. Model inference and model grading are never CI requirements. `evals/` must make this separation explicit.
+3. **Deterministic grading only:** CodeMaestro eval verdicts must not depend on an LLM-as-judge. Model-produced outputs may be inputs to evals, but acceptance grading remains deterministic and inspectable.
+4. **Self-Evolution is interactive:** because material Self-Evolution requires inference, it cannot be a background or scheduled process under project governance. It is command-gated and must run inside an authorized interactive session.
+5. **Quota is first-class:** invocation allowance is a design budget alongside context. Every model-based eval suite declares an invocation budget and may be distributed across quota windows without reducing corpus size, run count, or thresholds.
+6. **Cross-runtime conformance is manual per surface:** Chat, Work, Codex, and future target surfaces are evaluated separately in authorized sessions; results are not averaged across surfaces.
+7. **No artificial degradation:** optional capability exposed by the active authorized environment remains usable. This ADR forbids paid dependency, not capability discovery.
