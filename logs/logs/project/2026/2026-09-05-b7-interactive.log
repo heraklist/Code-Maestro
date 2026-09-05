@@ -1,0 +1,36 @@
+# CodeMaestro Project Event Log — 2026-09-05 B7 Interactive Evaluation
+
+Event stream policy: semantic append-only / public-safe
+Session: CM-SESSION-20260904T132119+0300-chat-inline-m0
+
+---
+
+EVENT ID: CM-EVENT-20260905T082000+0300-routing-b7-amendment-001
+TIMESTAMP: 2026-09-05 08:20:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: ARCHITECTURE_AND_EVAL_CONTRACT_REVISION
+TARGET: CM-ADR-031; Eval Readiness B7; deterministic routing workflow
+ACTION: Accepted and implemented the user-authorized zero-paid-external-dependency governance decision, split deterministic CI from interactive model evals, repaired B7 so only qualifying target-surface model generation contributes to its verdict, and renamed the deterministic workflow as a harness/grader conformance regression.
+REASON: The prior B7 text contradicted itself by requiring runtime/model metadata while allowing the deterministic keyword skeleton to appear as a qualifying repeated-run producer. Repeating a deterministic producer three times has zero informational value for runtime/model variance. The prior statement that the 32/100 skeleton result showed corpus difficulty was also too broad; the supported conclusion is only that the frozen corpus is not trivially keyword-separable.
+BEFORE: B7 was BLOCKED after three deterministic skeleton runs were correctly refused as qualifying model evidence; the repository had no explicit zero-paid-external-dependency ADR and no top-level deterministic-vs-interactive eval split.
+AFTER: CM-ADR-031 separates development governance from product capability; `evals/README.md` makes deterministic CI vs interactive model evals explicit; B7 requires Codex CLI target-surface runs, fresh single-turn sessions, explicit reasoning effort, non-alias model IDs, quota budgeting, per-case vote patterns, frozen-label high-risk fail-closed instability, and separate configuration verdicts; the old routing-baseline workflow is replaced by `routing-conformance.yml`.
+EVIDENCE: CM-ADR-031 commit `6d48433c4f7431389c2d12c8643383cbbe6ac220`; eval-surface split commit `0aaae6f8796a58a34179842aca39fad8a207b2ef`; B7 plan repair commit `fdde42adb727473174ff395b05bc2be84446ffad`; conformance workflow create/delete commits `99d435e0e1f36ff99ab4a6dc74f89c0799e31545` and `84cebc504b9e1e20376c47f1fe37c58affd97756`; authoritative OpenAI Codex source at commit `459a79eb85400af759e9220c7bafb4429ae07516` exposes `codex exec`, `--model`, `--sandbox`, `--ephemeral`, `--ignore-user-config`, `--ignore-rules`, `--output-schema`, `--json`, and `--output-last-message`, and current model-selection source includes both `gpt-5.6-sol` and `gpt-6-astra` with Astra shown as default in the bundled catalog.
+AUTHORITY: user-approved B7 bounded design with A0-A4 amendments; CM-ADR-025 coverage-bounded/target-faithful evidence; CM-ADR-031; Superpowers receiving-code-review and executing-plans.
+RESULT: PASS for A0-A3 contract repair. B7 model generation remains PENDING installed-surface verification and quota pilot; no corpus, expectations, skeleton, or grader content changed.
+RELATED COMMIT / ARTIFACT: `docs/architecture/DECISIONS.md`; `evals/README.md`; `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md`; `.github/workflows/routing-conformance.yml`.
+
+---
+
+EVENT ID: CM-EVENT-20260905T082100+0300-routing-b7-surface-001
+TIMESTAMP: 2026-09-05 08:21:00 +03:00
+SESSION: CM-SESSION-20260904T132119+0300-chat-inline-m0
+EVENT / TYPE: EXECUTION_SURFACE_CHECK
+TARGET: B7 Codex CLI interactive harness preflight
+ACTION: Checked the current execution environment for an installed `codex` binary before writing the model-generation loop, as required by the amended B7 Step 2.
+REASON: Repository source documents available CLI flags but cannot prove the installed target surface, its ChatGPT sign-in state, exposed model catalog, actual model reasoning default, or quota. The approved plan explicitly requires installed `codex exec --help` verification before the loop.
+BEFORE: Codex CLI source-level mechanics were known, but installed-surface mechanics had not been observed.
+AFTER: The current Chat execution container does not expose a `codex` executable. Therefore no honest installed `--help`, ChatGPT-sign-in model exposure, reasoning-effort default, or 10-case quota pilot can be produced from this surface.
+EVIDENCE: local execution probe `command -v codex; codex --version; codex exec --help` returned no installed executable/output; OpenAI Codex repository source separately confirms the intended flags but is not substituted for installed-runtime evidence.
+AUTHORITY: amended B7 Step 2; evidence-before-assertion; state-before-mutation; no-artificial-degradation.
+RESULT: BLOCKED at interactive execution preflight in this Chat surface. Do not write or run the B7 model loop here. Resume B7 in an authorized Codex CLI/Codex App surface with ChatGPT sign-in, verify installed help/model exposure/reasoning defaults, then run the 10-case quota pilot before the 300-invocation configuration.
+RELATED COMMIT / ARTIFACT: `docs/superpowers/plans/2026-09-04-pre-registry-eval-readiness.md`; OpenAI Codex source commit `459a79eb85400af759e9220c7bafb4429ae07516`.
