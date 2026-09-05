@@ -4,7 +4,9 @@
 
 **Goal:** Challenge the provisional 17-family capability taxonomy with precommitted real-derived routing tasks, deterministic grading, and repeated target-surface model runs before any full capability contract is authored.
 
-**Architecture:** Eval Readiness is independent of Repository Hardening and is the only pre-registry gate that authorizes capability-contract authoring. Deterministic CI checks establish corpus/harness/grader integrity. Qualifying model evidence is generated only in an authorized interactive target surface under CM-ADR-031.
+**Architecture:** Eval Readiness is independent of Repository Hardening and is the only pre-registry gate that authorizes capability-contract authoring. Deterministic CI checks establish corpus/harness/grader integrity. Qualifying model evidence is generated only in an authorized interactive target surface under CM-ADR-031 and its accepted Part 1 scope correction.
+
+**Coverage boundary:** **OpenAI Chat / Work / Codex surfaces only. B7 evidence is not an indication of behavior on other LLM providers.** Non-OpenAI portability validation is deferred to Part 2; the provider-neutral methodology and runtime-capability abstractions remain in Part 1.
 
 **Tech Stack:** Python 3.12 standard library, JSON, `unittest`, Markdown provenance records, authorized Chat/Work/Codex subscription surfaces.
 
@@ -12,13 +14,13 @@
 
 ## Global Constraints
 
-- The 17 capability families remain a **Provisional First-Generation Capability Freeze**, not an empirically proven taxonomy.
+- The 17 capability families remain a **Provisional First-Generation Capability Freeze**, not an empirically proven taxonomy. The freeze is coverage-bounded to the assessed OpenAI Part 1 surfaces and makes no claim about non-OpenAI providers.
 - No production `SKILL.md` or full capability contract may be authored before the Eval Readiness gate passes.
 - Corpus expectations are committed before routing outputs are generated; `corpus-v1.json`, its expectations, `skeleton-v0.json`, and the deterministic grader remain frozen during B7.
 - Full corpus: >=100 cases, >=10 per ambiguity cluster, >=1/3 real-derived provenance.
 - Qualifying model evaluation uses **n >= 3 independent runs per runtime/model configuration**.
 - Every invocation is a fresh single-turn session: no resume, no carryover, no `n=3` multi-generation shortcut.
-- Record runtime surface, provider, non-alias model ID, model version/build when exposed, reasoning effort, adapter mechanics, timestamp, corpus SHA, skeleton SHA, grader version, run ID, and result path. Unavailable metadata is literal `NOT AVAILABLE`; never invent it.
+- Record runtime surface, provider, non-alias model ID, model version/build when exposed, reasoning effort, adapter mechanics, timestamp, corpus SHA, skeleton SHA, grader version, run ID, result path, and the explicit coverage boundary. Unavailable metadata is literal `NOT AVAILABLE`; never invent it.
 - **Model pinning rule:** pin the most specific non-alias model ID exposed by the target surface (for example `gpt-5.6-sol`, never a floating family alias such as `gpt-5.6`). A dated snapshot is not required when that generation does not expose one. Reproducibility evidence is the non-alias ID plus explicit reasoning effort/configuration, timestamps, and per-run model identity. If a surface exposes a build identifier, record it.
 - GREEN is judged on the **worst complete run**, never the best run or average alone.
 - Per-run full-corpus thresholds remain: primary >=90%; supporting exact-set >=80%; clarification >=90%; unknown capability IDs = 0; malformed results = 0; frozen-corpus high-risk fail-closed = 100%; each cluster >=9/10 primary correct (or at most one primary failure when a cluster contains >10 cases).
@@ -27,6 +29,7 @@
 - Deterministic skeleton execution is a **routing harness/grader conformance regression** only. It does not qualify as a B7 model run, does not contribute to B7 dispersion, and never contributes to the B7 verdict.
 - No LLM-as-judge. The acceptance grader remains deterministic.
 - Model inference is never required in CI. Model-based evals run only in an authorized interactive target surface.
+- **Part 1 development/eval governance:** the project does not initiate OpenAI API execution, use API keys, or incur API billing. Model-based eval generation uses Chat / Work / Codex through ChatGPT sign-in. Host authentication used by a future Skill user is outside Skill authority and does not cause refusal or artificial degradation.
 - Quota is a first-class budget beside context. Every model-based suite declares an invocation budget. Quota pressure may distribute runs across windows/days but may not reduce corpus size, n, or thresholds.
 - If model identity changes inside a configuration while work is distributed across quota windows, invalidate that configuration and restart it from the beginning.
 - Cross-runtime/model configurations receive separate verdicts and are never averaged together.
@@ -71,7 +74,7 @@ The deterministic 3x100 skeleton execution performed before this revision is ret
 
 **Interfaces:**
 - Consumes frozen `corpus-v1.json`, frozen skeleton identity, unchanged deterministic grader.
-- Produces at least three complete model-generated runs for each configuration actually evaluated, per-case vote patterns, dispersion, worst-run verdict, and quota evidence.
+- Produces at least three complete model-generated runs for each configuration actually evaluated, per-case vote patterns, dispersion, worst-run verdict, quota evidence, and explicit coverage scope.
 
 - [ ] **Step 1: Freeze the qualifying configuration before generation**
 
@@ -84,6 +87,7 @@ model_id: gpt-5.6-sol
 model_version: NOT AVAILABLE unless the surface exposes a build identifier
 reasoning_effort: explicit actual Codex surface default for this model
 configuration: tools disabled; read-only; single-turn; fresh/ephemeral session; strict JSON output schema
+coverage_scope: OpenAI Chat / Work / Codex surfaces only; not evidence for other LLM providers
 corpus_sha256: <frozen>
 skeleton_sha256: <frozen>
 grader_version: <unchanged>
@@ -124,6 +128,7 @@ elapsed time
 model identity
 reasoning effort
 any throttling/retry behavior
+coverage scope
 ```
 
 Use this evidence to schedule the required full run budget. The full B7 budget is **300 invocations per configuration** (100 cases x 3 independent runs). Do not shrink corpus or n to fit a quota window.
@@ -164,7 +169,7 @@ Review provenance, ambiguous boundaries, leakage risk, and adversarial difficult
 
 - [ ] **Step 9: Record expected baseline state**
 
-A legitimate outcome is RED. Classify failures by cluster/reason and preserve instability evidence. Do not weaken thresholds, corpus size, n, labels, or high-risk rules after observing scores.
+A legitimate outcome is RED. Classify failures by cluster/reason and preserve instability evidence. Do not weaken thresholds, corpus size, n, labels, high-risk rules, or coverage boundary after observing scores.
 
 - [ ] **Step 10: Commit interactive baseline evidence**
 
@@ -205,6 +210,7 @@ model-based evidence generated only interactively
 primary target configuration has n>=3 complete full-corpus runs
 any additional configuration has a separate verdict
 runtime/model/reasoning/config metadata recorded or NOT AVAILABLE explicitly
+coverage scope recorded as OpenAI Chat / Work / Codex only
 quota budget recorded without weakening corpus or n
 per-case vote patterns recorded
 frozen high-risk instability rule applied
@@ -218,7 +224,7 @@ contract-driving failure table exists
 Result vocabulary:
 
 ```text
-PASS — capability registry/contracts may begin
+PASS — capability registry/contracts may begin for the coverage-bounded Part 1 target
 BLOCKED — missing evidence/infrastructure/quota window
 REOPEN TAXONOMY — architecture review required
 ```
@@ -238,4 +244,4 @@ Eval Readiness PASS
 -> require worst-run GREEN before claiming routing/composition readiness
 ```
 
-The first post-contract GREEN never authorizes changing corpus expectations to fit implementation.
+The first post-contract GREEN never authorizes changing corpus expectations to fit implementation or generalizing Part 1 evidence to unassessed providers.
